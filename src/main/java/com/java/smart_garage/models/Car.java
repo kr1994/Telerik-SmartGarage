@@ -39,13 +39,12 @@ public class Car {
     }
 
     public Car(int carId,
-               Manufacturer manufacturer,
+               Model model,
                RegistrationPlate registrationPlate,
                Identification identifications,
                Year year, Colour colour,
                Engine engine) {
         this.carId = carId;
-        this.manufacturer = manufacturer;
         this.registrationPlate = registrationPlate;
         this.identifications = identifications;
         this.year = year;
@@ -57,12 +56,13 @@ public class Car {
         this.carId = carId;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
-    }
 
     public void setRegistrationPlate(RegistrationPlate registrationPlate) {
         this.registrationPlate = registrationPlate;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
     public void setIdentifications(Identification identifications) {
@@ -86,17 +86,16 @@ public class Car {
     }
 
 
-    public Manufacturer getManufacturer() {
-        return manufacturer;
-    }
-
-
     public RegistrationPlate getRegistrationPlate() {
         return registrationPlate;
     }
 
     public Identification getIdentifications() {
         return identifications;
+    }
+
+    public Model getModel() {
+        return model;
     }
 
     public Year getYear() {
