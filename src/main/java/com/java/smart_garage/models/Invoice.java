@@ -18,11 +18,39 @@ public class Invoice {
 
     @OneToMany
     @JoinTable(name = "car_services")
-    private List<CarService> carServiceId;
+    private List<CarService> carService;
 
     public Invoice() {
     }
 
+    public Invoice(int invoiceId, Customer customer, List<CarService> carService) {
+        this.invoiceId = invoiceId;
+        this.customer = customer;
+        this.carService = carService;
+    }
 
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public void setCarService(List<CarService> carService) {
+        this.carService = carService;
+    }
+
+    public int getInvoiceId() {
+        return invoiceId;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public List<CarService> getCarService() {
+        return carService;
+    }
 }
 
