@@ -2,9 +2,8 @@ package com.java.smart_garage.models;
 
 import javax.persistence.*;
 
-
 @Entity
-@Table(name = "registation_plates")
+@Table(name = "registration_plates")
 public class RegistrationPlates {
 
     @Id
