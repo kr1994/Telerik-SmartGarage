@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "horse_powers")
-public class HorsePowers {
+public class HorsePower {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +14,10 @@ public class HorsePowers {
     @Column(name = "power")
     private int power;
 
-    public HorsePowers() {
+    public HorsePower() {
     }
 
-    public HorsePowers(int powerId, int power) {
+    public HorsePower(int powerId, int power) {
         this.powerId = powerId;
         this.power = power;
     }

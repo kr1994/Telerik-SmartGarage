@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cars")
-public class Cars {
+public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,38 +12,38 @@ public class Cars {
     private int carId;
 
     @ManyToOne
-    @Column(name = "manufacturer_id")
-    private Manufacturers manufacturer;
+    @Column(name = "model_id")
+    private Model model;
 
     @OneToOne
     @Column(name = "plate_id")
-    private RegistrationPlates registrationPlate;
+    private RegistrationPlate registrationPlate;
 
     @OneToOne
     @Column(name = "identification_id")
-    private Identifications identifications;
+    private Identification identifications;
 
     @ManyToOne
     @Column(name = "year_id")
-    private Years year;
+    private Year year;
 
     @ManyToOne
     @Column(name = "colour_id")
-    private Colours colour;
+    private Colour colour;
 
     @ManyToOne
     @Column(name = "engine_id")
-    private Engines engine;
+    private Engine engine;
 
-    public Cars() {
+    public Car() {
     }
 
-    public Cars(int carId,
-                Manufacturers manufacturer,
-                RegistrationPlates registrationPlate,
-                Identifications identifications,
-                Years year, Colours colour,
-                Engines engine) {
+    public Car(int carId,
+               Manufacturer manufacturer,
+               RegistrationPlate registrationPlate,
+               Identification identifications,
+               Year year, Colour colour,
+               Engine engine) {
         this.carId = carId;
         this.manufacturer = manufacturer;
         this.registrationPlate = registrationPlate;
@@ -57,27 +57,27 @@ public class Cars {
         this.carId = carId;
     }
 
-    public void setManufacturer(Manufacturers manufacturer) {
+    public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }
 
-    public void setRegistrationPlate(RegistrationPlates registrationPlate) {
+    public void setRegistrationPlate(RegistrationPlate registrationPlate) {
         this.registrationPlate = registrationPlate;
     }
 
-    public void setIdentifications(Identifications identifications) {
+    public void setIdentifications(Identification identifications) {
         this.identifications = identifications;
     }
 
-    public void setYear(Years year) {
+    public void setYear(Year year) {
         this.year = year;
     }
 
-    public void setColour(Colours colour) {
+    public void setColour(Colour colour) {
         this.colour = colour;
     }
 
-    public void setEngine(Engines engine) {
+    public void setEngine(Engine engine) {
         this.engine = engine;
     }
 
@@ -86,28 +86,28 @@ public class Cars {
     }
 
 
-    public Manufacturers getManufacturer() {
+    public Manufacturer getManufacturer() {
         return manufacturer;
     }
 
 
-    public RegistrationPlates getRegistrationPlate() {
+    public RegistrationPlate getRegistrationPlate() {
         return registrationPlate;
     }
 
-    public Identifications getIdentifications() {
+    public Identification getIdentifications() {
         return identifications;
     }
 
-    public Years getYear() {
+    public Year getYear() {
         return year;
     }
 
-    public Colours getColour() {
+    public Colour getColour() {
         return colour;
     }
 
-    public Engines getEngine() {
+    public Engine getEngine() {
         return engine;
     }
 

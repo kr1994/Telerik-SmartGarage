@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "engines")
-public class Engines {
+public class Engine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,20 +13,20 @@ public class Engines {
 
     @ManyToOne
     @JoinColumn(name = "hpw_id")
-    private HorsePowers hpw;
+    private HorsePower hpw;
 
     @ManyToOne
     @JoinColumn(name = "fuel_id")
-    private Fuels fuel;
+    private Fuel fuel;
 
     @ManyToOne
     @JoinColumn(name = "cubic_capacity_id")
-    private CubicCapacities cc;
+    private CubicCapacity cc;
 
-    public Engines() {
+    public Engine() {
     }
 
-    public Engines(int engineId, HorsePowers hpw, Fuels fuel, CubicCapacities cc) {
+    public Engine(int engineId, HorsePower hpw, Fuel fuel, CubicCapacity cc) {
         this.engineId = engineId;
         this.hpw = hpw;
         this.fuel = fuel;
@@ -41,27 +41,27 @@ public class Engines {
         this.engineId = engineId;
     }
 
-    public HorsePowers getHpw() {
+    public HorsePower getHpw() {
         return hpw;
     }
 
-    public void setHpw(HorsePowers hpw) {
+    public void setHpw(HorsePower hpw) {
         this.hpw = hpw;
     }
 
-    public Fuels getFuel() {
+    public Fuel getFuel() {
         return fuel;
     }
 
-    public void setFuel(Fuels fuel) {
+    public void setFuel(Fuel fuel) {
         this.fuel = fuel;
     }
 
-    public CubicCapacities getCubicCapacity() {
+    public CubicCapacity getCubicCapacity() {
         return cc;
     }
 
-    public void setCubicCapacity(CubicCapacities cc) {
+    public void setCubicCapacity(CubicCapacity cc) {
         this.cc = cc;
     }
 }

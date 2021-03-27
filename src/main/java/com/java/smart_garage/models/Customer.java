@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "customers")
-public class Customers {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,15 +14,15 @@ public class Customers {
 
     @OneToOne
     @Column(name = "user_id")
-    private Users user;
+    private User user;
 
     @Column(name = "phone_number")
     private int phoneNumber;
 
-    public Customers() {
+    public Customer() {
     }
 
-    public Customers(int customerId, Users user, int phoneNumber) {
+    public Customer(int customerId, User user, int phoneNumber) {
         this.customerId = customerId;
         this.user = user;
         this.phoneNumber = phoneNumber;
@@ -32,7 +32,7 @@ public class Customers {
         this.customerId = customerId;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -44,7 +44,7 @@ public class Customers {
         return customerId;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 

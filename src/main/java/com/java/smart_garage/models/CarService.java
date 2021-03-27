@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "car_services")
-public class CarServices {
+public class CarService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,16 +13,16 @@ public class CarServices {
 
     @OneToOne
     @Column(name = "car_id")
-    private Cars car;
+    private Car car;
 
     @OneToOne
     @Column(name = "service_id")
-    private Services service;
+    private Service service;
 
-    public CarServices() {
+    public CarService() {
     }
 
-    public CarServices(int carServicesId, Cars car, Services service) {
+    public CarService(int carServicesId, Car car, Service service) {
         this.carServicesId = carServicesId;
         this.car = car;
         this.service = service;
@@ -33,11 +33,11 @@ public class CarServices {
         this.carServicesId = carServicesId;
     }
 
-    public void setCar(Cars car) {
+    public void setCar(Car car) {
         this.car = car;
     }
 
-    public void setService(Services service) {
+    public void setService(Service service) {
         this.service = service;
     }
 
@@ -45,11 +45,11 @@ public class CarServices {
         return carServicesId;
     }
 
-    public Cars getCar() {
+    public Car getCar() {
         return car;
     }
 
-    public Services getService() {
+    public Service getService() {
         return service;
     }
 

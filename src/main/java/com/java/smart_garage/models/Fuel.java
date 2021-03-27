@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "fuels")
-public class Fuels {
+public class Fuel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,10 @@ public class Fuels {
     @Column(name = "fuel")
     private int fuelName;
 
-    public Fuels() {
+    public Fuel() {
     }
 
-    public Fuels(int fuelId, int fuelName) {
+    public Fuel(int fuelId, int fuelName) {
         this.fuelId = fuelId;
         this.fuelName = fuelName;
     }

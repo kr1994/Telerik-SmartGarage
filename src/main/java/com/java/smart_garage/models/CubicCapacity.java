@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cubic_capacities")
-public class CubicCapacities {
+public class CubicCapacity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +14,10 @@ public class CubicCapacities {
     @Column(name = "cc")
     private int cubicCapacity;
 
-    public CubicCapacities() {
+    public CubicCapacity() {
     }
 
-    public CubicCapacities(int cubicCapacityId, int cubicCapacity) {
+    public CubicCapacity(int cubicCapacityId, int cubicCapacity) {
         this.cubicCapacityId = cubicCapacityId;
         this.cubicCapacity = cubicCapacity;
     }
