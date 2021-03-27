@@ -15,7 +15,7 @@ public class CarService {
     @Column(name = "car_id")
     private Car car;
 
-    @OneToOne
+    @ManyToOne
     @Column(name = "service_id")
     private Service service;
 

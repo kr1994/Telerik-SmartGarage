@@ -45,6 +45,7 @@ public class Car {
                Year year, Colour colour,
                Engine engine) {
         this.carId = carId;
+        this.model = model;
         this.registrationPlate = registrationPlate;
         this.identifications = identifications;
         this.year = year;
@@ -84,7 +85,6 @@ public class Car {
     public int getCarId() {
         return carId;
     }
-
 
     public RegistrationPlate getRegistrationPlate() {
         return registrationPlate;

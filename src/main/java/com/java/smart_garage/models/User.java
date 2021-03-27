@@ -28,7 +28,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "user_type_id")
-    private UserTypes userType;
+    private UserType userType;
 
     public User() {
     }
@@ -40,7 +40,7 @@ public class User {
                 String firstName,
                 String lastName,
                 String email,
-                UserTypes userType) {
+                UserType userType) {
 
         this.userId = userId;
         this.username = username;
@@ -77,7 +77,7 @@ public class User {
         this.email = email;
     }
 
-    public void setUserType(UserTypes userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
@@ -105,7 +105,7 @@ public class User {
         return email;
     }
 
-    public UserTypes getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 

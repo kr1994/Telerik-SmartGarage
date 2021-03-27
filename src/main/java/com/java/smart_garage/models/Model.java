@@ -15,12 +15,17 @@ public class Model {
     @Column(name = "name")
     private String modelName;
 
+    @ManyToOne
+    @Column(name = "manufacturer_id")
+    private Manufacturer manufacturer;
+
     public Model() {
     }
 
-    public Model(int modelId, String modelName) {
+    public Model(int modelId, String modelName, Manufacturer manufacturer) {
         this.modelId = modelId;
         this.modelName = modelName;
+        this.manufacturer = manufacturer;
     }
 
     public void setModelId(int modelId) {
@@ -31,11 +36,19 @@ public class Model {
         this.modelName = modelName;
     }
 
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
     public int getModelId() {
         return modelId;
     }
 
     public String getModelName() {
         return modelName;
+    }
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
     }
 }
