@@ -27,8 +27,8 @@ public class UserTypes {
         this.typeId = typeId;
     }
 
-    public void setType(String plateNumber) {
-        this.type = plateNumber;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getType() {
