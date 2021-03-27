@@ -11,14 +11,14 @@ public class Engines {
     @Column(name = "engine_id")
     private int engineId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "hpw_id")
     private HorsePowers hpw;
 
     @Column(name = "fuel_id")
     private int fuelId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cubic_capacity_id")
     private CubicCapacities cc;
 
