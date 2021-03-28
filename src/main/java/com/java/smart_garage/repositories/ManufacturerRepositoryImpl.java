@@ -34,7 +34,7 @@ public class ManufacturerRepositoryImpl implements ManufacturerRepository {
         try (Session session = sessionFactory.openSession()) {
             Manufacturer manufacturer = session.get(Manufacturer.class, id);
             if(manufacturer==null){
-                throw new EntityNotFoundException("Category", "id", id);
+                throw new EntityNotFoundException("Manufacturer", "id", id);
             }
             return manufacturer;
         }
