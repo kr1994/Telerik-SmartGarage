@@ -24,11 +24,11 @@ public class CubicCapacityRepositoryImpl implements CubicCapacityRepository {
 
     @Override
     public List<CubicCapacity> getAll() {
-        String queryString = String.format("from %s ", CubicCapacity.class);
+       // String queryString = String.format("from %s order by %s", CubicCapacity.class,"cubicCapacityId");
 
         try (Session session = sessionFactory.openSession()) {
             Query<CubicCapacity> query = session.createQuery(
-                    queryString, CubicCapacity.class);
+                    "from CubicCapacity order by cubicCapacityId", CubicCapacity.class);
 
             return query.list();
         }
