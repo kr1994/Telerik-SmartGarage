@@ -13,12 +13,12 @@ public class Fuel {
     private int fuelId;
 
     @Column(name = "fuel")
-    private int fuelName;
+    private String fuelName;
 
     public Fuel() {
     }
 
-    public Fuel(int fuelId, int fuelName) {
+    public Fuel(int fuelId, String fuelName) {
         this.fuelId = fuelId;
         this.fuelName = fuelName;
     }
@@ -27,7 +27,7 @@ public class Fuel {
         this.fuelId = fuelId;
     }
 
-    public void setFuelName(int fuelName) {
+    public void setFuelName(String fuelName) {
         this.fuelName = fuelName;
     }
 
@@ -35,7 +35,7 @@ public class Fuel {
         return fuelId;
     }
 
-    public int getFuelName() {
+    public String getFuelName() {
         return fuelName;
     }
 }
