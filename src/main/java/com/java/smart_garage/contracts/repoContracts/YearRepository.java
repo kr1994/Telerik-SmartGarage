@@ -1,4 +1,4 @@
-package com.java.smart_garage.repositories;
+package com.java.smart_garage.contracts.repoContracts;
 
 import com.java.smart_garage.models.Year;
 
