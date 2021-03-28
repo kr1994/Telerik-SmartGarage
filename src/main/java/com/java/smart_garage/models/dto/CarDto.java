@@ -2,69 +2,83 @@ package com.java.smart_garage.models.dto;
 
 import com.java.smart_garage.models.*;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class CarDto {
 
+    @NotNull
+    @Positive(message = "Model Id must be positive.")
+    private int modelId;
 
-    private Model model;
+    @NotNull
+    @Positive(message = "Plate Id must be positive.")
+    private int registrationPlateId;
 
-    private RegistrationPlate registrationPlate;
+    @NotNull
+    @Positive(message = "Identification Id must be positive.")
+    private int identificationsId;
 
-    private Identification identifications;
+    @NotNull
+    @Positive(message = "Year Id must be positive.")
+    private int yearId;
 
-    private Year year;
+    @NotNull
+    @Positive(message = "Colour Id must be positive.")
+    private int colourId;
 
-    private Colour colour;
-
-    private Engine engine;
+    @NotNull
+    @Positive(message = "Engine Id must be positive.")
+    private int engineId;
 
     public CarDto() {
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
     }
 
-    public void setRegistrationPlate(RegistrationPlate registrationPlate) {
-        this.registrationPlate = registrationPlate;
+    public void setRegistrationPlateId(int registrationPlateId) {
+        this.registrationPlateId = registrationPlateId;
     }
 
-    public void setIdentifications(Identification identifications) {
-        this.identifications = identifications;
+    public void setIdentificationsId(int identificationsId) {
+        this.identificationsId = identificationsId;
     }
 
-    public void setYear(Year year) {
-        this.year = year;
+    public void setYearId(int yearId) {
+        this.yearId = yearId;
     }
 
-    public void setColour(Colour colour) {
-        this.colour = colour;
+    public void setColourId(int colourId) {
+        this.colourId = colourId;
     }
 
-    public void setEngine(Engine engine) {
-        this.engine = engine;
+    public void setEngineId(int engineId) {
+        this.engineId = engineId;
     }
 
-    public Model getModel() {
-        return model;
+    public int getModelId() {
+        return modelId;
     }
 
-    public RegistrationPlate getRegistrationPlate() {
-        return registrationPlate;
+    public int getRegistrationPlateId() {
+        return registrationPlateId;
     }
 
-    public Identification getIdentifications() {
-        return identifications;
+    public int getIdentificationsId() {
+        return identificationsId;
     }
 
-    public Year getYear() {
-        return year;
+    public int getYearId() {
+        return yearId;
     }
 
-    public Colour getColour() {
-        return colour;
+    public int getColourId() {
+        return colourId;
     }
 
-    public Engine getEngine() {
-        return engine;
+    public int getEngineId() {
+        return engineId;
     }
 }
