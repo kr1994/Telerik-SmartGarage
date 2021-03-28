@@ -1,7 +1,7 @@
 package com.java.smart_garage.models;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "invoice")
@@ -18,12 +18,12 @@ public class Invoice {
 
     @OneToMany
     @JoinTable(name = "car_services")
-    private List<CarService> carService;
+    private Set<CarService> carService;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceId, Customer customer, List<CarService> carService) {
+    public Invoice(int invoiceId, Customer customer, Set<CarService> carService) {
         this.invoiceId = invoiceId;
         this.customer = customer;
         this.carService = carService;
@@ -37,7 +37,7 @@ public class Invoice {
         this.customer = customer;
     }
 
-    public void setCarService(List<CarService> carService) {
+    public void setCarService(Set<CarService> carService) {
         this.carService = carService;
     }
 
@@ -49,7 +49,7 @@ public class Invoice {
         return customer;
     }
 
-    public List<CarService> getCarService() {
+    public Set<CarService> getCarService() {
         return carService;
     }
 }
