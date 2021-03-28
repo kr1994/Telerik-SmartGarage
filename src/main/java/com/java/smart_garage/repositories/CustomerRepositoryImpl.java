@@ -1,7 +1,6 @@
 package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.CustomerRepository;
-import com.java.smart_garage.contracts.repoContracts.EngineRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
 import org.hibernate.Session;
