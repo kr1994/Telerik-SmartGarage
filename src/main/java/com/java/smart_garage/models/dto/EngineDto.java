@@ -5,39 +5,47 @@ import com.java.smart_garage.models.CubicCapacity;
 import com.java.smart_garage.models.Fuel;
 import com.java.smart_garage.models.HorsePower;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class EngineDto {
 
-    private HorsePower hpw;
+    @NotNull
+    @Positive(message = "Horse power Id  must be positive.")
+    private int hpwId;
 
-    private Fuel fuel;
+    @NotNull
+    @Positive(message = "Fuel Id must be positive.")
+    private int fuelId;
 
-    private CubicCapacity cc;
+    @NotNull
+    @Positive(message = "Cubic Capacity Id must be positive.")
+    private int ccId;
 
     public EngineDto() {
-
     }
 
-    public void setHpw(HorsePower hpw) {
-        this.hpw = hpw;
+    public void setHpwId(int hpwId) {
+        this.hpwId = hpwId;
     }
 
-    public void setFuel(Fuel fuel) {
-        this.fuel = fuel;
+    public void setFuelId(int fuelId) {
+        this.fuelId = fuelId;
     }
 
-    public void setCc(CubicCapacity cc) {
-        this.cc = cc;
+    public void setCcId(int ccId) {
+        this.ccId = ccId;
     }
 
-    public HorsePower getHpw() {
-        return hpw;
+    public int getHpwId() {
+        return hpwId;
     }
 
-    public Fuel getFuel() {
-        return fuel;
+    public int getFuelId() {
+        return fuelId;
     }
 
-    public CubicCapacity getCc() {
-        return cc;
+    public int getCcId() {
+        return ccId;
     }
 }
