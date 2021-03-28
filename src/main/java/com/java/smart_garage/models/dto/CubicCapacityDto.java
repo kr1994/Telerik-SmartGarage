@@ -1,10 +1,12 @@
 package com.java.smart_garage.models.dto;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class CubicCapacityDto {
 
-    @Positive
+    @NotNull
+    @Positive(message = "Cubic Capacity must be positive.")
     private int cubicCapacity;
 
     public CubicCapacityDto() {
