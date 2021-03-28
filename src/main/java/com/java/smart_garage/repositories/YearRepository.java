@@ -1,0 +1,15 @@
+package com.java.smart_garage.repositories;
+
+import com.java.smart_garage.models.Year;
+
+import java.util.List;
+
+public interface YearRepository {
+    List<Year> getAllYears();
+
+    Year getById(int id);
+
+    Year create(Year year);
+
+    void delete(int id);
+}

@@ -54,10 +54,10 @@ public class HorsePowerRepositoryImpl implements HorsePowerRepository {
     }
 
     @Override
-    public void delete(int id){
-        try(Session session = sessionFactory.openSession()){
+    public void delete(int id) {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Manufacturer.class,id));
+            session.delete(session.get(Manufacturer.class, id));
             session.getTransaction().commit();
         }
     }

@@ -39,7 +39,7 @@ public class ServiceRepositoryImpl implements ServiceRepository {
         try (Session session = sessionFactory.openSession()){
             Query<Service> query = session.createQuery("from Service where serviceName like concat('%', :name, '%')",
                     Service.class);
-            query.setParameter("serviceName", name);
+            query.setParameter("name", name);
             List<Service> result = query.list();
 
             if (result.size() == 0) {

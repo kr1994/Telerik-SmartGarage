@@ -39,7 +39,7 @@ public class IdentificationRepositoryImpl implements IdentificationRepository {
         try (Session session = sessionFactory.openSession()){
             Query<Identification> query = session.createQuery("from Identification where identification like concat('%', :name, '%')",
                     Identification.class);
-            query.setParameter("identification", name);
+            query.setParameter("name", name);
             List<Identification> result = query.list();
 
             if (result.size() == 0) {
