@@ -9,6 +9,8 @@ public interface CarRepository {
 
     Car getById(int id);
 
+    Car getByIdentifications(String name);
+
     Car create(Car car);
 
     Car update(Car car, Model model,

@@ -43,6 +43,20 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     @Override
+    public Car getByIdentifications(String name) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Car> query = session.createQuery("from Car where identifications.identification like :name",
+                    Car.class);
+            query.setParameter("name", name);
+            List<Car> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("Identification", "value", name);
+            }
+            return result.get(0);
+        }
+    }
+
+    @Override
     public Car create(Car car) {
         try (Session session = sessionFactory.openSession()) {
             session.save(car);
@@ -61,7 +75,7 @@ public class CarRepositoryImpl implements CarRepository {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            carUpdate(car,session,model,registrationPlate,identification,year,colour,engine);
+            carUpdate(car, session, model, registrationPlate, identification, year, colour, engine);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
@@ -80,9 +94,8 @@ public class CarRepositoryImpl implements CarRepository {
         }
     }
 
-    private void carUpdate (Car car, Session session, Model model, RegistrationPlate registrationPlate, Identification identification,
-                            Year year, Colour colour, Engine engine)
-    {
+    private void carUpdate(Car car, Session session, Model model, RegistrationPlate registrationPlate, Identification identification,
+                           Year year, Colour colour, Engine engine) {
         car.setModel(model);
         car.setRegistrationPlate(registrationPlate);
         car.setIdentifications(identification);
