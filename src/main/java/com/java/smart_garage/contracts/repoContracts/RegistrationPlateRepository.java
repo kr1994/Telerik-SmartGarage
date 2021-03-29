@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RegistrationPlateRepository {
 
-    List<RegistrationPlate> getAll();
+    List<RegistrationPlate> getAllRegistrationPlates();
 
     RegistrationPlate getById(int id);
 

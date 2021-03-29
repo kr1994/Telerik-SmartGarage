@@ -23,7 +23,7 @@ public class RegistrationPlateRepositoryImpl implements RegistrationPlateReposit
     }
 
     @Override
-    public List<RegistrationPlate> getAll() {
+    public List<RegistrationPlate> getAllRegistrationPlates() {
         // String queryString = String.format("from %s order by %s", RegistrationPlate.class,"plateId");
 
         try (Session session = sessionFactory.openSession()) {
