@@ -24,7 +24,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 
     @Override
-    public List<Customer> getAll() {
+    public List<Customer> getAllCustomers() {
         try (Session session = sessionFactory.openSession()) {
             Query<Customer> query = session.createQuery("from Customer order by customerId",
                     Customer.class);
