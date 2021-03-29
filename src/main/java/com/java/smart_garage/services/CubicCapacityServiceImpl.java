@@ -30,7 +30,6 @@ public class CubicCapacityServiceImpl implements CubicCapacityService {
         return repository.getById(id);
     }
 
-
     @Override
     public void create(CubicCapacity cubicCapacity, User employeeUser) {
 
