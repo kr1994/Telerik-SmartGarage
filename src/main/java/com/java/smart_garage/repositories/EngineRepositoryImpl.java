@@ -24,7 +24,7 @@ public class EngineRepositoryImpl implements EngineRepository {
 
 
     @Override
-    public List<Engine> getAll() {
+    public List<Engine> getAllEngines() {
         try (Session session = sessionFactory.openSession()) {
             Query<Engine> query = session.createQuery("from Engine order by engineId",
                     Engine.class);

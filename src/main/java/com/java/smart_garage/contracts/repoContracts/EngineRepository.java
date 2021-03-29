@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EngineRepository {
 
-    List<Engine> getAll();
+    List<Engine> getAllEngines();
 
     Engine getById(int id);
 
