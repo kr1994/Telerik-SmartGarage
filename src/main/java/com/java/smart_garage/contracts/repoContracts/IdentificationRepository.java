@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IdentificationRepository {
 
-    List<Identification> getAll();
+    List<Identification> getAllIdentifications();
 
     Identification getById(int id);
 

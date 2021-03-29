@@ -23,7 +23,7 @@ public class IdentificationRepositoryImpl implements IdentificationRepository {
     }
 
     @Override
-    public List<Identification> getAll() {
+    public List<Identification> getAllIdentifications() {
         // String queryString = String.format("from %s order by %s", Identification.class,"identificationId");
 
         try (Session session = sessionFactory.openSession()) {
