@@ -45,7 +45,7 @@ public class HorsePowerServiceImpl implements HorsePowerService {
             throw new UnauthorizedOperationException("Only employee can create new horse power");
         }
         try {
-            repository.getById(horsePower.getPowerId());
+            repository.getByPower(horsePower.getPower());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
@@ -65,7 +65,7 @@ public class HorsePowerServiceImpl implements HorsePowerService {
         try {
             horsePower = repository.getById(id);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Horse Power", "power", horsePower.getPower());
+            throw new EntityNotFoundException("Horse Power", "id", id);
         }
 
         repository.delete(id);
