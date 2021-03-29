@@ -13,12 +13,12 @@ public class Invoice {
     private int invoiceId;
 
     @OneToOne
-    @Column(name = "customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany
-    @JoinTable(name = "car_services")
-    private Set<CarService> carService;
+//    @OneToMany
+//    @JoinTable(name = "car_services")
+//    private Set<CarService> carService;
 
     public Invoice() {
     }
@@ -26,7 +26,7 @@ public class Invoice {
     public Invoice(int invoiceId, Customer customer, Set<CarService> carService) {
         this.invoiceId = invoiceId;
         this.customer = customer;
-        this.carService = carService;
+//        this.carService = carService;
     }
 
     public void setInvoiceId(int invoiceId) {
@@ -37,9 +37,9 @@ public class Invoice {
         this.customer = customer;
     }
 
-    public void setCarService(Set<CarService> carService) {
-        this.carService = carService;
-    }
+//    public void setCarService(Set<CarService> carService) {
+//        this.carService = carService;
+//    }
 
     public int getInvoiceId() {
         return invoiceId;
@@ -49,8 +49,8 @@ public class Invoice {
         return customer;
     }
 
-    public Set<CarService> getCarService() {
-        return carService;
-    }
+//    public Set<CarService> getCarService() {
+//        return carService;
+//    }
 }
 

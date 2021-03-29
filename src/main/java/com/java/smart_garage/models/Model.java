@@ -16,7 +16,7 @@ public class Model {
     private String modelName;
 
     @ManyToOne
-    @Column(name = "manufacturer_id")
+    @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 
     public Model() {

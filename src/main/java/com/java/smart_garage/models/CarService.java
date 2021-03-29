@@ -12,11 +12,11 @@ public class CarService {
     private int carServicesId;
 
     @OneToOne
-    @Column(name = "car_id")
+    @JoinColumn(name = "car_id")
     private Car car;
 
     @ManyToOne
-    @Column(name = "service_id")
+    @JoinColumn(name = "service_id")
     private Service service;
 
     public CarService() {

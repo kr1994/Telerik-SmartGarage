@@ -12,27 +12,27 @@ public class Car {
     private int carId;
 
     @ManyToOne
-    @Column(name = "model_id")
+    @JoinColumn(name = "model_id")
     private Model model;
 
     @OneToOne
-    @Column(name = "plate_id")
+    @JoinColumn(name = "plate_id")
     private RegistrationPlate registrationPlate;
 
     @OneToOne
-    @Column(name = "identification_id")
+    @JoinColumn(name = "identification_id")
     private Identification identifications;
 
     @ManyToOne
-    @Column(name = "year_id")
+    @JoinColumn(name = "year_id")
     private Year year;
 
     @ManyToOne
-    @Column(name = "colour_id")
+    @JoinColumn(name = "colour_id")
     private Colour colour;
 
     @ManyToOne
-    @Column(name = "engine_id")
+    @JoinColumn(name = "engine_id")
     private Engine engine;
 
     public Car() {

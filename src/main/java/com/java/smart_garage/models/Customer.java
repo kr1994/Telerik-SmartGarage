@@ -13,7 +13,7 @@ public class Customer {
     private int customerId;
 
     @OneToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "phone_number")
