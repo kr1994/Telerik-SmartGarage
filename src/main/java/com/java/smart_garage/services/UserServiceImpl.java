@@ -1,6 +1,7 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.UserRepository;
+import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements com.java.smart_garage.contracts.serviceContracts.UserService {
+public class UserServiceImpl implements UserService {
+
     private final UserRepository repository;
 
     public UserServiceImpl(UserRepository repository) {
@@ -21,6 +23,7 @@ public class UserServiceImpl implements com.java.smart_garage.contracts.serviceC
     public List<User> getAllUsers(){
         return repository.getAllUsers();
     }
+
     @Override
     public User getById(int id){
         return repository.getById(id);
