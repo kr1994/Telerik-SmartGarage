@@ -9,6 +9,8 @@ public interface YearRepository {
 
     Year getById(int id);
 
+    Year getByYear(int year);
+
     Year create(Year year);
 
     void delete(int id);

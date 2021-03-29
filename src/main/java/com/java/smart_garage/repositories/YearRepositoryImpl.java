@@ -39,6 +39,19 @@ public class YearRepositoryImpl implements YearRepository {
         }
     }
 
+    public Year getByYear(int year){
+        try(Session session = sessionFactory.openSession()){
+            Query<Year> query = session.createQuery("from Year where year = :year", Year.class);
+            query.setParameter("year", year);
+            List<Year> result = query.list();
+
+            if (result.size()==0){
+                throw new EntityNotFoundException(year);
+            }
+            return result.get(0);
+        }
+    }
+
     @Override
     public Year create(Year year) {
         try (Session session = sessionFactory.openSession()) {

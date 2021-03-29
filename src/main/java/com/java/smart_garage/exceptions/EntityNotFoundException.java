@@ -18,4 +18,9 @@ public class EntityNotFoundException extends RuntimeException{
         super(String.format("%s with %s %s not found.", type, attribute, value));
     }
 
+    public EntityNotFoundException(int value) {
+        super(String.format("The year %d is  not found.", value));
+    }
+
+
 }
