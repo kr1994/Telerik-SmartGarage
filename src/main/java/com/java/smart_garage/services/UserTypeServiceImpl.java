@@ -1,71 +1,71 @@
 package com.java.smart_garage.services;
 
-import com.java.smart_garage.contracts.repoContracts.ColoursRepository;
-import com.java.smart_garage.contracts.serviceContracts.ColourService;
+import com.java.smart_garage.contracts.repoContracts.UserTypeRepository;
+import com.java.smart_garage.contracts.serviceContracts.UserTypeService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Colour;
 import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ColourServiceImpl implements ColourService {
-    private final ColoursRepository repository;
+public class UserTypeServiceImpl implements UserTypeService {
+    private final UserTypeRepository repository;
 
     @Autowired
-    public ColourServiceImpl(ColoursRepository repository) {
+    public UserTypeServiceImpl(UserTypeRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Colour> getAllColours() {
-        return repository.getAllColours();
+    public List<UserType> getAllTypes() {
+        return repository.getAllUserTypes();
     }
 
     @Override
-    public Colour getById(int id) {
+    public UserType getById(int id) {
         return repository.getById(id);
     }
 
     @Override
-    public Colour getByName(String name) {
+    public UserType getByName(String name) {
         return repository.getByName(name);
     }
 
     @Override
-    public void create(Colour colour, User user) {
+    public void create(UserType type, User user) {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create a new colour.");
+            throw new UnauthorizedOperationException("Only employee can create a new type.");
         }
 
         try {
-            repository.getByName(colour.getColour());
+            repository.getByName(type.getType());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Colour", "name", colour.getColour());
+            throw new DuplicateEntityException("Type", "name", type.getType());
         }
 
-        repository.create(colour);
+        repository.create(type);
     }
 
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee  can delete a colour.");
+            throw new UnauthorizedOperationException("Only employee  can delete a type.");
         }
-        Colour colour = new Colour();
+        UserType type = new UserType();
         try {
-            colour = repository.getById(id);
+            type = repository.getById(id);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Colour", "id", id);
+            throw new EntityNotFoundException("Type", "id", id);
         }
         repository.delete(id);
     }
