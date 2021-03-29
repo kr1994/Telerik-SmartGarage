@@ -5,7 +5,7 @@ import com.java.smart_garage.models.Year;
 
 import java.util.List;
 
-public interface YearsService {
+public interface YearService {
     List<Year> getAllYears();
 
     Year getById(int id);

@@ -1,7 +1,7 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.ModelRepository;
-import com.java.smart_garage.contracts.serviceContracts.ModelsService;
+import com.java.smart_garage.contracts.serviceContracts.ModelService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ModelsServiceImpl implements ModelsService {
+public class ModelServiceImpl implements ModelService {
 
     private final ModelRepository repository;
 
     @Autowired
-    public ModelsServiceImpl(ModelRepository repository) {
+    public ModelServiceImpl(ModelRepository repository) {
         this.repository = repository;
     }
 

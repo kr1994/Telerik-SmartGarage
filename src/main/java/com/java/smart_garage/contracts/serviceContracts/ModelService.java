@@ -5,7 +5,7 @@ import com.java.smart_garage.models.User;
 
 import java.util.List;
 
-public interface ModelsService {
+public interface ModelService {
     List<Model> getAllModels();
 
     Model getModelById(int id);

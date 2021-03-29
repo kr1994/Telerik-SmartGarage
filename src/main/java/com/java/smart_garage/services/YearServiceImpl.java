@@ -1,7 +1,7 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.YearRepository;
-import com.java.smart_garage.contracts.serviceContracts.YearsService;
+import com.java.smart_garage.contracts.serviceContracts.YearService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class YearsServiceImpl implements YearsService {
+public class YearServiceImpl implements YearService {
     private final YearRepository repository;
 
     @Autowired
-    public YearsServiceImpl(YearRepository repository) {
+    public YearServiceImpl(YearRepository repository) {
         this.repository = repository;
     }
 
