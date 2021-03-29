@@ -7,6 +7,7 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.HorsePower;
 import com.java.smart_garage.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class HorsePowerServiceImpl implements HorsePowerService {
 
     private final HorsePowerRepository repository;
 
+    @Autowired
     public HorsePowerServiceImpl(HorsePowerRepository repository) {
         this.repository = repository;
     }
