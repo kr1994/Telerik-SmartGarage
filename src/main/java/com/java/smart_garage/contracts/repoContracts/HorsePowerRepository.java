@@ -6,11 +6,9 @@ import java.util.List;
 
 public interface HorsePowerRepository {
 
-    List<HorsePower> getAll();
+    List<HorsePower> getAllHorsePowers();
 
     HorsePower getById(int id);
-
-    //HorsePower getByName(String name);
 
     HorsePower create(HorsePower horsePower);
 

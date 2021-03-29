@@ -98,7 +98,7 @@ public class UserRepositoryImpl implements UserRepository {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-           session.update(user);
+            session.update(user);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();

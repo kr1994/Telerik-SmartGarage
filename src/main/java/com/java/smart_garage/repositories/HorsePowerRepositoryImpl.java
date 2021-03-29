@@ -23,7 +23,7 @@ public class HorsePowerRepositoryImpl implements HorsePowerRepository {
     }
 
     @Override
-    public List<HorsePower> getAll() {
+    public List<HorsePower> getAllHorsePowers() {
         // String queryString = String.format("from %s order by %s", HorsePower.class,"powerId");
 
         try (Session session = sessionFactory.openSession()) {
