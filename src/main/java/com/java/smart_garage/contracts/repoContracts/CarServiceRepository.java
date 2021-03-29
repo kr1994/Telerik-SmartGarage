@@ -4,7 +4,7 @@ import com.java.smart_garage.models.CarService;
 
 import java.util.List;
 
-public interface CarServicesRepository {
+public interface CarServiceRepository {
     List<CarService> getAllCarServices();
 
     CarService getById(int id);

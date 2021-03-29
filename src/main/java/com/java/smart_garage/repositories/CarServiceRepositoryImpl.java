@@ -1,6 +1,6 @@
 package com.java.smart_garage.repositories;
 
-import com.java.smart_garage.contracts.repoContracts.CarServicesRepository;
+import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.CarService;
 import org.hibernate.Session;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CarServicesRepositoryImpl implements CarServicesRepository {
+public class CarServiceRepositoryImpl implements CarServiceRepository {
     private final SessionFactory sessionFactory;
     @Autowired
-    public CarServicesRepositoryImpl(SessionFactory sessionFactory) {
+    public CarServiceRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
