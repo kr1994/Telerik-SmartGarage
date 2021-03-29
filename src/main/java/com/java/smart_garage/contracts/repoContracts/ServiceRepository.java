@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ServiceRepository {
 
-    List<Service> getAll();
+    List<Service> getAllServices();
 
     Service getById(int id);
 

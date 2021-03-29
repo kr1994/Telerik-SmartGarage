@@ -23,7 +23,7 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     }
 
     @Override
-    public List<Service> getAll() {
+    public List<Service> getAllServices() {
         // String queryString = String.format("from %s order by %s", Service.class,"serviceId");
 
         try (Session session = sessionFactory.openSession()) {
