@@ -37,7 +37,7 @@ public class CarServiceServiceImpl implements CarServiceService {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create new identification.");
+            throw new UnauthorizedOperationException("Only employee can create a new car service.");
         }
 
         try {
