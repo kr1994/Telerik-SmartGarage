@@ -23,7 +23,7 @@ public class CubicCapacityRepositoryImpl implements CubicCapacityRepository {
     }
 
     @Override
-    public List<CubicCapacity> getAll() {
+    public List<CubicCapacity> getAllCubicCapacities() {
        // String queryString = String.format("from %s order by %s", CubicCapacity.class,"cubicCapacityId");
 
         try (Session session = sessionFactory.openSession()) {

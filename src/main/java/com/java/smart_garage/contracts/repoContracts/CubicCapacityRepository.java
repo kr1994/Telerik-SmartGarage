@@ -6,11 +6,9 @@ import java.util.List;
 
 public interface CubicCapacityRepository {
 
-    List<CubicCapacity> getAll();
+    List<CubicCapacity> getAllCubicCapacities();
 
     CubicCapacity getById(int id);
-
-    //CubicCapacity getByName(String name);
 
     CubicCapacity create(CubicCapacity cubicCapacity);
 
