@@ -1,10 +1,12 @@
 package com.java.smart_garage.services;
 
+import com.java.smart_garage.contracts.repoContracts.ColoursRepository;
 import com.java.smart_garage.contracts.repoContracts.FuelRepository;
-import com.java.smart_garage.contracts.serviceContracts.FuelService;
+import com.java.smart_garage.contracts.serviceContracts.ColourService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Colour;
 import com.java.smart_garage.models.Fuel;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,60 +15,59 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FuelServiceImpl implements FuelService {
-
-    private final FuelRepository repository;
+public class ColourServiceImpl implements ColourService {
+    private final ColoursRepository repository;
 
     @Autowired
-    public FuelServiceImpl(FuelRepository repository) {
+    public ColourServiceImpl(ColoursRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Fuel> getAllFuels() {
-        return repository.getAllFuels();
+    public List<Colour> getAllColours() {
+        return repository.getAllColours();
     }
 
     @Override
-    public Fuel getById(int id) {
+    public Colour getById(int id) {
         return repository.getById(id);
     }
 
     @Override
-    public Fuel getByName(String name) {
+    public Colour getByName(String name) {
         return repository.getByName(name);
     }
 
     @Override
-    public void create(Fuel fuel, User user) {
+    public void create(Colour colour, User user) {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create a new fuel.");
+            throw new UnauthorizedOperationException("Only employee can create a new colour.");
         }
 
         try {
-            repository.getByName(fuel.getFuelName());
+            repository.getByName(colour.getColour());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Fuel", "name", fuel.getFuelName());
+            throw new DuplicateEntityException("Colour", "name", colour.getColour());
         }
 
-        repository.create(fuel);
+        repository.create(colour);
     }
 
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee  can delete a fuel.");
+            throw new UnauthorizedOperationException("Only employee  can delete a colour.");
         }
-        Fuel fuel = new Fuel();
+        Colour colour = new Colour();
         try {
-            fuel = repository.getById(id);
+            colour = repository.getById(id);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Fuel", "id", id);
+            throw new EntityNotFoundException("Colour", "id", id);
         }
         repository.delete(id);
     }
