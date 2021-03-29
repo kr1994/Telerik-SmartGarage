@@ -33,6 +33,11 @@ public class HorsePowerServiceImpl implements HorsePowerService {
     }
 
     @Override
+    public HorsePower getByPower(int power){
+        return repository.getByPower(power);
+    }
+
+    @Override
     public void create(HorsePower horsePower, User employeeUser) {
 
         boolean duplicateExists = true;

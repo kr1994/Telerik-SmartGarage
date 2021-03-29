@@ -10,6 +10,8 @@ public interface HorsePowerRepository {
 
     HorsePower getById(int id);
 
+    HorsePower getByPower(int power);
+
     HorsePower create(HorsePower horsePower);
 
     void delete(int id);

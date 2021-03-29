@@ -11,6 +11,8 @@ public interface HorsePowerService {
 
     HorsePower getById(int id);
 
+    HorsePower getByPower(int power);
+
     void create(HorsePower cubicCapacity, User employeeUser);
 
     void delete(int id, User employeeUser);

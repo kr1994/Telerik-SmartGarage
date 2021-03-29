@@ -1,6 +1,7 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.ManufacturerRepository;
+import com.java.smart_garage.contracts.serviceContracts.ManufactureService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -23,7 +24,7 @@ public class ManufactureServiceImpl implements ManufactureService {
 
     @Override
     public List<Manufacturer> getAllManufacturers() {
-       return repository.getAllManufacturers();
+        return repository.getAllManufacturers();
     }
 
     @Override
@@ -40,7 +41,7 @@ public class ManufactureServiceImpl implements ManufactureService {
     public void create(Manufacturer manufacturer, User employeeUser) {
         boolean duplicateExists = true;
 
-        if(!(employeeUser.isEmployee())){
+        if (!(employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new manufacturer.");
         }
         try {
@@ -49,10 +50,10 @@ public class ManufactureServiceImpl implements ManufactureService {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Manufacturer", "name",  manufacturer.getManufacturerName());
+            throw new DuplicateEntityException("Manufacturer", "name", manufacturer.getManufacturerName());
         }
 
-       repository.create(manufacturer);
+        repository.create(manufacturer);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.java.smart_garage.services;
+package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.Manufacturer;
 import com.java.smart_garage.models.User;

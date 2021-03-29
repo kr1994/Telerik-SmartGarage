@@ -46,6 +46,21 @@ public class HorsePowerRepositoryImpl implements HorsePowerRepository {
     }
 
     @Override
+    public HorsePower getByPower(int power){
+        try (Session session = sessionFactory.openSession()){
+            Query<HorsePower> query = session.createQuery("from HorsePower where power = :power", HorsePower.class);
+            query.setParameter("power", power);
+            List<HorsePower> result = query.list();
+
+            if (result.size()==0){
+                throw new EntityNotFoundException("Horse Power", "power", power);
+            }
+            return result.get(0);
+
+        }
+    }
+
+    @Override
     public HorsePower create(HorsePower entity) {
         try (Session session = sessionFactory.openSession()) {
             session.save(entity);
