@@ -1,10 +1,13 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
+import com.java.smart_garage.models.RegistrationPlate;
+import com.java.smart_garage.models.User;
+
 import java.util.List;
 
 public interface RegistrationPlateService {
 
-    List<RegistrationPlate> getAllRegisrationPlates();
+    List<RegistrationPlate> getAllRegistrationPlates();
 
     RegistrationPlate getById(int id);
 
@@ -12,5 +15,5 @@ public interface RegistrationPlateService {
 
     void create(RegistrationPlate registrationPlate, User user);
 
-    void delete(int id, RegistrationPlate registrationPlate);
+    void delete(int id, User employeeUser);
 }
