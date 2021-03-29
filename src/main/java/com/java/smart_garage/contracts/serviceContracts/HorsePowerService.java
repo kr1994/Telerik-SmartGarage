@@ -9,6 +9,7 @@ public interface HorsePowerService {
 
     List<HorsePower> getAllCubicCapacities();
 
+
     HorsePower getById(int id);
 
     HorsePower getByPower(int power);
