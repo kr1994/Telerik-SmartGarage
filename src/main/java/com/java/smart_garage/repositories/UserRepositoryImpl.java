@@ -23,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User order by userId",
                     User.class);
@@ -57,6 +57,34 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where email like concat('%', :name, '%')",
+                    User.class);
+            query.setParameter("name", email);
+            List<User> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("User", "name", email);
+            }
+            return result.get(0);
+        }
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where username like concat('%', :name, '%')",
+                    User.class);
+            query.setParameter("name", username);
+            List<User> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("User", "name", username);
+            }
+            return result.get(0);
+        }
+    }
+
+    @Override
     public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.save(user);
@@ -66,17 +94,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User update(User user,
-                       String username,
-                       String password,
-                       String firstName,
-                       String lastName,
-                       String email,
-                       UserType userType) {
+    public User update(User user) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            userUpdate(user, session, username, password, firstName, lastName, email, userType);
+           session.update(user);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
@@ -95,28 +117,4 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    private void userUpdate(User user,
-                            Session session,
-                            String username,
-                            String password,
-                            String firstName,
-                            String lastName,
-                            String email,
-                            UserType userType) {
-
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setUserType(userType);
-        session.update(username);
-        session.update(password);
-        session.update(firstName);
-        session.update(lastName);
-        session.update(email);
-        session.update(userType);
-        session.update(user);
-
-    }
 }

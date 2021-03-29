@@ -7,21 +7,19 @@ import java.util.List;
 
 public interface UserRepository {
 
-    List<User> getAll();
+    List<User> getAllUsers();
 
     User getById(int id);
 
     User getByName(String firstName);
 
+    User getByUsername(String username);
+
+    User getByEmail(String email);
+
     User create(User user);
 
-    User update(User user,
-                String username,
-                String password,
-                String firstName,
-                String lastName,
-                String email,
-                UserType userType);
+    User update(User user);
 
     void delete(int id);
 }

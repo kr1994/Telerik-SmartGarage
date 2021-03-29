@@ -1,6 +1,9 @@
 package com.java.smart_garage.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -107,6 +110,32 @@ public class User {
 
     public UserType getUserType() {
         return userType;
+    }
+
+    @JsonIgnore
+    public boolean isEmployee() {
+        return getUserType().getType().equals("Employee");
+    }
+    @JsonIgnore
+    public boolean isUser(String userName) {
+        return getUsername().equals(userName);
+    }
+    @JsonIgnore
+    public boolean isUserId(int id) {
+        return getUserId()==id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return this.getUsername().equals(user.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 
 }
