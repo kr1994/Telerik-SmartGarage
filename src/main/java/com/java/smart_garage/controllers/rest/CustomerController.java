@@ -60,6 +60,18 @@ public class CustomerController {
         }
     }
 
+    @PostMapping
+    public Customer update(@RequestHeader HttpHeaders headers, @Valid @RequestBody CustomerDto customerDto) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            Customer customer = modelConversionHelper.customerFromDto(customerDto);
+            //service.update(customer, user);
+            return customer;
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
