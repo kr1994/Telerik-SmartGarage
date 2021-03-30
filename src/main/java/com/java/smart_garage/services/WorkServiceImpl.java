@@ -5,7 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.ServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Service; //That name should be changed
+import com.java.smart_garage.models.WorkService;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,32 +13,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ServiceServiceImpl implements ServiceService {
+public class WorkServiceImpl implements ServiceService {
 
     private final ServiceRepository repository;
 
     @Autowired
-    public ServiceServiceImpl(ServiceRepository repository) {
+    public WorkServiceImpl(ServiceRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Service> getAllServices(){
+    public List<WorkService> getAllServices(){
         return repository.getAllServices();
     }
 
     @Override
-    public Service getById(int id){
+    public WorkService getById(int id){
         return repository.getById(id);
     }
 
     @Override
-    public Service getByName(String name){
+    public WorkService getByName(String name){
         return repository.getByName(name);
     }
 
     @Override
-    public void create(Service service, User user) {
+    public void create(WorkService service, User user) {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
@@ -62,7 +62,7 @@ public class ServiceServiceImpl implements ServiceService {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete service.");
         }
-        Service service = new Service();
+        WorkService service = new WorkService();
         try {
             service = repository.getById(id);
         } catch (EntityNotFoundException e) {

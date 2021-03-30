@@ -9,76 +9,76 @@ public class CarDto {
 
     @NotNull
     @Positive(message = "Model Id must be positive.")
-    private int modelId;
+    private ModelDto model;
 
     @NotNull
     @Positive(message = "Plate Id must be positive.")
-    private int registrationPlateId;
+    private PlateDto plate;
 
     @NotNull
     @Positive(message = "Identification Id must be positive.")
-    private int identificationsId;
+    private IdentificationDto identification;
 
     @NotNull
     @Positive(message = "Year Id must be positive.")
-    private int yearId;
+    private YearDto year;
 
     @NotNull
     @Positive(message = "Colour Id must be positive.")
-    private int colourId;
+    private ColourDto colour;
 
     @NotNull
     @Positive(message = "Engine Id must be positive.")
-    private int engineId;
+    private EngineDto engine;
 
     public CarDto() {
     }
 
-    public void setModelId(int modelId) {
-        this.modelId = modelId;
+    public void setModel(ModelDto model) {
+        this.model = model;
     }
 
-    public void setRegistrationPlateId(int registrationPlateId) {
-        this.registrationPlateId = registrationPlateId;
+    public void setPlate(PlateDto plate) {
+        this.plate = plate;
     }
 
-    public void setIdentificationsId(int identificationsId) {
-        this.identificationsId = identificationsId;
+    public void setIdentification(IdentificationDto identification) {
+        this.identification = identification;
     }
 
-    public void setYearId(int yearId) {
-        this.yearId = yearId;
+    public void setYear(YearDto year) {
+        this.year = year;
     }
 
-    public void setColourId(int colourId) {
-        this.colourId = colourId;
+    public void setColour(ColourDto colour) {
+        this.colour = colour;
     }
 
-    public void setEngineId(int engineId) {
-        this.engineId = engineId;
+    public void setEngine(EngineDto engine) {
+        this.engine = engine;
     }
 
-    public int getModelId() {
-        return modelId;
+    public ModelDto getModel() {
+        return model;
     }
 
-    public int getRegistrationPlateId() {
-        return registrationPlateId;
+    public PlateDto getPlate() {
+        return plate;
     }
 
-    public int getIdentificationsId() {
-        return identificationsId;
+    public IdentificationDto getIdentification() {
+        return identification;
     }
 
-    public int getYearId() {
-        return yearId;
+    public YearDto getYear() {
+        return year;
     }
 
-    public int getColourId() {
-        return colourId;
+    public ColourDto getColour() {
+        return colour;
     }
 
-    public int getEngineId() {
-        return engineId;
+    public EngineDto getEngine() {
+        return engine;
     }
 }

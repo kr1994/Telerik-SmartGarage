@@ -1,18 +1,18 @@
 package com.java.smart_garage.contracts.repoContracts;
 
-import com.java.smart_garage.models.Service;
+import com.java.smart_garage.models.WorkService;
 
 import java.util.List;
 
 public interface ServiceRepository {
 
-    List<Service> getAllServices();
+    List<WorkService> getAllServices();
 
-    Service getById(int id);
+    WorkService getById(int id);
 
-    Service getByName(String name);
+    WorkService getByName(String name);
 
-    Service create(Service service);
+    WorkService create(WorkService service);
 
     void delete(int id);
 }

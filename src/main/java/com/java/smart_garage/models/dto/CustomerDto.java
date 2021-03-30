@@ -9,7 +9,7 @@ public class CustomerDto {
 
     @NotNull
     @Positive(message = "User Id must be positive.")
-    private int userId;
+    private UserDto userDto;
 
     @NotNull
     @Size(min = 10,max = 10, message = "Phone number must be 10 characters long.")
@@ -19,16 +19,16 @@ public class CustomerDto {
     public CustomerDto() {
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
     public int getPhoneNumber() {

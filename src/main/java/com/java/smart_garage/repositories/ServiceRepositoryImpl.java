@@ -2,7 +2,7 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.ServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Service;
+import com.java.smart_garage.models.WorkService;
 import com.java.smart_garage.models.Manufacturer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,24 +23,24 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     }
 
     @Override
-    public List<Service> getAllServices() {
+    public List<WorkService> getAllServices() {
         // String queryString = String.format("from %s order by %s", Service.class,"serviceId");
 
         try (Session session = sessionFactory.openSession()) {
-            Query<Service> query = session.createQuery(
-                    "from Service order by serviceId", Service.class);
+            Query<WorkService> query = session.createQuery(
+                    "from WorkService order by serviceId", WorkService.class);
 
             return query.list();
         }
     }
 
     @Override
-    public Service getByName(String name) {
+    public WorkService getByName(String name) {
         try (Session session = sessionFactory.openSession()){
-            Query<Service> query = session.createQuery("from Service where serviceName like concat('%', :name, '%')",
-                    Service.class);
+            Query<WorkService> query = session.createQuery("from WorkService where serviceName like concat('%', :name, '%')",
+                    WorkService.class);
             query.setParameter("name", name);
-            List<Service> result = query.list();
+            List<WorkService> result = query.list();
 
             if (result.size() == 0) {
                 throw new EntityNotFoundException("Service", "name", name);
@@ -50,9 +50,9 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     }
 
     @Override
-    public Service getById(int id) {
+    public WorkService getById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Service service = session.get(Service.class, id);
+            WorkService service = session.get(WorkService.class, id);
             if (service == null) {
                 throw new EntityNotFoundException("Category", "id", id);
             }
@@ -61,7 +61,7 @@ public class ServiceRepositoryImpl implements ServiceRepository {
     }
 
     @Override
-    public Service create(Service entity) {
+    public WorkService create(WorkService entity) {
         try (Session session = sessionFactory.openSession()) {
             session.save(entity);
         }
