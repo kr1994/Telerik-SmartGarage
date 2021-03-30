@@ -17,12 +17,12 @@ public class CarService {
 
     @ManyToOne
     @JoinColumn(name = "service_id")
-    private Service service;
+    private WorkService service;
 
     public CarService() {
     }
 
-    public CarService(int carServicesId, Car car, Service service) {
+    public CarService(int carServicesId, Car car, WorkService service) {
         this.carServicesId = carServicesId;
         this.car = car;
         this.service = service;
@@ -37,7 +37,7 @@ public class CarService {
         this.car = car;
     }
 
-    public void setService(Service service) {
+    public void setService(WorkService service) {
         this.service = service;
     }
 
@@ -49,7 +49,7 @@ public class CarService {
         return car;
     }
 
-    public Service getService() {
+    public WorkService getService() {
         return service;
     }
 
