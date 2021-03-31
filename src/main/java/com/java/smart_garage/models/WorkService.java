@@ -9,46 +9,46 @@ public class WorkService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_id")
-    private int serviceId;
+    private int workServiceId;
 
     @Column(name = "service_name")
-    private String serviceName;
+    private String workServiceName;
 
     @Column(name = "service_price")
-    private double servicePrice;
+    private double workServicePrice;
 
     public WorkService() {
     }
 
-    public WorkService(int serviceId, String serviceName, double servicePrice) {
-        this.serviceId = serviceId;
-        this.serviceName = serviceName;
-        this.servicePrice = servicePrice;
+    public WorkService(int workServiceId, String workServiceName, double workServicePrice) {
+        this.workServiceId = workServiceId;
+        this.workServiceName = workServiceName;
+        this.workServicePrice = workServicePrice;
     }
 
 
-    public void setWorkServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public void setWorkServiceId(int workServiceId) {
+        this.workServiceId = workServiceId;
     }
 
-    public void setWorkServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public void setWorkServiceName(String workServiceName) {
+        this.workServiceName = workServiceName;
     }
 
-    public void setWorkServicePrice(double servicePrice) {
-        this.servicePrice = servicePrice;
+    public void setWorkServicePrice(double workServicePrice) {
+        this.workServicePrice = workServicePrice;
     }
 
     public int getWorkServiceId() {
-        return serviceId;
+        return workServiceId;
     }
 
     public String getWorkServiceName() {
-        return serviceName;
+        return workServiceName;
     }
 
     public double getWorkServicePrice() {
-        return servicePrice;
+        return workServicePrice;
     }
 
 
