@@ -27,27 +27,27 @@ public class WorkService {
     }
 
 
-    public void setServiceId(int serviceId) {
+    public void setWorkServiceId(int serviceId) {
         this.serviceId = serviceId;
     }
 
-    public void setServiceName(String serviceName) {
+    public void setWorkServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
-    public void setServicePrice(double servicePrice) {
+    public void setWorkServicePrice(double servicePrice) {
         this.servicePrice = servicePrice;
     }
 
-    public int getServiceId() {
+    public int getWorkServiceId() {
         return serviceId;
     }
 
-    public String getServiceName() {
+    public String getWorkServiceName() {
         return serviceName;
     }
 
-    public double getServicePrice() {
+    public double getWorkServicePrice() {
         return servicePrice;
     }
 

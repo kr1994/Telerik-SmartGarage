@@ -97,15 +97,15 @@ public class ModelConversionHelper {
     }
 
 
-    public WorkService serviceFromDto(WorkServiceDto workServiceDto) {
+    public WorkService workServiceFromDto(WorkServiceDto workServiceDto) {
         WorkService service = new WorkService();
-        service.setServiceName(workServiceDto.getWorkServiceName());
+        service.setWorkServiceName(workServiceDto.getWorkServiceName());
         return service;
     }
 
-    public WorkService serviceFromDto(WorkServiceDto workServiceDto, int id) {
+    public WorkService workServiceFromDto(WorkServiceDto workServiceDto, int id) {
         WorkService service = workServiceRepository.getById(id);
-        service.setServiceName(workServiceDto.getWorkServiceName());
+        service.setWorkServiceName(workServiceDto.getWorkServiceName());
         return service;
     }
 

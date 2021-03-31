@@ -46,12 +46,12 @@ public class WorkServiceImpl implements WorkServiceService {
         }
 
         try {
-            repository.getByName(service.getServiceName());
+            repository.getByName(service.getWorkServiceName());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Work Service", "name", service.getServiceName());
+            throw new DuplicateEntityException("Work Service", "name", service.getWorkServiceName());
         }
 
         repository.create(service);
