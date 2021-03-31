@@ -1,7 +1,7 @@
 package com.java.smart_garage.services;
 
-import com.java.smart_garage.contracts.repoContracts.ServiceRepository;
-import com.java.smart_garage.contracts.serviceContracts.ServiceService;
+import com.java.smart_garage.contracts.repoContracts.WorkServiceRepository;
+import com.java.smart_garage.contracts.serviceContracts.WorkServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -13,18 +13,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class WorkServiceImpl implements ServiceService {
+public class WorkServiceImpl implements WorkServiceService {
 
-    private final ServiceRepository repository;
+    private final WorkServiceRepository repository;
 
     @Autowired
-    public WorkServiceImpl(ServiceRepository repository) {
+    public WorkServiceImpl(WorkServiceRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<WorkService> getAllServices(){
-        return repository.getAllServices();
+    public List<WorkService> getAllWorkServices(){
+        return repository.getAllWorkServices();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class WorkServiceImpl implements ServiceService {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create new service.");
+            throw new UnauthorizedOperationException("Only employee can create new work service.");
         }
 
         try {
@@ -51,7 +51,7 @@ public class WorkServiceImpl implements ServiceService {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Service", "name", service.getServiceName());
+            throw new DuplicateEntityException("Work Service", "name", service.getServiceName());
         }
 
         repository.create(service);
@@ -60,13 +60,13 @@ public class WorkServiceImpl implements ServiceService {
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can delete service.");
+            throw new UnauthorizedOperationException("Only employee can delete work service.");
         }
         WorkService service = new WorkService();
         try {
             service = repository.getById(id);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Service", "id", id);
+            throw new EntityNotFoundException("Work Service", "id", id);
         }
         repository.delete(id);
     }

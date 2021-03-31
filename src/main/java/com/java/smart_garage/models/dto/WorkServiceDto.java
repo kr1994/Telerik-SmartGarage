@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-public class ServiceDto {
+public class WorkServiceDto {
 
     @NotNull
     @Size(min=5,message = "Service name must be longer than 5 characters.")
@@ -16,22 +16,22 @@ public class ServiceDto {
     @Positive(message = "Service price must be positive.")
     private double servicePrice;
 
-    public ServiceDto() {
+    public WorkServiceDto() {
     }
 
-    public void setServiceName(String serviceName) {
+    public void setWorkServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
-    public void setServicePrice(double servicePrice) {
+    public void setWorkServicePrice(double servicePrice) {
         this.servicePrice = servicePrice;
     }
 
-    public String getServiceName() {
+    public String getWorkServiceName() {
         return serviceName;
     }
 
-    public double getServicePrice() {
+    public double getWorkServicePrice() {
         return servicePrice;
     }
 }

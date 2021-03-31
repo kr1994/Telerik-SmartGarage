@@ -17,7 +17,7 @@ public class ModelConversionHelper {
     private final EngineRepository engineRepository;
     private final FuelRepository fuelRepository;
     private final ModelRepository modelRepository;
-    private final ServiceRepository serviceRepository;
+    private final WorkServiceRepository workServiceRepository;
     private final UserTypeRepository userTypeRepository;
     private final UserRepository userRepository;
 
@@ -30,7 +30,7 @@ public class ModelConversionHelper {
                                  EngineRepository engineRepository,
                                  FuelRepository fuelRepository,
                                  ModelRepository modelRepository,
-                                 ServiceRepository serviceRepository,
+                                 WorkServiceRepository workServiceRepository,
                                  UserTypeRepository userTypeRepository,
                                  UserRepository userRepository) {
         this.manufacturerRepository = manufacturerRepository;
@@ -41,7 +41,7 @@ public class ModelConversionHelper {
         this.engineRepository = engineRepository;
         this.fuelRepository = fuelRepository;
         this.modelRepository = modelRepository;
-        this.serviceRepository = serviceRepository;
+        this.workServiceRepository = workServiceRepository;
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
     }
@@ -97,15 +97,15 @@ public class ModelConversionHelper {
     }
 
 
-    public WorkService serviceFromDto(ServiceDto serviceDto) {
+    public WorkService serviceFromDto(WorkServiceDto workServiceDto) {
         WorkService service = new WorkService();
-        service.setServiceName(serviceDto.getServiceName());
+        service.setServiceName(workServiceDto.getWorkServiceName());
         return service;
     }
 
-    public WorkService serviceFromDto(ServiceDto serviceDto, int id) {
-        WorkService service = serviceRepository.getById(id);
-        service.setServiceName(serviceDto.getServiceName());
+    public WorkService serviceFromDto(WorkServiceDto workServiceDto, int id) {
+        WorkService service = workServiceRepository.getById(id);
+        service.setServiceName(workServiceDto.getWorkServiceName());
         return service;
     }
 

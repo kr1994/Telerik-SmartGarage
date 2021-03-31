@@ -1,6 +1,6 @@
 package com.java.smart_garage.repositories;
 
-import com.java.smart_garage.contracts.repoContracts.ServiceRepository;
+import com.java.smart_garage.contracts.repoContracts.WorkServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.WorkService;
 import com.java.smart_garage.models.Manufacturer;
@@ -13,18 +13,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ServiceRepositoryImpl implements ServiceRepository {
+public class WorkServiceRepositoryImpl implements WorkServiceRepository {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public ServiceRepositoryImpl(SessionFactory sessionFactory) {
+    public WorkServiceRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<WorkService> getAllServices() {
-        // String queryString = String.format("from %s order by %s", Service.class,"serviceId");
+    public List<WorkService> getAllWorkServices() {
+        // String queryString = String.format("from %s order by %s", WorkService.class,"serviceId");
 
         try (Session session = sessionFactory.openSession()) {
             Query<WorkService> query = session.createQuery(
@@ -43,7 +43,7 @@ public class ServiceRepositoryImpl implements ServiceRepository {
             List<WorkService> result = query.list();
 
             if (result.size() == 0) {
-                throw new EntityNotFoundException("Service", "name", name);
+                throw new EntityNotFoundException("Work Service", "name", name);
             }
             return result.get(0);
         }

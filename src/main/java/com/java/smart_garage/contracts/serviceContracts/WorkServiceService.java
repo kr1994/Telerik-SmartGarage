@@ -5,9 +5,9 @@ import com.java.smart_garage.models.WorkService;
 
 import java.util.List;
 
-public interface ServiceService {
+public interface WorkServiceService {
 
-    List<WorkService> getAllServices();
+    List<WorkService> getAllWorkServices();
 
     WorkService getById(int id);
 
