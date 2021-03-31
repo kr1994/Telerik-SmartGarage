@@ -15,7 +15,6 @@ public class ModelDto {
     private String modelName;
 
     @NotNull
-    @Positive(message = "Manufacturer Id must be positive.")
     private ManufacturerDto manufacturer;
 
     public ModelDto() {
@@ -25,7 +24,7 @@ public class ModelDto {
         this.modelName = modelName;
     }
 
-    public void setManufacturerId(ManufacturerDto manufacturer) {
+    public void setManufacturer(ManufacturerDto manufacturer) {
         this.manufacturer = manufacturer;
     }
 

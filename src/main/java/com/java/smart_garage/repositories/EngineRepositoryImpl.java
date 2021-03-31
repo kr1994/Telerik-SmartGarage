@@ -54,9 +54,9 @@ public class EngineRepositoryImpl implements EngineRepository {
 
     @Override
     public Engine update(Engine engine,
-                         HorsePower horsePower,
+                         int horsePower,
                          Fuel fuel,
-                         CubicCapacity cubicCapacity) {
+                         int cubicCapacity) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
@@ -81,9 +81,9 @@ public class EngineRepositoryImpl implements EngineRepository {
 
     private void engineUpdate (Engine engine,
                                Session session,
-                               HorsePower horsePower,
+                               int horsePower,
                                Fuel fuel,
-                               CubicCapacity cubicCapacity)
+                               int cubicCapacity)
     {
         engine.setHpw(horsePower);
         engine.setFuel(fuel);

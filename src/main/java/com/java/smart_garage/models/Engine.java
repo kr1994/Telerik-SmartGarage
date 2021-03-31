@@ -11,22 +11,22 @@ public class Engine {
     @Column(name = "engine_id")
     private int engineId;
 
-    @ManyToOne
-    @JoinColumn(name = "hpw_id")
-    private HorsePower hpw;
+
+    @Column(name = "hpw")
+    private int hpw;
 
     @ManyToOne
     @JoinColumn(name = "fuel_id")
     private Fuel fuel;
 
-    @ManyToOne
-    @JoinColumn(name = "cubic_capacity_id")
-    private CubicCapacity cc;
+
+    @Column(name = "cubic_capacity")
+    private int cc;
 
     public Engine() {
     }
 
-    public Engine(int engineId, HorsePower hpw, Fuel fuel, CubicCapacity cc) {
+    public Engine(int engineId, int hpw, Fuel fuel, int cc) {
         this.engineId = engineId;
         this.hpw = hpw;
         this.fuel = fuel;
@@ -41,11 +41,11 @@ public class Engine {
         this.engineId = engineId;
     }
 
-    public HorsePower getHpw() {
+    public int getHpw() {
         return hpw;
     }
 
-    public void setHpw(HorsePower hpw) {
+    public void setHpw(int hpw) {
         this.hpw = hpw;
     }
 
@@ -57,11 +57,11 @@ public class Engine {
         this.fuel = fuel;
     }
 
-    public CubicCapacity getCubicCapacity() {
+    public int getCubicCapacity() {
         return cc;
     }
 
-    public void setCubicCapacity(CubicCapacity cc) {
+    public void setCubicCapacity(int cc) {
         this.cc = cc;
     }
 }

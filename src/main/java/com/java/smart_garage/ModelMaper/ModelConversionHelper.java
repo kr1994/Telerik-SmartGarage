@@ -10,80 +10,53 @@ import org.springframework.stereotype.Component;
 public class ModelConversionHelper {
 
     private final ManufacturerRepository manufacturerRepository;
-    private final HorsePowerRepository horsePowerRepository;
     private final CarRepository carRepository;
     private final CarServiceRepository carServiceRepository;
     private final ColoursRepository coloursRepository;
-    private final CubicCapacityRepository cubicCapacityRepository;
     private final CustomerRepository customerRepository;
     private final EngineRepository engineRepository;
     private final FuelRepository fuelRepository;
-    private final IdentificationRepository identificationRepository;
     private final ModelRepository modelRepository;
-    private final RegistrationPlateRepository registrationPlateRepository;
     private final ServiceRepository serviceRepository;
     private final UserTypeRepository userTypeRepository;
     private final UserRepository userRepository;
-    private final YearRepository yearRepository;
 
     @Autowired
     public ModelConversionHelper(ManufacturerRepository manufacturerRepository,
-                                 HorsePowerRepository horsePowerRepository,
                                  CarRepository carRepository,
                                  CarServiceRepository carServiceRepository,
                                  ColoursRepository coloursRepository,
-                                 CubicCapacityRepository cubicCapacityRepository,
                                  CustomerRepository customerRepository,
                                  EngineRepository engineRepository,
                                  FuelRepository fuelRepository,
-                                 IdentificationRepository identificationRepository,
                                  ModelRepository modelRepository,
-                                 RegistrationPlateRepository registrationPlateRepository,
                                  ServiceRepository serviceRepository,
                                  UserTypeRepository userTypeRepository,
-                                 UserRepository userRepository,
-                                 YearRepository yearRepository) {
+                                 UserRepository userRepository) {
         this.manufacturerRepository = manufacturerRepository;
-        this.horsePowerRepository = horsePowerRepository;
         this.carRepository = carRepository;
         this.carServiceRepository = carServiceRepository;
         this.coloursRepository = coloursRepository;
-        this.cubicCapacityRepository = cubicCapacityRepository;
         this.customerRepository = customerRepository;
         this.engineRepository = engineRepository;
         this.fuelRepository = fuelRepository;
-        this.identificationRepository = identificationRepository;
         this.modelRepository = modelRepository;
-        this.registrationPlateRepository = registrationPlateRepository;
         this.serviceRepository = serviceRepository;
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
-        this.yearRepository = yearRepository;
     }
 
 
     public Manufacturer manufacturerFromDto(ManufacturerDto manufacturerDto) {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setManufacturerName(manufacturerDto.getName());
+        manufacturer.setManufacturerName(manufacturerDto.getManufacturerName());
         return manufacturer;
     }
 
     public Manufacturer manufacturerFromDto(ManufacturerDto manufacturerDto, int id) {
         Manufacturer manufacturer = manufacturerRepository.getById(id);
-        manufacturer.setManufacturerName(manufacturerDto.getName());
+        manufacturer.setManufacturerName(manufacturerDto.getManufacturerName());
         return manufacturer;
-    }
-
-    public HorsePower horsePowerFromDto(HorsePowerDto horsePowerDto) {
-        HorsePower horsePower = new HorsePower();
-        horsePower.setPower(horsePowerDto.getPower());
-        return horsePower;
-    }
-
-    public HorsePower horsePowerFromDto(HorsePowerDto horsePowerDto, int id) {
-        HorsePower horsePower = horsePowerRepository.getById(id);
-        horsePower.setPower(horsePowerDto.getPower());
-        return horsePower;
     }
 
     public Fuel fuelFromDto(FuelDto fuelDto) {
@@ -98,17 +71,6 @@ public class ModelConversionHelper {
         return fuel;
     }
 
-    public CubicCapacity cubicCapacityFromDto(CubicCapacityDto cubicCapacityDto) {
-        CubicCapacity cubicCapacity = new CubicCapacity();
-        cubicCapacity.setCubicCapacity(cubicCapacityDto.getCubicCapacity());
-        return cubicCapacity;
-    }
-
-    public CubicCapacity cubicCapacityFromDto(CubicCapacityDto cubicCapacityDto, int id) {
-        CubicCapacity cubicCapacity = cubicCapacityRepository.getById(id);
-        cubicCapacity.setCubicCapacity(cubicCapacityDto.getCubicCapacity());
-        return cubicCapacity;
-    }
 
     public UserType userTypeFromDto(UserTypeDto userTypeDto) {
         UserType userType = new UserType();
@@ -134,41 +96,6 @@ public class ModelConversionHelper {
         return colour;
     }
 
-    public Year yearFromDto(YearDto yearDto) {
-        Year year = new Year();
-        year.setYear(yearDto.getYear());
-        return year;
-    }
-
-    public Year yearFromDto(YearDto yearDto, int id) {
-        Year year = yearRepository.getById(id);
-        year.setYear(yearDto.getYear());
-        return year;
-    }
-
-    public Identification identificationFromDto(IdentificationDto identificationDto) {
-        Identification identification = new Identification();
-        identification.setIdentification(identificationDto.getIdentification());
-        return identification;
-    }
-
-    public Identification identificationFromDto(IdentificationDto identificationDto, int id) {
-        Identification identification = identificationRepository.getById(id);
-        identification.setIdentification(identificationDto.getIdentification());
-        return identification;
-    }
-
-    public RegistrationPlate registrationPlateFromDto(PlateDto plateDto) {
-        RegistrationPlate registrationPlate = new RegistrationPlate();
-        registrationPlate.setPlateNumber(plateDto.getPlate());
-        return registrationPlate;
-    }
-
-    public RegistrationPlate registrationPlateFromDto(PlateDto plateDto, int id) {
-        RegistrationPlate registrationPlate = registrationPlateRepository.getById(id);
-        registrationPlate.setPlateNumber(plateDto.getPlate());
-        return registrationPlate;
-    }
 
     public WorkService serviceFromDto(ServiceDto serviceDto) {
         WorkService service = new WorkService();
@@ -259,17 +186,14 @@ public class ModelConversionHelper {
     }
 
     private void dtoToCarObject(CarDto carDto, Car car) {
-        Model model = modelFromDto(carDto.getModel());
-        RegistrationPlate plate = registrationPlateFromDto(carDto.getPlate());
-        Identification identification = identificationFromDto(carDto.getIdentification());
-        Year year = yearFromDto(carDto.getYear());
-        Colour colour = colourFromDto(carDto.getColour());
-        Engine engine = engineFromDto(carDto.getEngine());
+        Model model = modelRepository.getById(carDto.getModelId());
+        Colour colour = coloursRepository.getById(carDto.getColourId());
+        Engine engine = engineRepository.getById(carDto.getEngineId());
 
         car.setModel(model);
-        car.setRegistrationPlate(plate);
-        car.setIdentifications(identification);
-        car.setYear(year);
+        car.setRegistrationPlate(carDto.getPlate());
+        car.setIdentifications(carDto.getIdentification());
+        car.setYear(carDto.getYear());
         car.setColour(colour);
         car.setEngine(engine);
     }
@@ -281,12 +205,11 @@ public class ModelConversionHelper {
     }
 
     private void dtoToEngineObject(EngineDto engineDto, Engine engine) {
-        HorsePower horsePower = horsePowerFromDto(engineDto.getHorsePower());
-        Fuel fuel = fuelFromDto(engineDto.getFuel());
-        CubicCapacity cubicCapacity = cubicCapacityFromDto(engineDto.getCc());
-        engine.setHpw(horsePower);
+
+        Fuel fuel = fuelRepository.getById(engineDto.getFuel());
+        engine.setHpw(engineDto.getHorsePower());
         engine.setFuel(fuel);
-        engine.setCubicCapacity(cubicCapacity);
+        engine.setCubicCapacity(engineDto.getCc());
     }
 
 }

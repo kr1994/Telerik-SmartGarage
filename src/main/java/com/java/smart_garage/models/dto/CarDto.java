@@ -9,76 +9,76 @@ public class CarDto {
 
     @NotNull
     @Positive(message = "Model Id must be positive.")
-    private ModelDto model;
+    private int modelId;
 
     @NotNull
     @Positive(message = "Plate Id must be positive.")
-    private PlateDto plate;
+    private String plate;
 
     @NotNull
     @Positive(message = "Identification Id must be positive.")
-    private IdentificationDto identification;
+    private String identification;
 
     @NotNull
     @Positive(message = "Year Id must be positive.")
-    private YearDto year;
+    private int year;
 
     @NotNull
     @Positive(message = "Colour Id must be positive.")
-    private ColourDto colour;
+    private int colourId;
 
     @NotNull
     @Positive(message = "Engine Id must be positive.")
-    private EngineDto engine;
+    private int engineId;
 
     public CarDto() {
     }
 
-    public void setModel(ModelDto model) {
-        this.model = model;
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
     }
 
-    public void setPlate(PlateDto plate) {
+    public void setPlate(String plate) {
         this.plate = plate;
     }
 
-    public void setIdentification(IdentificationDto identification) {
+    public void setIdentification(String identification) {
         this.identification = identification;
     }
 
-    public void setYear(YearDto year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
-    public void setColour(ColourDto colour) {
-        this.colour = colour;
+    public void setColourId(int colourId) {
+        this.colourId = colourId;
     }
 
-    public void setEngine(EngineDto engine) {
-        this.engine = engine;
+    public void setEngineId(int engineId) {
+        this.engineId = engineId;
     }
 
-    public ModelDto getModel() {
-        return model;
+    public int getModelId() {
+        return modelId;
     }
 
-    public PlateDto getPlate() {
+    public String getPlate() {
         return plate;
     }
 
-    public IdentificationDto getIdentification() {
+    public String getIdentification() {
         return identification;
     }
 
-    public YearDto getYear() {
+    public int getYear() {
         return year;
     }
 
-    public ColourDto getColour() {
-        return colour;
+    public int getColourId() {
+        return colourId;
     }
 
-    public EngineDto getEngine() {
-        return engine;
+    public int getEngineId() {
+        return engineId;
     }
 }

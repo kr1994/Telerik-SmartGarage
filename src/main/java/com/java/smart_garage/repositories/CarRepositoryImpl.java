@@ -45,7 +45,7 @@ public class CarRepositoryImpl implements CarRepository {
     @Override
     public Car getByIdentifications(String name) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Car> query = session.createQuery("from Car where identifications.identification like :name",
+            Query<Car> query = session.createQuery("from Car where identifications like :name",
                     Car.class);
             query.setParameter("name", name);
             List<Car> result = query.list();
@@ -67,9 +67,9 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public Car update(Car car, Model model,
-                      RegistrationPlate registrationPlate,
-                      Identification identification,
-                      Year year,
+                      String registrationPlate,
+                      String identification,
+                      int year,
                       Colour colour,
                       Engine engine) {
         Transaction tx = null;
@@ -94,8 +94,8 @@ public class CarRepositoryImpl implements CarRepository {
         }
     }
 
-    private void carUpdate(Car car, Session session, Model model, RegistrationPlate registrationPlate, Identification identification,
-                           Year year, Colour colour, Engine engine) {
+    private void carUpdate(Car car, Session session, Model model, String registrationPlate, String identification,
+                           int year, Colour colour, Engine engine) {
         car.setModel(model);
         car.setRegistrationPlate(registrationPlate);
         car.setIdentifications(identification);

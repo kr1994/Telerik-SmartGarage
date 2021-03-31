@@ -1,10 +1,6 @@
 package com.java.smart_garage.models.dto;
 
 
-import com.java.smart_garage.models.CubicCapacity;
-import com.java.smart_garage.models.Fuel;
-import com.java.smart_garage.models.HorsePower;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -12,40 +8,40 @@ public class EngineDto {
 
     @NotNull
     @Positive(message = "Horse power Id  must be positive.")
-    private HorsePowerDto horsePower;
+    private int horsePower;
 
     @NotNull
     @Positive(message = "Fuel Id must be positive.")
-    private FuelDto fuel;
+    private int fuel;
 
     @NotNull
     @Positive(message = "Cubic Capacity Id must be positive.")
-    private CubicCapacityDto cubicCapacity;
+    private int cubicCapacity;
 
     public EngineDto() {
     }
 
-    public void setHpw(HorsePowerDto horsePower) {
+    public void setHpw(int horsePower) {
         this.horsePower = horsePower;
     }
 
-    public void setFuel(FuelDto fuel) {
+    public void setFuel(int fuel) {
         this.fuel = fuel;
     }
 
-    public void setCc(CubicCapacityDto cubicCapacity) {
+    public void setCc(int cubicCapacity) {
         this.cubicCapacity = cubicCapacity;
     }
 
-    public HorsePowerDto getHorsePower() {
+    public int getHorsePower() {
         return horsePower;
     }
 
-    public FuelDto getFuel() {
+    public int getFuel() {
         return fuel;
     }
 
-    public CubicCapacityDto getCc() {
+    public int getCc() {
         return cubicCapacity;
     }
 }

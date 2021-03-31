@@ -13,9 +13,9 @@ public interface EngineRepository {
     Engine create(Engine engine);
 
     Engine update(Engine engine,
-                  HorsePower horsePower,
+                  int horsePower,
                   Fuel fuel,
-                  CubicCapacity cubicCapacity);
+                  int cubicCapacity);
 
     void delete(int id);
 }

@@ -14,9 +14,9 @@ public interface CarRepository {
     Car create(Car car);
 
     Car update(Car car, Model model,
-               RegistrationPlate registrationPlate,
-               Identification identification,
-               Year year,
+               String registrationPlate,
+               String identification,
+               int year,
                Colour colour,
                Engine engine);
 

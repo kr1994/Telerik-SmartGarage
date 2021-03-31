@@ -15,17 +15,17 @@ public class Car {
     @JoinColumn(name = "model_id")
     private Model model;
 
-    @OneToOne
-    @JoinColumn(name = "plate_id")
-    private RegistrationPlate registrationPlate;
 
-    @OneToOne
-    @JoinColumn(name = "identification_id")
-    private Identification identifications;
+    @Column(name = "plate")
+    private String registrationPlate;
 
-    @ManyToOne
-    @JoinColumn(name = "year_id")
-    private Year year;
+
+    @Column(name = "identification")
+    private String identifications;
+
+
+    @Column(name = "year")
+    private int year;
 
     @ManyToOne
     @JoinColumn(name = "colour_id")
@@ -40,9 +40,9 @@ public class Car {
 
     public Car(int carId,
                Model model,
-               RegistrationPlate registrationPlate,
-               Identification identifications,
-               Year year, Colour colour,
+               String registrationPlate,
+               String identifications,
+               int year, Colour colour,
                Engine engine) {
         this.carId = carId;
         this.model = model;
@@ -58,7 +58,7 @@ public class Car {
     }
 
 
-    public void setRegistrationPlate(RegistrationPlate registrationPlate) {
+    public void setRegistrationPlate(String registrationPlate) {
         this.registrationPlate = registrationPlate;
     }
 
@@ -66,11 +66,11 @@ public class Car {
         this.model = model;
     }
 
-    public void setIdentifications(Identification identifications) {
+    public void setIdentifications(String identifications) {
         this.identifications = identifications;
     }
 
-    public void setYear(Year year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
@@ -86,11 +86,11 @@ public class Car {
         return carId;
     }
 
-    public RegistrationPlate getRegistrationPlate() {
+    public String getRegistrationPlate() {
         return registrationPlate;
     }
 
-    public Identification getIdentifications() {
+    public String getIdentifications() {
         return identifications;
     }
 
@@ -98,7 +98,7 @@ public class Car {
         return model;
     }
 
-    public Year getYear() {
+    public int getYear() {
         return year;
     }
 
