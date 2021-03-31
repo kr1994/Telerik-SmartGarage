@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class WorkServiceImpl implements WorkServiceService {
+public class WorkServiceServiceImpl implements WorkServiceService {
 
     private final WorkServiceRepository repository;
 
     @Autowired
-    public WorkServiceImpl(WorkServiceRepository repository) {
+    public WorkServiceServiceImpl(WorkServiceRepository repository) {
         this.repository = repository;
     }
 
@@ -59,17 +59,16 @@ public class WorkServiceImpl implements WorkServiceService {
 
     @Override
     public void update(WorkService workService, User employeeUser) {
-        boolean duplicateExists = true;
 
         if (!(employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can modify the work service!");
         }
-
         try {
             repository.getById(workService.getWorkServiceId());
         } catch (EntityNotFoundException e) {
-            duplicateExists = false;
+            throw new EntityNotFoundException("Work Service", "id", workService.getWorkServiceId());
         }
+
         repository.update(workService);
     }
 
