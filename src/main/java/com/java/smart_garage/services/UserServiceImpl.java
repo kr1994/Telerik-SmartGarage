@@ -5,6 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,5 +100,20 @@ public class UserServiceImpl implements UserService {
         }
 
         repository.update(user);
+    }
+
+    @Override
+    public void delete(int id, User user) {
+
+        if (!user.isEmployee()) {
+            throw new UnauthorizedOperationException("Only employee can delete users.");
+        }
+        User deletedUser = new User();
+        try {
+            deletedUser = repository.getById(id);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("User", "id", id);
+        }
+        repository.delete(id);
     }
  }
