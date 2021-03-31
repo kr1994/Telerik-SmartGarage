@@ -58,13 +58,29 @@ public class WorkServiceImpl implements WorkServiceService {
     }
 
     @Override
+    public void update(WorkService workService, User employeeUser) {
+        boolean duplicateExists = true;
+
+        if (!(employeeUser.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee or the user can modify the work service!");
+        }
+
+        try {
+            repository.getById(workService.getWorkServiceId());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+        repository.update(workService);
+    }
+
+    @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can delete work service.");
+            throw new UnauthorizedOperationException("Only employee can delete work work service.");
         }
-        WorkService service = new WorkService();
+        WorkService workService = new WorkService();
         try {
-            service = repository.getById(id);
+            workService = repository.getById(id);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Work Service", "id", id);
         }

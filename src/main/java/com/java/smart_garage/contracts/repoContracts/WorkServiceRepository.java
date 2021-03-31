@@ -14,5 +14,7 @@ public interface WorkServiceRepository {
 
     WorkService create(WorkService service);
 
+    WorkService update(WorkService service);
+
     void delete(int id);
 }

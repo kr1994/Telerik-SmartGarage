@@ -15,5 +15,7 @@ public interface WorkServiceService {
 
     void create(WorkService service, User user);
 
+    void update(WorkService service, User user);
+
     void delete(int id, User user);
 }

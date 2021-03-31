@@ -2,10 +2,12 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.WorkServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.WorkService;
 import com.java.smart_garage.models.Manufacturer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -65,6 +67,21 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
         try (Session session = sessionFactory.openSession()) {
             session.save(entity);
         }
+        return entity;
+    }
+
+    @Override
+    public WorkService update(WorkService entity) {
+        Transaction tx = null;
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.update(entity);
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+            tx.rollback();
+            throw new RuntimeException(e.toString());
+        }
+
         return entity;
     }
 
