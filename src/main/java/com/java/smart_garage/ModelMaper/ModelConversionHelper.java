@@ -144,14 +144,14 @@ public class ModelConversionHelper {
         dtoToCarObject(carDto, car);
         return car;
     }
-    public User usersFromDto(UserDto userDto) {
+    public User userFromDto(UserDto userDto) {
 
         User users = new User();
         dtoToUserObject(userDto, users);
         return users;
     }
 
-    public User usersFromDto(UserDto userDto, int id) {
+    public User userFromDto(UserDto userDto, int id) {
         User user = userRepository.getById(id);
         dtoToUserObject(userDto, user);
         return user;
@@ -170,7 +170,7 @@ public class ModelConversionHelper {
 
 
     private void dtoToCustomerObject(CustomerDto customerDto, Customer customer) {
-        User user = usersFromDto(customerDto.getUserDto());
+        User user = userFromDto(customerDto.getUserDto());
         customer.setUser(user);
         customer.setPhoneNumber(customerDto.getPhoneNumber());
     }

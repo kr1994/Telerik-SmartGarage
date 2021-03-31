@@ -63,7 +63,7 @@ public class ModelServiceImpl implements ModelService {
     public void delete(int id, User user) {
 
         if (!user.isEmployee()) {
-            throw new UnauthorizedOperationException("Only employee can delete cities.");
+            throw new UnauthorizedOperationException("Only employee can delete model.");
         }
         Model model = new Model();
         try {
