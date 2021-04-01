@@ -35,6 +35,10 @@ public class Car {
     @JoinColumn(name = "engine_id")
     private Engine engine;
 
+    @ManyToOne
+    @JoinColumn
+    private Customer customer;
+
     public Car() {
     }
 
@@ -43,7 +47,7 @@ public class Car {
                String registrationPlate,
                String identifications,
                int year, Colour colour,
-               Engine engine) {
+               Engine engine,Customer customer) {
         this.carId = carId;
         this.model = model;
         this.registrationPlate = registrationPlate;
@@ -51,6 +55,7 @@ public class Car {
         this.year = year;
         this.colour = colour;
         this.engine = engine;
+        this.customer = customer;
     }
 
     public void setCarId(int carId) {
@@ -82,6 +87,10 @@ public class Car {
         this.engine = engine;
     }
 
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public int getCarId() {
         return carId;
     }
@@ -110,4 +119,7 @@ public class Car {
         return engine;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
 }

@@ -1,6 +1,9 @@
 package com.java.smart_garage.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -12,45 +15,35 @@ public class Invoice {
     @Column(name = "invoice_id")
     private int invoiceId;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @DateTimeFormat
+    @Column(name = "date")
+    private LocalDate date;
 
-//    @OneToMany
-//    @JoinTable(name = "car_services")
-//    private Set<CarService> carService;
+
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceId, Customer customer, Set<CarService> carService) {
+    public Invoice(int invoiceId, LocalDate date) {
         this.invoiceId = invoiceId;
-        this.customer = customer;
-//        this.carService = carService;
+        this.date = date;
     }
 
     public void setInvoiceId(int invoiceId) {
         this.invoiceId = invoiceId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
-
-//    public void setCarService(Set<CarService> carService) {
-//        this.carService = carService;
-//    }
 
     public int getInvoiceId() {
         return invoiceId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public LocalDate getDate() {
+        return date;
     }
-
-//    public Set<CarService> getCarService() {
-//        return carService;
-//    }
 }
+
 

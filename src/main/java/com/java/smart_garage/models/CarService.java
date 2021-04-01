@@ -22,10 +22,16 @@ public class CarService {
     public CarService() {
     }
 
-    public CarService(int carServicesId, Car car, WorkService service) {
+    @OneToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
+
+    public CarService(int carServicesId, Car car, WorkService service, Invoice invoice) {
         this.carServicesId = carServicesId;
         this.car = car;
         this.service = service;
+        this.invoice = invoice;
     }
 
 
@@ -41,6 +47,10 @@ public class CarService {
         this.service = service;
     }
 
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
     public int getCarServicesId() {
         return carServicesId;
     }
@@ -53,4 +63,7 @@ public class CarService {
         return service;
     }
 
+    public Invoice getInvoice() {
+        return invoice;
+    }
 }

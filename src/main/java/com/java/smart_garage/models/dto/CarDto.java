@@ -31,6 +31,10 @@ public class CarDto {
     @Positive(message = "Engine Id must be positive.")
     private int engineId;
 
+    @NotNull
+    @Positive(message = "Customer Id must be positive.")
+    private int customerId;
+
     public CarDto() {
     }
 
@@ -58,6 +62,10 @@ public class CarDto {
         this.engineId = engineId;
     }
 
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     public int getModelId() {
         return modelId;
     }
@@ -80,5 +88,9 @@ public class CarDto {
 
     public int getEngineId() {
         return engineId;
+    }
+
+    public int getCustomerId() {
+        return customerId;
     }
 }
