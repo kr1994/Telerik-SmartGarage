@@ -40,12 +40,12 @@ public class CarServiceImpl implements CarService {
         }
 
         try {
-            repository.getByIdentifications(car.getIdentifications().getIdentification());
+            repository.getByIdentifications(car.getIdentifications());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Car", "identification number", car.getIdentifications().getIdentification());
+            throw new DuplicateEntityException("Car", "identification number", car.getIdentifications());
         }
 
         repository.create(car);

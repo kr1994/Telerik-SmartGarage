@@ -17,7 +17,7 @@ public class ModelConversionHelper {
     private final EngineRepository engineRepository;
     private final FuelRepository fuelRepository;
     private final ModelRepository modelRepository;
-    private final ServiceRepository serviceRepository;
+    private final WorkServiceRepository workServiceRepository;
     private final UserTypeRepository userTypeRepository;
     private final UserRepository userRepository;
 
@@ -30,7 +30,7 @@ public class ModelConversionHelper {
                                  EngineRepository engineRepository,
                                  FuelRepository fuelRepository,
                                  ModelRepository modelRepository,
-                                 ServiceRepository serviceRepository,
+                                 WorkServiceRepository workServiceRepository,
                                  UserTypeRepository userTypeRepository,
                                  UserRepository userRepository) {
         this.manufacturerRepository = manufacturerRepository;
@@ -41,7 +41,7 @@ public class ModelConversionHelper {
         this.engineRepository = engineRepository;
         this.fuelRepository = fuelRepository;
         this.modelRepository = modelRepository;
-        this.serviceRepository = serviceRepository;
+        this.workServiceRepository = workServiceRepository;
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
     }
@@ -97,15 +97,15 @@ public class ModelConversionHelper {
     }
 
 
-    public WorkService serviceFromDto(ServiceDto serviceDto) {
+    public WorkService workServiceFromDto(WorkServiceDto workServiceDto) {
         WorkService service = new WorkService();
-        service.setServiceName(serviceDto.getServiceName());
+        service.setWorkServiceName(workServiceDto.getWorkServiceName());
         return service;
     }
 
-    public WorkService serviceFromDto(ServiceDto serviceDto, int id) {
-        WorkService service = serviceRepository.getById(id);
-        service.setServiceName(serviceDto.getServiceName());
+    public WorkService workServiceFromDto(WorkServiceDto workServiceDto, int id) {
+        WorkService service = workServiceRepository.getById(id);
+        service.setWorkServiceName(workServiceDto.getWorkServiceName());
         return service;
     }
 
@@ -144,14 +144,14 @@ public class ModelConversionHelper {
         dtoToCarObject(carDto, car);
         return car;
     }
-    public User usersFromDto(UserDto userDto) {
+    public User userFromDto(UserDto userDto) {
 
         User users = new User();
         dtoToUserObject(userDto, users);
         return users;
     }
 
-    public User usersFromDto(UserDto userDto, int id) {
+    public User userFromDto(UserDto userDto, int id) {
         User user = userRepository.getById(id);
         dtoToUserObject(userDto, user);
         return user;
@@ -170,7 +170,7 @@ public class ModelConversionHelper {
 
 
     private void dtoToCustomerObject(CustomerDto customerDto, Customer customer) {
-        User user = usersFromDto(customerDto.getUserDto());
+        User user = userFromDto(customerDto.getUserDto());
         customer.setUser(user);
         customer.setPhoneNumber(customerDto.getPhoneNumber());
     }

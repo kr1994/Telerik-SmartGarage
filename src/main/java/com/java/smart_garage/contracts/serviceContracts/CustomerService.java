@@ -13,6 +13,8 @@ public interface CustomerService {
 
     void create(Customer customer, User user);
 
+    void update(Customer customer, User user);
+
     void delete(int id, User user);
 
 }

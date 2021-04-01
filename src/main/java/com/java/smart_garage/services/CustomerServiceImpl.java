@@ -52,6 +52,25 @@ public class CustomerServiceImpl implements CustomerService {
         repository.create(customer);
     }
 
+    //In progress
+    @Override
+    public void update(Customer customer, User user) {
+        boolean duplicateExists = true;
+
+        if (!(user.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can update new customer.");
+        }
+
+        try {
+            repository.getById(customer.getCustomerId());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+
+
+        repository.update(customer, user, customer.getPhoneNumber());
+    }
+
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {

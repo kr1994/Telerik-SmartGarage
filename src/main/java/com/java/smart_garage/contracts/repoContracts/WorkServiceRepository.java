@@ -4,15 +4,17 @@ import com.java.smart_garage.models.WorkService;
 
 import java.util.List;
 
-public interface ServiceRepository {
+public interface WorkServiceRepository {
 
-    List<WorkService> getAllServices();
+    List<WorkService> getAllWorkServices();
 
     WorkService getById(int id);
 
     WorkService getByName(String name);
 
     WorkService create(WorkService service);
+
+    WorkService update(WorkService service);
 
     void delete(int id);
 }
