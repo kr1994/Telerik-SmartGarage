@@ -2,12 +2,12 @@ package com.java.smart_garage.controllers.rest;
 
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
-import com.java.smart_garage.contracts.serviceContracts.ModelService;
+import com.java.smart_garage.contracts.serviceContracts.UserTypeService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.dto.ModelDto;
+import com.java.smart_garage.models.UserType;
+import com.java.smart_garage.models.dto.UserTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,43 +18,35 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("smartgarage/model")
-public class ModelController {
+@RequestMapping("smartgarage/types")
+public class UserTypeController {
 
-    private final ModelService service;
+    private final UserTypeService service;
     private final ModelConversionHelper modelConversionHelper;
     private final AuthenticationHelper authenticationHelper;
 
+
     @Autowired
-    public ModelController(ModelService service,
-                           ModelConversionHelper modelConversionHelper,
-                           AuthenticationHelper authenticationHelper) {
+    public UserTypeController(UserTypeService service,
+                              ModelConversionHelper modelConversionHelper,
+                              AuthenticationHelper authenticationHelper) {
         this.service = service;
         this.modelConversionHelper = modelConversionHelper;
         this.authenticationHelper = authenticationHelper;
     }
 
-    @GetMapping
-    public List<Model> getAllModels(){
-        return  service.getAllModels();
+    @GetMapping()
+    public List<UserType> getAllUsers(){
+        return service.getAllTypes();
     }
 
-    @GetMapping("/{id}")
-    public Model getById(@PathVariable int id) {
-        try {
-            return service.getModelById(id);
-        }
-        catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
     @PostMapping
-    public Model create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ModelDto modelDto) {
+    public UserType create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserTypeDto userTypeDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Model model = modelConversionHelper.modelFromDto(modelDto);
-            service.create(model, user);
-            return model;
+            UserType userType = modelConversionHelper.userTypeFromDto(userTypeDto);
+            service.create(userType, user);
+            return userType;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
