@@ -18,11 +18,13 @@ public class PersonalInfoDto {
 
     @NotBlank
     @Email(message = "It doesn't look like email.")
+    @Pattern(regexp = "/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9]" +
+            "(?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g")
     private String email;
 
     @NotBlank
     @Length(min = 10, max = 10, message = "Phone number must be 10 characters long.")
-    @Pattern(regexp = "^.*08[7-9][2-9]\\d\\d\\d\\d\\d\\d.*$")
+    @Pattern(regexp = "(^08[7-9][2-9]\\d{6}$)")
     private int phoneNumber;
 
     public PersonalInfoDto() {

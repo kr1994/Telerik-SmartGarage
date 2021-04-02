@@ -23,7 +23,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     @Override
     public List<Invoice> getAllInvoices() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Invoice> query = session.createQuery("from Invoice i where exists (from CarService cs where cs.invoice = i )order by invoiceId",
+            Query<Invoice> query = session.createQuery("from Invoice i where exists (from CarService cs where cs.invoice = i) order by invoiceId",
                     Invoice.class);
             return query.list();
         }
