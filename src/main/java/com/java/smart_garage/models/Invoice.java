@@ -19,8 +19,6 @@ public class Invoice {
     @Column(name = "date")
     private LocalDate date;
 
-
-
     public Invoice() {
     }
 

@@ -182,6 +182,7 @@ public class ModelConversionHelper {
         personalInfo.setFirstName(personalInfo.getFirstName());
         personalInfo.setLastName(personalInfo.getLastName());
         personalInfo.setEmail(personalInfo.getEmail());
+        personalInfo.setPhoneNumber(personalInfo.getPhoneNumber());
         return personalInfo;
     }
 
@@ -190,6 +191,7 @@ public class ModelConversionHelper {
         personalInfo.setFirstName(personalInfo.getFirstName());
         personalInfo.setLastName(personalInfo.getLastName());
         personalInfo.setEmail(personalInfo.getEmail());
+        personalInfo.setPhoneNumber(personalInfo.getPhoneNumber());
         return personalInfo;
     }
 
