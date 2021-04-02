@@ -39,11 +39,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByEmail(String email) {
-        return repository.getByEmail(email);
-    }
-
-    @Override
     public void create(User user, User employeeUser) {
         boolean duplicateExists = true;
         if (!(employeeUser.isEmployee())) {

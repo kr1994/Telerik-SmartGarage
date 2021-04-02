@@ -43,34 +43,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getByName(String firstName) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where firstName like concat('%', :name, '%')",
-                    User.class);
-            query.setParameter("name", firstName);
-            List<User> result = query.list();
-            if (result.size() == 0) {
-                throw new EntityNotFoundException("User", "name", firstName);
-            }
-            return result.get(0);
-        }
-    }
-
-    @Override
-    public User getByEmail(String email) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where email like concat('%', :name, '%')",
-                    User.class);
-            query.setParameter("name", email);
-            List<User> result = query.list();
-            if (result.size() == 0) {
-                throw new EntityNotFoundException("User", "name", email);
-            }
-            return result.get(0);
-        }
-    }
-
-    @Override
     public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where username like concat('%', :name, '%')",

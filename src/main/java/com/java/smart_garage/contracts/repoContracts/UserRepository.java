@@ -11,11 +11,7 @@ public interface UserRepository {
 
     User getById(int id);
 
-    User getByName(String firstName);
-
     User getByUsername(String username);
-
-    User getByEmail(String email);
 
     User create(User user);
 
