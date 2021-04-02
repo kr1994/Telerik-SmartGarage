@@ -75,7 +75,7 @@ public class WorkServiceServiceImpl implements WorkServiceService {
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can delete work work service.");
+            throw new UnauthorizedOperationException("Only employee can delete work service.");
         }
         WorkService workService = new WorkService();
         try {
