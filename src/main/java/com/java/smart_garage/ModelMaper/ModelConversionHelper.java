@@ -170,12 +170,28 @@ public class ModelConversionHelper {
         dtoToCustomerObject(customerDto,customer);
         return customer;
     }
+
     public Customer customerFromDto(CustomerDto customerDto, int id) {
         Customer customer = new Customer();
-        dtoToCustomerObject(customerDto,customer);
+        dtoToCustomerObject(customerDto, customer);
         return customer;
     }
 
+    public PersonalInfo personalInfoFromDto(PersonalInfoDto personalInfoDto) {
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setFirstName(personalInfo.getFirstName());
+        personalInfo.setLastName(personalInfo.getLastName());
+        personalInfo.setEmail(personalInfo.getEmail());
+        return personalInfo;
+    }
+
+    public PersonalInfo personalInfoFromDto(PersonalInfoDto personalInfoDto, int id) {
+        PersonalInfo personalInfo = personalInfoRepository.getById(id);
+        personalInfo.setFirstName(personalInfo.getFirstName());
+        personalInfo.setLastName(personalInfo.getLastName());
+        personalInfo.setEmail(personalInfo.getEmail());
+        return personalInfo;
+    }
 
     private void dtoToCustomerObject(CustomerDto customerDto, Customer customer) {
         User user = userRepository.getById(customerDto.getUserId());
