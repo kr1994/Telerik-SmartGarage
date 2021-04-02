@@ -16,16 +16,17 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "phone_number")
-    private int phoneNumber;
+    @OneToOne
+    @JoinColumn(name = "personal_info_id")
+    private PersonalInfo personalInfo;
 
     public Customer() {
     }
 
-    public Customer(int customerId, User user, int phoneNumber) {
+    public Customer(int customerId, User user, PersonalInfo personalInfo) {
         this.customerId = customerId;
         this.user = user;
-        this.phoneNumber = phoneNumber;
+        this.personalInfo = personalInfo;
     }
 
     public void setCustomerId(int customerId) {
@@ -36,8 +37,8 @@ public class Customer {
         this.user = user;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPersonalInfo(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
     }
 
     public int getCustomerId() {
@@ -48,8 +49,7 @@ public class Customer {
         return user;
     }
 
-    public int getPhoneNumber() {
-        return phoneNumber;
+    public PersonalInfo getPersonalInfo() {
+        return personalInfo;
     }
-
 }

@@ -178,18 +178,16 @@ public class ModelConversionHelper {
 
 
     private void dtoToCustomerObject(CustomerDto customerDto, Customer customer) {
-        User user = userFromDto(customerDto.getUserDto());
+        User user = userRepository.getById(customerDto.getUserId());
+        PersonalInfo personalInfo =
         customer.setUser(user);
-        customer.setPhoneNumber(customerDto.getPhoneNumber());
+        customer.setPersonalInfo(customerDto.getPhoneNumber());
     }
 
     private void dtoToUserObject(UserDto userDto, User user) {
         UserType userType = userTypeRepository.getById(userDto.getUserType().getTypeId());
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
         user.setUserType(userType);
     }
 

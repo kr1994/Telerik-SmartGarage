@@ -20,14 +20,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "email")
-    private String email;
 
     @ManyToOne
     @JoinColumn(name = "user_type_id")
@@ -40,17 +32,11 @@ public class User {
     public User(int userId,
                 String username,
                 String password,
-                String firstName,
-                String lastName,
-                String email,
                 UserType userType) {
 
         this.userId = userId;
         this.username = username;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
         this.userType = userType;
     }
 
@@ -64,29 +50,15 @@ public class User {
         this.username = username;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
     public int getUserId() {
         return userId;
@@ -100,13 +72,6 @@ public class User {
         return password;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 
     public UserType getUserType() {
         return userType;

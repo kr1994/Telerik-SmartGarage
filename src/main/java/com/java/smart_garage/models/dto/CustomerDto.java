@@ -9,29 +9,33 @@ public class CustomerDto {
 
     @NotNull
     @Positive(message = "User Id must be positive.")
-    private UserDto userDto;
+    private int userId;
 
     @NotNull
-    @Size(min = 10,max = 10, message = "Phone number must be 10 characters long.")
-    @Pattern(regexp = "^\0[0-9]" )
-    private int phoneNumber;
+    @Positive(message = "Personal Info Id must be positive.")
+    private int personalInfoId;
+
+//    @NotNull
+//    @Size(min = 10,max = 10, message = "Phone number must be 10 characters long.")
+//    @Pattern(regexp = "^\0[0-9]" )
+//    private int phoneNumber;
 
     public CustomerDto() {
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPersonalInfoId(int personalInfoId) {
+        this.personalInfoId = personalInfoId;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public int getUserId() {
+        return userId;
     }
 
-    public int getPhoneNumber() {
-        return phoneNumber;
+    public int getPersonalInfoId() {
+        return personalInfoId;
     }
 }

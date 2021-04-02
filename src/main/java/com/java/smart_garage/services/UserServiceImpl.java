@@ -24,20 +24,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return repository.getAllUsers();
     }
 
     @Override
-    public User getById(int id){
+    public User getById(int id) {
         return repository.getById(id);
     }
 
     @Override
-    public User getByUsername(String username){return repository.getByUsername(username);}
+    public User getByUsername(String username) {
+        return repository.getByUsername(username);
+    }
 
     @Override
-    public User getByEmail(String email){return repository.getByEmail(email);}
+    public User getByEmail(String email) {
+        return repository.getByEmail(email);
+    }
 
     @Override
     public void create(User user, User employeeUser) {
@@ -51,8 +55,8 @@ public class UserServiceImpl implements UserService {
             duplicateExists = false;
         }
         try {
-            User existingUser = repository.getByEmail(user.getEmail());
-            if (existingUser.getEmail().equals(user.getEmail())) {
+            User existingUser = repository.getByUsername(user.getUsername());
+            if (existingUser.getUsername().equals(user.getUsername())) {
                 duplicateExists = true;
             }
         } catch (EntityNotFoundException e) {
@@ -60,17 +64,18 @@ public class UserServiceImpl implements UserService {
         }
 
         if (duplicateExists) {
-            throw new DuplicateEntityException("User", "name", "email", user.getUsername(), user.getEmail());
+            throw new DuplicateEntityException("User", "name", "user name", user.getUsername(), user.getUsername());
         }
 
         repository.create(user);
 
     }
+
     @Override
     public void update(User user, User employeeUser) {
 
         boolean duplicateExistsUsername = true;
-        boolean duplicateExistsEmail = true;
+
 
         if (!(user.isUser(user.getUsername()) || employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can modify the user");
@@ -83,22 +88,11 @@ public class UserServiceImpl implements UserService {
         } catch (EntityNotFoundException e) {
             duplicateExistsUsername = false;
         }
-        try {
-            User existingUser = repository.getByEmail(user.getEmail());
-            if (existingUser.getEmail().equals(user.getEmail()) && existingUser.getUserId() != user.getUserId()) {
-                duplicateExistsEmail = true;
-            }
 
-        } catch (EntityNotFoundException e) {
-            duplicateExistsEmail = false;
-        }
 
         if (duplicateExistsUsername) {
             throw new DuplicateEntityException("User", "username", user.getUsername());
-        } else if (duplicateExistsEmail) {
-            throw new DuplicateEntityException("User", "email", user.getEmail());
         }
-
         repository.update(user);
     }
 
@@ -116,4 +110,4 @@ public class UserServiceImpl implements UserService {
         }
         repository.delete(id);
     }
- }
+}
