@@ -67,8 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
             duplicateExists = false;
         }
 
-
-        repository.update(customer, user, customer.getPhoneNumber());
+        repository.update(customer, user, customer.getPersonalInfo());
     }
 
     @Override
