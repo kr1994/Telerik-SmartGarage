@@ -16,18 +16,6 @@ public class UserDto {
     @Length(min = 8, max = 30)
     private String password;
 
-    @NotBlank
-    @Length(min = 2, max = 20)
-    private String firstName;
-
-    @NotBlank
-    @Length(min = 2, max = 20)
-    private String lastName;
-
-    @NotBlank
-    @Email(message = "It doesn't look like email.")
-    private String email;
-
     private UserType userType;
 
     public UserDto() {
@@ -41,18 +29,6 @@ public class UserDto {
         this.password = password;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
@@ -63,18 +39,6 @@ public class UserDto {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public UserType getUserType() {
