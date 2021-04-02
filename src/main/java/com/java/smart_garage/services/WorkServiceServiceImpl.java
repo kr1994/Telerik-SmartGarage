@@ -38,7 +38,7 @@ public class WorkServiceServiceImpl implements WorkServiceService {
     }
 
     @Override
-    public void create(WorkService service, User user) {
+    public void create(WorkService workService, User user) {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
@@ -46,15 +46,15 @@ public class WorkServiceServiceImpl implements WorkServiceService {
         }
 
         try {
-            repository.getByName(service.getWorkServiceName());
+            repository.getByName(workService.getWorkServiceName());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Work Service", "name", service.getWorkServiceName());
+            throw new DuplicateEntityException("Work Service", "name", workService.getWorkServiceName());
         }
 
-        repository.create(service);
+        repository.create(workService);
     }
 
     @Override
