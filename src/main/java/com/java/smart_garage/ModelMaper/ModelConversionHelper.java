@@ -157,6 +157,14 @@ public class ModelConversionHelper {
         return user;
     }
 
+    public Invoice invoiceFromDto(InvoiceDto invoiceDto){
+        Invoice invoice = new Invoice();
+        dtoToInvoiceObject(invoiceDto,invoice);
+        return invoice;
+    }
+
+
+
     public Customer customerFromDto(CustomerDto customerDto){
         Customer customer = new Customer();
         dtoToCustomerObject(customerDto,customer);
@@ -210,6 +218,10 @@ public class ModelConversionHelper {
         engine.setHpw(engineDto.getHorsePower());
         engine.setFuel(fuel);
         engine.setCubicCapacity(engineDto.getCc());
+    }
+
+    private void dtoToInvoiceObject(InvoiceDto invoiceDto, Invoice invoice) {
+        invoice.setDate(invoiceDto.getDate());
     }
 
 }

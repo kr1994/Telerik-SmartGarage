@@ -6,7 +6,7 @@ import com.java.smart_garage.models.User;
 import java.util.List;
 
 public interface InvoiceService {
-    List<Invoice> getAllFuels();
+    List<Invoice> getAllInvoices();
 
     Invoice getById(int id);
 
