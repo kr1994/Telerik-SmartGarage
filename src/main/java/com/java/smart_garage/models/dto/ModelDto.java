@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class ModelDto {
 
     @NotNull
-    @Size(min=1,max=20, message = "Model name must be between 1 and 20 characters long.")
+    @Size(min = 1, max = 20, message = "Model name must be between 1 and 20 characters long.")
     private String modelName;
 
     @NotNull

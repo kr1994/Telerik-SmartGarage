@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class InvoiceDto {
 
-   private LocalDate date;
+    private LocalDate date;
 
     public LocalDate getDate() {
         return date;
