@@ -89,7 +89,7 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
     public void delete(int id){
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
-            session.delete(session.get(Manufacturer.class,id));
+            session.delete(session.get(WorkService.class,id));
             session.getTransaction().commit();
         }
     }
