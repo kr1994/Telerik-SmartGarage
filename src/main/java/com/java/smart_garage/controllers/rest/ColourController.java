@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("smartgarage/model")
+@RequestMapping("smartgarage/colours")
 public class ColourController {
 
     private final ColourService service;
@@ -40,7 +40,7 @@ public class ColourController {
     }
 
     @GetMapping("/{id}")
-    public Colour getById(@PathVariable int id) {
+    public Colour getColourById(@PathVariable int id) {
         try {
             return service.getById(id);
         }
@@ -69,7 +69,7 @@ public class ColourController {
         }
     }
     @DeleteMapping("/{id}")
-    public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void deleteColour(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);

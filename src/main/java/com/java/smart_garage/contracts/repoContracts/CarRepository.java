@@ -13,12 +13,7 @@ public interface CarRepository {
 
     Car create(Car car);
 
-    Car update(Car car, Model model,
-               String registrationPlate,
-               String identification,
-               int year,
-               Colour colour,
-               Engine engine);
+    Car update(Car car);
 
     void delete(int id);
 }

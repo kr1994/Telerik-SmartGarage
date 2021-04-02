@@ -25,7 +25,7 @@ public class CarRepositoryImpl implements CarRepository {
     @Override
     public List<Car> getAllCars() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Car> query = session.createQuery("from Car order by carId",
+            Query<Car> query = session.createQuery("from Car",
                     Car.class);
             return query.list();
         }
@@ -66,20 +66,11 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     @Override
-    public Car update(Car car, Model model,
-                      String registrationPlate,
-                      String identification,
-                      int year,
-                      Colour colour,
-                      Engine engine) {
-        Transaction tx = null;
+    public Car update(Car car) {
         try (Session session = sessionFactory.openSession()) {
-            tx = session.beginTransaction();
-            carUpdate(car, session, model, registrationPlate, identification, year, colour, engine);
+            session.beginTransaction();
+            session.update(car);
             session.getTransaction().commit();
-        } catch (RuntimeException e) {
-            tx.rollback();
-            throw new RuntimeException(e.toString());
         }
 
         return car;
@@ -94,21 +85,5 @@ public class CarRepositoryImpl implements CarRepository {
         }
     }
 
-    private void carUpdate(Car car, Session session, Model model, String registrationPlate, String identification,
-                           int year, Colour colour, Engine engine) {
-        car.setModel(model);
-        car.setRegistrationPlate(registrationPlate);
-        car.setIdentifications(identification);
-        car.setYear(year);
-        car.setColour(colour);
-        car.setEngine(engine);
-        session.update(model);
-        session.update(registrationPlate);
-        session.update(identification);
-        session.update(year);
-        session.update(colour);
-        session.update(engine);
-        session.update(car);
-    }
 
 }

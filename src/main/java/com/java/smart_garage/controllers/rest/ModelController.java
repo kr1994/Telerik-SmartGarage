@@ -40,7 +40,7 @@ public class ModelController {
     }
 
     @GetMapping("/{id}")
-    public Model getById(@PathVariable int id) {
+    public Model getModelById(@PathVariable int id) {
         try {
             return service.getModelById(id);
         }

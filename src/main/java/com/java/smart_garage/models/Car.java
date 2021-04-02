@@ -9,7 +9,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
-    private int carId;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "model_id")
@@ -36,19 +36,20 @@ public class Car {
     private Engine engine;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Car() {
     }
 
-    public Car(int carId,
+    public Car(int id,
                Model model,
                String registrationPlate,
                String identifications,
                int year, Colour colour,
-               Engine engine,Customer customer) {
-        this.carId = carId;
+               Engine engine,
+               Customer customer) {
+        this.id = id;
         this.model = model;
         this.registrationPlate = registrationPlate;
         this.identifications = identifications;
@@ -58,8 +59,8 @@ public class Car {
         this.customer = customer;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
+    public void setId(int id) {
+        this.id = id;
     }
 
 
@@ -91,8 +92,8 @@ public class Car {
         this.customer = customer;
     }
 
-    public int getCarId() {
-        return carId;
+    public int getId() {
+        return id;
     }
 
     public String getRegistrationPlate() {

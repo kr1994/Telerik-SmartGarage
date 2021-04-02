@@ -51,6 +51,14 @@ public class CarServiceImpl implements CarService {
         repository.create(car);
     }
 
+    public void update(Car car, User user) {
+        if (!user.isEmployee()) {
+            throw new UnauthorizedOperationException("Only employee can update shipment.");
+        }
+
+        repository.update(car);
+    }
+
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {

@@ -179,19 +179,13 @@ public class ModelConversionHelper {
 
     public PersonalInfo personalInfoFromDto(PersonalInfoDto personalInfoDto) {
         PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.setFirstName(personalInfo.getFirstName());
-        personalInfo.setLastName(personalInfo.getLastName());
-        personalInfo.setEmail(personalInfo.getEmail());
-        personalInfo.setPhoneNumber(personalInfo.getPhoneNumber());
+        dtoToPersonalInfoObject (personalInfoDto, personalInfo);
         return personalInfo;
     }
 
     public PersonalInfo personalInfoFromDto(PersonalInfoDto personalInfoDto, int id) {
         PersonalInfo personalInfo = personalInfoRepository.getById(id);
-        personalInfo.setFirstName(personalInfo.getFirstName());
-        personalInfo.setLastName(personalInfo.getLastName());
-        personalInfo.setEmail(personalInfo.getEmail());
-        personalInfo.setPhoneNumber(personalInfo.getPhoneNumber());
+        dtoToPersonalInfoObject (personalInfoDto, personalInfo);
         return personalInfo;
     }
 
@@ -213,6 +207,7 @@ public class ModelConversionHelper {
         Model model = modelRepository.getById(carDto.getModelId());
         Colour colour = coloursRepository.getById(carDto.getColourId());
         Engine engine = engineRepository.getById(carDto.getEngineId());
+        Customer customer = customerRepository.getById(carDto.getCustomerId());
 
         car.setModel(model);
         car.setRegistrationPlate(carDto.getPlate());
@@ -220,6 +215,7 @@ public class ModelConversionHelper {
         car.setYear(carDto.getYear());
         car.setColour(colour);
         car.setEngine(engine);
+        car.setCustomer(customer);
     }
 
     private void dtoToModelObject(ModelDto modelDto, Model model) {
@@ -234,6 +230,13 @@ public class ModelConversionHelper {
         engine.setHpw(engineDto.getHorsePower());
         engine.setFuel(fuel);
         engine.setCubicCapacity(engineDto.getCc());
+    }
+
+    private void dtoToPersonalInfoObject(PersonalInfoDto personalInfoDto, PersonalInfo personalInfo) {
+        personalInfo.setFirstName(personalInfo.getFirstName());
+        personalInfo.setLastName(personalInfo.getLastName());
+        personalInfo.setEmail(personalInfo.getEmail());
+        personalInfo.setPhoneNumber(personalInfo.getPhoneNumber());
     }
 
     private void dtoToInvoiceObject(InvoiceDto invoiceDto, Invoice invoice) {

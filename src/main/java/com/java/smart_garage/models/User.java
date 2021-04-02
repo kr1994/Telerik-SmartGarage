@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.EMPLOYEE;
+
 @Entity
 @Table(name = "users")
 public class User {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +20,11 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_type_id")
     private UserType userType;
@@ -78,7 +83,7 @@ public class User {
 
     @JsonIgnore
     public boolean isEmployee() {
-        return getUserType().getType().equals("Employee");
+        return getUserType().getType().equals(EMPLOYEE);
     }
     @JsonIgnore
     public boolean isUser(String userName) {
