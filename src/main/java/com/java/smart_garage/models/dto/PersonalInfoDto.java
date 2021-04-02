@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class PersonalInfoDto {
 
@@ -18,6 +19,11 @@ public class PersonalInfoDto {
     @NotBlank
     @Email(message = "It doesn't look like email.")
     private String email;
+
+    @NotBlank
+    @Length(min = 10, max = 10, message = "Phone number must be 10 characters long.")
+    @Pattern(regexp = "^\0[0-9]" )
+    private int phoneNumber;
 
     public PersonalInfoDto() {
     }
@@ -34,6 +40,10 @@ public class PersonalInfoDto {
         this.email = email;
     }
 
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -44,6 +54,10 @@ public class PersonalInfoDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 
 }
