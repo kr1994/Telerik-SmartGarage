@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("smartgarage/users")
+@RequestMapping("/smartgarage/users")
 public class UserController {
 
     private final UserService service;
@@ -33,7 +33,7 @@ public class UserController {
         this.authenticationHelper = authenticationHelper;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<User> getAllUsers(){
         return service.getAllUsers();
     }
@@ -51,15 +51,6 @@ public class UserController {
     public User getByUsername(@RequestParam String username) {
         try {
             return service.getByUsername(username);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @GetMapping("/email")
-    public User getByEmail(@RequestParam String email) {
-        try {
-            return service.getByEmail(email);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
