@@ -20,6 +20,7 @@ public class ModelConversionHelper {
     private final WorkServiceRepository workServiceRepository;
     private final UserTypeRepository userTypeRepository;
     private final UserRepository userRepository;
+    private final PersonalInfoRepository personalInfoRepository;
 
     @Autowired
     public ModelConversionHelper(ManufacturerRepository manufacturerRepository,
@@ -32,7 +33,8 @@ public class ModelConversionHelper {
                                  ModelRepository modelRepository,
                                  WorkServiceRepository workServiceRepository,
                                  UserTypeRepository userTypeRepository,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 PersonalInfoRepository personalInfoRepository) {
         this.manufacturerRepository = manufacturerRepository;
         this.carRepository = carRepository;
         this.carServiceRepository = carServiceRepository;
@@ -44,6 +46,7 @@ public class ModelConversionHelper {
         this.workServiceRepository = workServiceRepository;
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
+        this.personalInfoRepository = personalInfoRepository;
     }
 
 
@@ -70,7 +73,6 @@ public class ModelConversionHelper {
         fuel.setFuelName(fuelDto.getFuelName());
         return fuel;
     }
-
 
     public UserType userTypeFromDto(UserTypeDto userTypeDto) {
         UserType userType = new UserType();
@@ -163,14 +165,12 @@ public class ModelConversionHelper {
         return invoice;
     }
 
-
-
     public Customer customerFromDto(CustomerDto customerDto){
         Customer customer = new Customer();
         dtoToCustomerObject(customerDto,customer);
         return customer;
     }
-    public Customer customerFromDto(CustomerDto customerDto,int id){
+    public Customer customerFromDto(CustomerDto customerDto, int id) {
         Customer customer = new Customer();
         dtoToCustomerObject(customerDto,customer);
         return customer;
@@ -179,9 +179,9 @@ public class ModelConversionHelper {
 
     private void dtoToCustomerObject(CustomerDto customerDto, Customer customer) {
         User user = userRepository.getById(customerDto.getUserId());
-        PersonalInfo personalInfo =
+        PersonalInfo personalInfo = personalInfoRepository.getById(customerDto.getPersonalInfoId());
         customer.setUser(user);
-        customer.setPersonalInfo(customerDto.getPhoneNumber());
+        customer.setPersonalInfo(personalInfo);
     }
 
     private void dtoToUserObject(UserDto userDto, User user) {
