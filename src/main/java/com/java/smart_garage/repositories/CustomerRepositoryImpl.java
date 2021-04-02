@@ -55,12 +55,12 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Customer update(Customer customer,
                            User user,
-                           int phoneNumber) {
+                           PersonalInfo personalInfo) {
 
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            customerUpdate(customer, session, user, phoneNumber);
+            customerUpdate(customer, session, user, personalInfo);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
@@ -82,12 +82,12 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     private void customerUpdate(Customer customer,
                                 Session session,
                                 User user,
-                                int phoneNumber) {
+                                PersonalInfo personalInfo) {
 
         customer.setUser(user);
-        customer.setPhoneNumber(phoneNumber);
+        customer.setPersonalInfo(personalInfo);
         session.update(user);
-        session.update(phoneNumber);
+        session.update(personalInfo);
         session.update(customer);
     }
 }

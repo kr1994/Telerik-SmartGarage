@@ -1,6 +1,7 @@
 package com.java.smart_garage.contracts.repoContracts;
 
 import com.java.smart_garage.models.Customer;
+import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.models.User;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface CustomerRepository {
 
     Customer update(Customer customer,
                     User user,
-                    int phoneNumber);
+                    PersonalInfo personalInfo);
 
     void delete(int id);
 
