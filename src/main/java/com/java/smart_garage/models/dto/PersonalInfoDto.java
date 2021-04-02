@@ -22,7 +22,7 @@ public class PersonalInfoDto {
 
     @NotBlank
     @Length(min = 10, max = 10, message = "Phone number must be 10 characters long.")
-    @Pattern(regexp = "^\0[0-9]" )
+    @Pattern(regexp = "^.*08[7-9][2-9]\\d\\d\\d\\d\\d\\d.*$")
     private int phoneNumber;
 
     public PersonalInfoDto() {
