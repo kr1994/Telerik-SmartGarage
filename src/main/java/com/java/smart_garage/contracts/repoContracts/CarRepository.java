@@ -11,6 +11,8 @@ public interface CarRepository {
 
     Car getByIdentifications(String name);
 
+    Car getByPlate(String name);
+
     Car create(Car car);
 
     Car update(Car car);

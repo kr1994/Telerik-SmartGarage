@@ -1,6 +1,11 @@
 package com.java.smart_garage.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Objects;
+
+import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.EMPLOYEE;
 
 @Entity
 @Table(name = "cars")
@@ -123,4 +128,21 @@ public class Car {
     public Customer getCustomer() {
         return customer;
     }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return this.getIdentifications().equals(car.getIdentifications());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifications);
+    }
+
+
 }

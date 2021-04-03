@@ -12,11 +12,9 @@ public class CarDto {
     private int modelId;
 
     @NotNull
-    @Positive(message = "Plate Id must be positive.")
     private String plate;
 
     @NotNull
-    @Positive(message = "Identification Id must be positive.")
     private String identification;
 
     @NotNull

@@ -1,9 +1,7 @@
 package com.java.smart_garage.models.dto;
 
-import com.java.smart_garage.models.UserType;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
