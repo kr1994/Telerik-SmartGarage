@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 
 public class UserDto {
@@ -16,7 +17,9 @@ public class UserDto {
     @Length(min = 8, max = 30)
     private String password;
 
-    private UserType userType;
+
+    @Positive(message = "User type Id must be positive.")
+    private int userType;
 
     public UserDto() {
     }
@@ -29,7 +32,7 @@ public class UserDto {
         this.password = password;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(int userType) {
         this.userType = userType;
     }
 
@@ -41,7 +44,7 @@ public class UserDto {
         return password;
     }
 
-    public UserType getUserType() {
+    public int getUserType() {
         return userType;
     }
 }

@@ -1,5 +1,6 @@
 package com.java.smart_garage.ModelMaper;
 
+import com.java.smart_garage.configuration.Md5Hashing;
 import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.*;
@@ -197,9 +198,9 @@ public class ModelConversionHelper {
     }
 
     private void dtoToUserObject(UserDto userDto, User user) {
-        UserType userType = userTypeRepository.getById(userDto.getUserType().getTypeId());
+        UserType userType = userTypeRepository.getById(userDto.getUserType());
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(Md5Hashing.md5(userDto.getPassword()));
         user.setUserType(userType);
     }
 

@@ -44,6 +44,7 @@ public class HibernateConfiguration {
         return dataSource;
     }
 
+
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
