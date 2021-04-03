@@ -13,7 +13,7 @@ import java.util.Properties;
 @RequestMapping("/smartgarage/sendemail")
 public class EmailController {
 
-    @RequestMapping(value = "/sendemail")
+    @RequestMapping( "")
     public String sendEmail() throws AddressException, MessagingException, IOException {
         sendMail();
         return "Email sent successfully";
@@ -28,7 +28,7 @@ public class EmailController {
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("tutorialspoint@gmail.com", "");
+                return new PasswordAuthentication("tutorialspoint@gmail.com", "1234");
             }
         });
 
