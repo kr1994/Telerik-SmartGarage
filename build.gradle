@@ -21,6 +21,7 @@ dependencies {
 
     compile group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+    compile ('org.springframework.boot:spring-boot-starter-mail')
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
