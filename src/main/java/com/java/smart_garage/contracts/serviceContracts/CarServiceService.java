@@ -13,4 +13,6 @@ public interface CarServiceService  {  // Too complex name
 
     void create(CarService carService, User user);
 
+    public void delete(int id, User user);
+
 }

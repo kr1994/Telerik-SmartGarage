@@ -58,7 +58,7 @@ public class CarServiceImpl implements CarService {
         if (!plateValidationService.trueNumberPlate(car.getRegistrationPlate()))
             throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
 
-        if(!plateValidationService.check(car.getRegistrationPlate())){
+        if (!plateValidationService.check(car.getRegistrationPlate())) {
             throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
         }
 

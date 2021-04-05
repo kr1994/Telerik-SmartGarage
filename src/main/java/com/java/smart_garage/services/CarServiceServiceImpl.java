@@ -5,6 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Car;
 import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,20 @@ public class CarServiceServiceImpl implements CarServiceService {
         }
 
         repository.create(carService);
+    }
+
+    @Override
+    public void delete(int id, User user) {
+        if (!(user.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee  can delete a car.");
+        }
+        CarService carService = new CarService();
+        try {
+            carService = repository.getById(id);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Car", "id", id);
+        }
+        repository.delete(id);
     }
 
 }

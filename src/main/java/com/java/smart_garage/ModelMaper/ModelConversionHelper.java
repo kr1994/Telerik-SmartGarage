@@ -22,6 +22,7 @@ public class ModelConversionHelper {
     private final UserTypeRepository userTypeRepository;
     private final UserRepository userRepository;
     private final PersonalInfoRepository personalInfoRepository;
+    private final InvoiceRepository invoiceRepository;
 
     @Autowired
     public ModelConversionHelper(ManufacturerRepository manufacturerRepository,
@@ -35,7 +36,8 @@ public class ModelConversionHelper {
                                  WorkServiceRepository workServiceRepository,
                                  UserTypeRepository userTypeRepository,
                                  UserRepository userRepository,
-                                 PersonalInfoRepository personalInfoRepository) {
+                                 PersonalInfoRepository personalInfoRepository,
+                                 InvoiceRepository invoiceRepository) {
         this.manufacturerRepository = manufacturerRepository;
         this.carRepository = carRepository;
         this.carServiceRepository = carServiceRepository;
@@ -48,6 +50,7 @@ public class ModelConversionHelper {
         this.userTypeRepository = userTypeRepository;
         this.userRepository = userRepository;
         this.personalInfoRepository = personalInfoRepository;
+        this.invoiceRepository = invoiceRepository;
     }
 
 
@@ -103,12 +106,14 @@ public class ModelConversionHelper {
     public WorkService workServiceFromDto(WorkServiceDto workServiceDto) {
         WorkService service = new WorkService();
         service.setWorkServiceName(workServiceDto.getWorkServiceName());
+        service.setWorkServicePrice(workServiceDto.getWorkServicePrice());
         return service;
     }
 
     public WorkService workServiceFromDto(WorkServiceDto workServiceDto, int id) {
         WorkService service = workServiceRepository.getById(id);
         service.setWorkServiceName(workServiceDto.getWorkServiceName());
+        service.setWorkServicePrice(workServiceDto.getWorkServicePrice());
         return service;
     }
 
@@ -124,6 +129,18 @@ public class ModelConversionHelper {
         return engine;
     }
 
+    public CarService carServiceFromDto(CarServiceDto carServiceDto) {
+        CarService carService = new CarService();
+        dtoToCarServiceObject(carServiceDto, carService);
+        return carService;
+    }
+
+
+    public CarService carServiceFromDto(CarServiceDto carServiceDto, int id) {
+        CarService carService = carServiceRepository.getById(id);
+        dtoToCarServiceObject(carServiceDto, carService);
+        return carService;
+    }
     public Model modelFromDto(ModelDto modelDto) {
         Model model = new Model();
         dtoToModelObject(modelDto, model);
@@ -135,6 +152,7 @@ public class ModelConversionHelper {
         dtoToModelObject(modelDto, model);
         return model;
     }
+
 
     public Car carFromDto(CarDto carDto) {
         Car car = new Car();
@@ -223,6 +241,15 @@ public class ModelConversionHelper {
         Manufacturer manufacturer = manufacturerFromDto(modelDto.getManufacturer());
         model.setModelName(modelDto.getModelName());
         model.setManufacturer(manufacturer);
+    }
+    private void dtoToCarServiceObject(CarServiceDto carServiceDto, CarService carService) {
+        Car car = carRepository.getById(carServiceDto.getCarId());
+        WorkService workService = workServiceRepository.getById(carServiceDto.getServiceId());
+        Invoice invoice = invoiceRepository.getById(carServiceDto.getInvoiceId());
+        carService.setCar(car);
+        carService.setService(workService);
+        carService.setInvoice(invoice);
+
     }
 
     private void dtoToEngineObject(EngineDto engineDto, Engine engine) {

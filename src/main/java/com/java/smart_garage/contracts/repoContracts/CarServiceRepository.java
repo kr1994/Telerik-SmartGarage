@@ -10,4 +10,6 @@ public interface CarServiceRepository {
     CarService getById(int id);
 
     CarService create(CarService carService);
+
+    public void delete(int id);
 }

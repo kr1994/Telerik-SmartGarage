@@ -39,7 +39,7 @@ public class PersonalInfoRepositoryImpl implements PersonalInfoRepository {
         try (Session session = sessionFactory.openSession()) {
             PersonalInfo service = session.get(PersonalInfo.class, id);
             if (service == null) {
-                throw new EntityNotFoundException("Category", "id", id);
+                throw new EntityNotFoundException("Personal Information", "id", id);
             }
             return service;
         }

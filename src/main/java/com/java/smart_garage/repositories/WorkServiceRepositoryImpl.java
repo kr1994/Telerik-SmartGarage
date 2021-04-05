@@ -30,7 +30,7 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
 
         try (Session session = sessionFactory.openSession()) {
             Query<WorkService> query = session.createQuery(
-                    "from WorkService order by serviceId", WorkService.class);
+                    "from WorkService order by workServiceId", WorkService.class);
 
             return query.list();
         }
@@ -39,7 +39,7 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
     @Override
     public WorkService getByName(String name) {
         try (Session session = sessionFactory.openSession()){
-            Query<WorkService> query = session.createQuery("from WorkService where serviceName like concat('%', :name, '%')",
+            Query<WorkService> query = session.createQuery("from WorkService where workServiceName like concat('%', :name, '%')",
                     WorkService.class);
             query.setParameter("name", name);
             List<WorkService> result = query.list();
@@ -56,7 +56,7 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
         try (Session session = sessionFactory.openSession()) {
             WorkService service = session.get(WorkService.class, id);
             if (service == null) {
-                throw new EntityNotFoundException("Category", "id", id);
+                throw new EntityNotFoundException("Work Service", "id", id);
             }
             return service;
         }

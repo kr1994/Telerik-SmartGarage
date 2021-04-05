@@ -2,6 +2,7 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.Car;
 import com.java.smart_garage.models.CarService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,5 +49,16 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
             session.save(carService);
         }
         return carService;
+    }
+
+
+
+    @Override
+    public void delete(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.delete(session.get(Car.class, id));
+            session.getTransaction().commit();
+        }
     }
 }
