@@ -3,8 +3,10 @@ package com.java.smart_garage.controllers.rest;
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.CarService;
+import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Car;
 import com.java.smart_garage.models.User;
@@ -30,7 +32,7 @@ public class CarController {
     @Autowired
     public CarController(CarService service,
                          ModelConversionHelper modelConversionHelper,
-                         AuthenticationHelper authenticationHelper) {
+                         AuthenticationHelper authenticationHelper, PlateValidationService plateValidationService) {
         this.service = service;
         this.modelConversionHelper = modelConversionHelper;
         this.authenticationHelper = authenticationHelper;
@@ -57,9 +59,10 @@ public class CarController {
             Car car = modelConversionHelper.carFromDto(carDto);
             service.create(car, user);
             return car;
-        } catch (DuplicateEntityException e) {
+        } catch (DuplicateEntityException | IncorrectPlateRegistrationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
+
     }
 
     @PutMapping("/{id}")

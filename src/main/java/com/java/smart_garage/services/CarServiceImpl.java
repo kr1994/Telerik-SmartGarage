@@ -1,14 +1,13 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.CarRepository;
-import com.java.smart_garage.contracts.repoContracts.CityRepository;
 import com.java.smart_garage.contracts.serviceContracts.CarService;
+import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Car;
-import com.java.smart_garage.models.City;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,14 @@ import java.util.List;
 @Service
 public class CarServiceImpl implements CarService {
     private final CarRepository repository;
-    private final CityRepository cityRepository;
+    private final PlateValidationService plateValidationService;
+
 
     @Autowired
-    public CarServiceImpl(CarRepository repository, CityRepository cityRepository) {
+    public CarServiceImpl(CarRepository repository, PlateValidationService plateValidationService) {
         this.repository = repository;
-        this.cityRepository = cityRepository;
+
+        this.plateValidationService = plateValidationService;
     }
 
     @Override
@@ -51,17 +52,15 @@ public class CarServiceImpl implements CarService {
             duplicateExists = false;
         }
 
-        if (!trueCityIndexPlate(car.getRegistrationPlate())) {
-            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate(), car.getRegistrationPlate().substring(0, 1));
+        if (!plateValidationService.trueCityIndexPlate(car.getRegistrationPlate())) {
+            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
         }
-        if (!trueNumberPlate(car.getRegistrationPlate()))
+        if (!plateValidationService.trueNumberPlate(car.getRegistrationPlate()))
             throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
 
-        if(!check(car.getRegistrationPlate())){
-            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate(), car.getRegistrationPlate().substring(6));
+        if(!plateValidationService.check(car.getRegistrationPlate())){
+            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
         }
-
-
 
         if (duplicateExists) {
             throw new DuplicateEntityException("Car", "identification number", car.getIdentifications());
@@ -93,62 +92,4 @@ public class CarServiceImpl implements CarService {
     }
 
 
-    public boolean trueCityIndexPlate(String plate) {
-        boolean flag = false;
-        String cityIndex = plate;
-        if(plate.length()==7){
-           cityIndex = plate.substring(0, 1);
-        }
-        else {
-            cityIndex = plate.substring(0, 2);
-        }
-
-        List<City> cityList = cityRepository.getAllCityIndex();
-
-        for (City city : cityList) {
-            if (cityIndex.equals(city.getCityIndex())) {
-                flag = true;
-                break;
-            }
-
-        }
-        return flag;
-    }
-
-    public boolean trueNumberPlate(String plate) {
-        boolean flag = true;
-        String cityIndex = plate;
-        if(plate.length()==7){
-            cityIndex = plate.substring(1, 5);
-        }
-        else {
-            cityIndex = plate.substring(2, 6);
-        }
-        try {
-            int number = Integer.parseInt(cityIndex.trim());
-        } catch (NumberFormatException nFE) {
-            flag = false;
-        }
-        return flag;
-    }
-
-    boolean check(String plate) {
-
-        String cityIndex = plate;
-        if(plate.length()==7){
-            cityIndex = plate.substring(5);
-        }
-        else {
-            cityIndex = plate.substring(6);
-        }
-
-        int len = cityIndex.length();
-        for (int i = 0; i < len; i++) {
-
-            if ((!Character.isLetter(cityIndex.charAt(i)))) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
