@@ -68,6 +68,16 @@ public class CarServiceController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @GetMapping("/car/price/{id}")
+    public double getCarServicesPrice(@PathVariable int id) {
+        try {
+            return service.getCarServicesPrice(id);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
     @PostMapping
     public CarService create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CarServiceDto carServiceDto) {
         try {

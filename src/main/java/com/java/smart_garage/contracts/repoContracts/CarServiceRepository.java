@@ -13,6 +13,8 @@ public interface CarServiceRepository {
 
     List<CarService> getAllCarServicesByCustomer(int id);
 
+    double getCarServicesPrice(int id);
+
     List<CarService> getAllCarServicesByCar(int id);
 
     void delete(int id);

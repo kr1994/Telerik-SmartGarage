@@ -13,6 +13,8 @@ public interface CarServiceService  {  // Too complex name
 
     List<CarService> getAllCarServicesByCar(int id);
 
+    double getCarServicesPrice(int id);
+
     CarService getById(int id);
 
     void create(CarService carService, User user);

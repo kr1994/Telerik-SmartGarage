@@ -40,6 +40,9 @@ public class CarServiceServiceImpl implements CarServiceService {
     public List<CarService> getAllCarServicesByCar(int id) {return repository.getAllCarServicesByCar(id);}
 
     @Override
+    public double getCarServicesPrice(int id) {return repository.getCarServicesPrice(id);}
+
+    @Override
     public void create(CarService carService, User user) {
         boolean duplicateExists = true;
 
