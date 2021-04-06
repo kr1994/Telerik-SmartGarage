@@ -1,6 +1,7 @@
 package com.java.smart_garage.models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "services")
@@ -16,6 +17,9 @@ public class WorkService {
 
     @Column(name = "service_price")
     private double workServicePrice;
+
+    //@Column(name = "service_price")
+    //private Date dateFinished;
 
     public WorkService() {
     }
