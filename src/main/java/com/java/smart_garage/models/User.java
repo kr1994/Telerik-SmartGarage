@@ -1,8 +1,13 @@
 package com.java.smart_garage.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.criterion.CriteriaQuery;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+import java.util.List;
 import java.util.Objects;
 
 import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.EMPLOYEE;
@@ -29,6 +34,9 @@ public class User {
     @JoinColumn(name = "user_type_id")
     private UserType userType;
 
+    @OneToMany(mappedBy = "")
+    private List<Customer> allCustomers;
+
     public User() {
     }
 
@@ -43,7 +51,6 @@ public class User {
         this.password = password;
         this.userType = userType;
     }
-
 
 
     public void setUserId(int userId) {
@@ -94,6 +101,29 @@ public class User {
         return getUserId()==id;
     }
 
+
+    /*
+    public void filterCustomersByFirstName() {
+        CriteriaQuery<Customer> criteriaQuery =
+                criteriaBuilder.createQuery(Customer.class);
+        Root<Customer> root = criteriaQuery.from(Customer.class);
+        CriteriaBuilder.In<String> inClause = criteriaBuilder.in(root.get("firstName"));
+        for (String title : titles) {
+            inClause.value(title);
+        }
+        criteriaQuery.select(root).where(inClause);
+
+        Subquery<User> subquery = criteriaQuery.subquery(User.class);
+        Root<User> user = subquery.from(User.class);
+        subquery.select(user)
+                .distinct(true)
+                .where(criteriaBuilder.like(user.get("name"), "%" + searchKey + "%"));
+
+        criteriaQuery.select(customer)
+                .where(criteriaBuilder.in(customer.get("firstName")).value(subquery));
+    }
+
+    */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
