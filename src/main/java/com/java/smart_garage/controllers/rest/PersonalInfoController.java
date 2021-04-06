@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("smartgarage/personal_informations")
+@RequestMapping("smartgarage/ps")
 public class PersonalInfoController {
 
     private final PersonalInfoService service;

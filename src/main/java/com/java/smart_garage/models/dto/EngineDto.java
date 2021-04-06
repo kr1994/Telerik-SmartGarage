@@ -11,12 +11,14 @@ public class EngineDto {
     private int horsePower;
 
     @NotNull
+    @Positive(message = "Cubic Capacity Id must be positive.")
+    private int cc;
+
+    @NotNull
     @Positive(message = "Fuel Id must be positive.")
     private int fuel;
 
-    @NotNull
-    @Positive(message = "Cubic Capacity Id must be positive.")
-    private int cubicCapacity;
+
 
     public EngineDto() {
     }
@@ -30,7 +32,7 @@ public class EngineDto {
     }
 
     public void setCc(int cubicCapacity) {
-        this.cubicCapacity = cubicCapacity;
+        this.cc = cubicCapacity;
     }
 
     public int getHorsePower() {
@@ -42,6 +44,6 @@ public class EngineDto {
     }
 
     public int getCc() {
-        return cubicCapacity;
+        return cc;
     }
 }

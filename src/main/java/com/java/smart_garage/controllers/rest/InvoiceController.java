@@ -49,6 +49,17 @@ public class InvoiceController {
         }
     }
 
+    @GetMapping("/customer/{id}")
+    public List<Invoice> getInvoiceByCustomer(@PathVariable int id){
+        try {
+            return service.getByCustomer(id);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
+    }
+
     @PostMapping
     public Invoice create(@RequestHeader HttpHeaders headers, @Valid @RequestBody InvoiceDto invoiceDto) {
         try {

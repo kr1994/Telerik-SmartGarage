@@ -11,5 +11,9 @@ public interface CarServiceRepository {
 
     CarService create(CarService carService);
 
-    public void delete(int id);
+    List<CarService> getAllCarServicesByCustomer(int id);
+
+    List<CarService> getAllCarServicesByCar(int id);
+
+    void delete(int id);
 }

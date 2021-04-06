@@ -40,9 +40,29 @@ public class CarServiceController {
     }
 
     @GetMapping("/{id}")
-    public CarService getByCarId(@PathVariable int id) {
+    public CarService getByCarService(@PathVariable int id) {
         try {
             return service.getById(id);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/customer/{id}")
+    public List<CarService> getByCarCustomer(@PathVariable int id) {
+        try {
+            return service.getAllCarServicesByCustomer(id);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/car/{id}")
+    public List<CarService> getAllServicesForCar(@PathVariable int id) {
+        try {
+            return service.getAllCarServicesByCar(id);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

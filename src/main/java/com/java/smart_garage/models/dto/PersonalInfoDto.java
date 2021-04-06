@@ -18,14 +18,11 @@ public class PersonalInfoDto {
 
     @NotBlank
     @Email(message = "It doesn't look like email.")
-    @Pattern(regexp = "/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9]" +
-            "(?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g")
     private String email;
 
     @NotBlank
     @Length(min = 10, max = 10, message = "Phone number must be 10 characters long.")
-    @Pattern(regexp = "(^08[7-9][2-9]\\d{6}$)")
-    private int phoneNumber;
+    private String phoneNumber;
 
     public PersonalInfoDto() {
     }
@@ -42,7 +39,7 @@ public class PersonalInfoDto {
         this.email = email;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -58,7 +55,7 @@ public class PersonalInfoDto {
         return email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
