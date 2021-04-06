@@ -29,6 +29,22 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
         }
     }
 
+    @Override
+    public List<CarService> getAllCarServicesByCustomer(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<CarService> query = session.createQuery("from CarService cs where cs.car.customer.id = :id order by carServicesId", CarService.class);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<CarService> getAllCarServicesByCar(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<CarService> query = session.createQuery("from CarService cs where cs.car.id = :id order by carServicesId", CarService.class);
+            return query.list();
+        }
+    }
+
 
     @Override
     public CarService getById(int id) {

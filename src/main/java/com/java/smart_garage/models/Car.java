@@ -130,19 +130,26 @@ public class Car {
     }
 
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return this.getIdentifications().equals(car.getIdentifications());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(identifications);
-    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || this.getClass() != o.getClass()) return false;
+//        Car car = (Car) o;
+//        return this.getIdentifications().equals(car.getIdentifications());
+//    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || this.getClass() != o.getClass()) return false;
+//        Car car = (Car) o;
+//        return this.getRegistrationPlate().equals(car.getRegistrationPlate());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(identifications);
+//    }
 
 
 }

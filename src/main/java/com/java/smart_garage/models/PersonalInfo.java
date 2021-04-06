@@ -21,7 +21,7 @@ public class PersonalInfo {
     private String email;
 
     @Column(name = "phone_number")
-    private int phoneNumber;
+    private String phoneNumber;
 
     public PersonalInfo() {
     }
@@ -30,7 +30,7 @@ public class PersonalInfo {
                         String firstName,
                         String lastName,
                         String email,
-                        int phoneNumber) {
+                        String phoneNumber) {
         this.personalId = personalId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,7 +54,7 @@ public class PersonalInfo {
         this.email = email;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -74,7 +74,7 @@ public class PersonalInfo {
         return email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 }

@@ -238,7 +238,7 @@ public class ModelConversionHelper {
     }
 
     private void dtoToModelObject(ModelDto modelDto, Model model) {
-        Manufacturer manufacturer = manufacturerFromDto(modelDto.getManufacturer());
+        Manufacturer manufacturer = manufacturerRepository.getById(modelDto.getManufacturer());
         model.setModelName(modelDto.getModelName());
         model.setManufacturer(manufacturer);
     }
@@ -261,10 +261,10 @@ public class ModelConversionHelper {
     }
 
     private void dtoToPersonalInfoObject(PersonalInfoDto personalInfoDto, PersonalInfo personalInfo) {
-        personalInfo.setFirstName(personalInfo.getFirstName());
-        personalInfo.setLastName(personalInfo.getLastName());
-        personalInfo.setEmail(personalInfo.getEmail());
-        personalInfo.setPhoneNumber(personalInfo.getPhoneNumber());
+        personalInfo.setFirstName(personalInfoDto.getFirstName());
+        personalInfo.setLastName(personalInfoDto.getLastName());
+        personalInfo.setEmail(personalInfoDto.getEmail());
+        personalInfo.setPhoneNumber(personalInfoDto.getPhoneNumber());
     }
 
     private void dtoToInvoiceObject(InvoiceDto invoiceDto, Invoice invoice) {

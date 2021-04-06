@@ -45,6 +45,10 @@ public class EngineServiceImpl implements EngineService {
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
+        if(engineCheck(engine)){
+            throw new DuplicateEntityException("Engine", "hpw", engine.getHpw(), "fuel", engine.getFuel().getFuelName(), "cc", engine.getCubicCapacity());
+        }
+
         if (duplicateExists) {
             throw new DuplicateEntityException("Engine", "id", engine.getEngineId());
         }
@@ -64,6 +68,19 @@ public class EngineServiceImpl implements EngineService {
             throw new EntityNotFoundException("Engine", "id", id);
         }
         repository.delete(id);
+    }
+
+    private boolean engineCheck(Engine value){
+        List<Engine> engines = getAllEngines();
+
+        for (Engine engine : engines) {
+            if(value.getHpw()==engine.getHpw() &&
+                    value.getFuel().getFuelName().equals(engine.getFuel().getFuelName()) &&
+                            value.getCubicCapacity()==value.getCubicCapacity()){
+                return true;
+            }
+
+        }return false;
     }
 }
 

@@ -15,7 +15,7 @@ public class ModelDto {
     private String modelName;
 
     @NotNull
-    private ManufacturerDto manufacturer;
+    private int manufacturer;
 
     public ModelDto() {
     }
@@ -24,7 +24,7 @@ public class ModelDto {
         this.modelName = modelName;
     }
 
-    public void setManufacturer(ManufacturerDto manufacturer) {
+    public void setManufacturer(int manufacturer) {
         this.manufacturer = manufacturer;
     }
 
@@ -32,7 +32,7 @@ public class ModelDto {
         return modelName;
     }
 
-    public ManufacturerDto getManufacturer() {
+    public int getManufacturer() {
         return manufacturer;
     }
 }
