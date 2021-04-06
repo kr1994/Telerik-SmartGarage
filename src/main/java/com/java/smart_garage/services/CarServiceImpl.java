@@ -39,7 +39,8 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void create(Car car, User user) {
-        boolean duplicateExists = true;
+        boolean duplicateExistsIdentification = true;
+        boolean duplicateExistsIPlate = true;
 
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new car.");
@@ -47,10 +48,15 @@ public class CarServiceImpl implements CarService {
 
         try {
             repository.getByIdentifications(car.getIdentifications());
-            repository.getByPlate(car.getIdentifications());
         } catch (EntityNotFoundException e) {
-            duplicateExists = false;
+            duplicateExistsIdentification = false;
         }
+        try {
+            repository.getByPlate(car.getRegistrationPlate());
+        } catch (EntityNotFoundException e) {
+            duplicateExistsIPlate = false;
+        }
+
 
         if (!plateValidationService.trueCityIndexPlate(car.getRegistrationPlate())) {
             throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
@@ -62,9 +68,13 @@ public class CarServiceImpl implements CarService {
             throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
         }
 
-        if (duplicateExists) {
+        if (duplicateExistsIdentification) {
             throw new DuplicateEntityException("Car", "identification number", car.getIdentifications());
         }
+        if (duplicateExistsIPlate) {
+            throw new DuplicateEntityException("Car", "plate", car.getRegistrationPlate());
+        }
+
 
         repository.create(car);
     }
