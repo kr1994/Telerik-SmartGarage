@@ -5,6 +5,7 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.UserTypeService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.UserType;
 import com.java.smart_garage.models.dto.UserTypeDto;
@@ -43,7 +44,8 @@ public class UserTypeController {
     @PostMapping
     public UserType create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserTypeDto userTypeDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             UserType userType = modelConversionHelper.userTypeFromDto(userTypeDto);
             service.create(userType, user);
             return userType;
@@ -54,7 +56,8 @@ public class UserTypeController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

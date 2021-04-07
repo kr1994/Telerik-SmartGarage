@@ -6,6 +6,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,10 +38,10 @@ public class UserTypeServiceImpl implements UserTypeService {
     }
 
     @Override
-    public void create(UserType type, Credential credential) {
+    public void create(UserType type, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(credential.isEmployee())) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new type.");
         }
 
@@ -57,8 +58,8 @@ public class UserTypeServiceImpl implements UserTypeService {
     }
 
     @Override
-    public void delete(int id, Credential credential) {
-        if (!(credential.isEmployee())) {
+    public void delete(int id, User credentialUser) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a type.");
         }
         UserType type = new UserType();
