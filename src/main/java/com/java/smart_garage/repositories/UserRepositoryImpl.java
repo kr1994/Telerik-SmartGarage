@@ -22,71 +22,107 @@ public class UserRepositoryImpl implements UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
+
     @Override
-    public List<Credential> getAllUsers() {
+    public List<User> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Credential> query = session.createQuery("from Credential order by credentialId",
-                    Credential.class);
+            Query<User> query = session.createQuery("from User order by userId",
+                    User.class);
             return query.list();
         }
     }
 
     @Override
-    public Credential getById(int id) {
+    public User getById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Credential credential = session.get(Credential.class, id);
-            if (credential == null) {
+            User user = session.get(User.class, id);
+            if (user == null) {
                 throw new EntityNotFoundException("User", "id", id);
             }
-            return credential;
+            return user;
         }
     }
 
     @Override
-    public Credential getByUsername(String username) {
+    public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Credential> query = session.createQuery("from Credential where username like concat('%', :name, '%')",
-                    Credential.class);
-            query.setParameter("name", username);
-            List<Credential> result = query.list();
-            if (result.size() == 0) {
-                throw new EntityNotFoundException("User", "name", username);
-            }
-            return result.get(0);
+            session.save(user);
         }
+
+        return user;
     }
 
     @Override
-    public Credential create(Credential credential) {
-        try (Session session = sessionFactory.openSession()) {
-            session.save(credential);
-        }
+    public User update(User user,
+                       Credential credential,
+                       PersonalInfo personalInfo) {
 
-        return credential;
-    }
-
-    @Override
-    public Credential update(Credential credential) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            session.update(credential);
+            customerUpdate(user, session, credential, personalInfo);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
             throw new RuntimeException(e.toString());
         }
 
-        return credential;
+        return user;
     }
 
     @Override
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Credential.class, id));
+            session.delete(session.get(User.class, id));
             session.getTransaction().commit();
         }
     }
 
+    private void customerUpdate(User user,
+                                Session session,
+                                Credential credential,
+                                PersonalInfo personalInfo) {
+
+        user.setCredential(credential);
+        user.setPersonalInfo(personalInfo);
+        session.update(credential);
+        session.update(personalInfo);
+        session.update(user);
+    }
+
+    @Override
+    public void filterCustomersByFirstName(String searchKey) {
+
+        /*
+        try (Session session = sessionFactory.openSession()) {
+            Query<Customer> query = session.createQuery("from User order by userId",
+                    Customer.class);
+
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+            query.
+
+            CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
+            Root<Customer> root = criteriaQuery.from(Customer.class);
+
+            //CriteriaBuilder.In<String> inClause = criteriaBuilder.in(root.get("firstName"));
+
+            //criteriaQuery.select(root).where(inClause);
+            //criteriaQuery.select(root).where(criteriaBuilder.gt(root.get("itemPrice"), 1000));
+            criteriaQuery.select(root).where(criteriaBuilder.like(root.get("firstName"), searchKey));
+
+
+
+            Subquery<Customer> subquery = criteriaQuery.subquery(Customer.class);
+            Root<Customer> customer = subquery.from(Customer.class);
+            subquery.select(customer)
+                    .distinct(true)
+                    .where(criteriaBuilder.like(customer.get("firstName"), "%" + searchKey + "%"));
+
+            criteriaQuery.select(customer)
+                    .where(criteriaBuilder.in(customer.get("firstName")).value(subquery));
+           }
+          */
+    }
 }

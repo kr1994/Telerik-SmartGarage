@@ -2,12 +2,11 @@ package com.java.smart_garage.controllers.rest;
 
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
-import com.java.smart_garage.contracts.serviceContracts.CustomerService;
+import com.java.smart_garage.contracts.serviceContracts.CredentialService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.Credential;
-import com.java.smart_garage.models.dto.UserDto;
+import com.java.smart_garage.models.dto.CredentialDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,29 +17,29 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("smartgarage/customers")
-public class CustomerController {
+@RequestMapping("/smartgarage/credentials")
+public class CredentialController {
 
-    private final CustomerService service;
+    private final CredentialService service;
     private final ModelConversionHelper modelConversionHelper;
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public CustomerController(CustomerService service,
-                              ModelConversionHelper modelConversionHelper,
-                              AuthenticationHelper authenticationHelper) {
+    public CredentialController(CredentialService service,
+                                ModelConversionHelper modelConversionHelper,
+                                AuthenticationHelper authenticationHelper) {
         this.service = service;
         this.modelConversionHelper = modelConversionHelper;
         this.authenticationHelper = authenticationHelper;
     }
 
-    @GetMapping("/")
-    public List<User> getAllCustomers(){
-        return service.getAllCustomers();
+    @GetMapping
+    public List<Credential> getAllCredentials(){
+        return service.getAllCredentials();
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable int id) {
+    public Credential getById(@PathVariable int id) {
         try {
             return service.getById(id);
         } catch (EntityNotFoundException e) {
@@ -48,27 +47,36 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/username")
+    public Credential getByUsername(@RequestParam String username) {
+        try {
+            return service.getByUsername(username);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @PostMapping
-    public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
+    public Credential create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CredentialDto credentialDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = modelConversionHelper.customerFromDto(userDto);
-            service.create(user, credential);
-            return user;
+            Credential newCredential = modelConversionHelper.userFromDto(credentialDto);
+            service.create(newCredential, credential);
+            return newCredential;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
+    public Credential update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CredentialDto credentialDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = modelConversionHelper.customerFromDto(userDto);
-            service.update(user, credential);
-            return user;
-        } catch (DuplicateEntityException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            Credential updatedCredential = modelConversionHelper.userFromDto(credentialDto);  //Should be found by id
+            service.update(updatedCredential, credential);
+            return updatedCredential;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -83,5 +91,7 @@ public class CustomerController {
     }
 
 
+
 }
+
 

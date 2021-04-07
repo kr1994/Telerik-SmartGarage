@@ -1,20 +1,25 @@
 package com.java.smart_garage.contracts.repoContracts;
 
+import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.models.Credential;
 
 import java.util.List;
 
 public interface UserRepository {
 
-    List<Credential> getAllUsers();
+    List<User> getAllUsers();
 
-    Credential getById(int id);
+    User getById(int id);
 
-    Credential getByUsername(String username);
+    User create(User user);
 
-    Credential create(Credential credential);
-
-    Credential update(Credential credential);
+    User update(User user,
+                Credential credential,
+                PersonalInfo personalInfo);
 
     void delete(int id);
+
+    void filterCustomersByFirstName(String searchKey);
+
 }

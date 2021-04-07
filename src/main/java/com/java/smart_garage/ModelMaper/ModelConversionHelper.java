@@ -14,13 +14,13 @@ public class ModelConversionHelper {
     private final CarRepository carRepository;
     private final CarServiceRepository carServiceRepository;
     private final ColoursRepository coloursRepository;
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
     private final EngineRepository engineRepository;
     private final FuelRepository fuelRepository;
     private final ModelRepository modelRepository;
     private final WorkServiceRepository workServiceRepository;
     private final UserTypeRepository userTypeRepository;
-    private final UserRepository userRepository;
+    private final CredentialRepository credentialRepository;
     private final PersonalInfoRepository personalInfoRepository;
     private final InvoiceRepository invoiceRepository;
 
@@ -29,26 +29,26 @@ public class ModelConversionHelper {
                                  CarRepository carRepository,
                                  CarServiceRepository carServiceRepository,
                                  ColoursRepository coloursRepository,
-                                 CustomerRepository customerRepository,
+                                 UserRepository userRepository,
                                  EngineRepository engineRepository,
                                  FuelRepository fuelRepository,
                                  ModelRepository modelRepository,
                                  WorkServiceRepository workServiceRepository,
                                  UserTypeRepository userTypeRepository,
-                                 UserRepository userRepository,
+                                 CredentialRepository credentialRepository,
                                  PersonalInfoRepository personalInfoRepository,
                                  InvoiceRepository invoiceRepository) {
         this.manufacturerRepository = manufacturerRepository;
         this.carRepository = carRepository;
         this.carServiceRepository = carServiceRepository;
         this.coloursRepository = coloursRepository;
-        this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
         this.engineRepository = engineRepository;
         this.fuelRepository = fuelRepository;
         this.modelRepository = modelRepository;
         this.workServiceRepository = workServiceRepository;
         this.userTypeRepository = userTypeRepository;
-        this.userRepository = userRepository;
+        this.credentialRepository = credentialRepository;
         this.personalInfoRepository = personalInfoRepository;
         this.invoiceRepository = invoiceRepository;
     }
@@ -173,7 +173,7 @@ public class ModelConversionHelper {
     }
 
     public Credential userFromDto(CredentialDto credentialDto, int id) {
-        Credential credential = userRepository.getById(id);
+        Credential credential = credentialRepository.getById(id);
         dtoToUserObject(credentialDto, credential);
         return credential;
     }
@@ -209,7 +209,7 @@ public class ModelConversionHelper {
     }
 
     private void dtoToUserObject(UserDto userDto, User user) {
-        Credential credential = userRepository.getById(userDto.getUserId());
+        Credential credential = credentialRepository.getById(userDto.getUserId());
         PersonalInfo personalInfo = personalInfoRepository.getById(userDto.getPersonalInfoId());
         UserType userType = personalInfoRepository.getById(userDto.ge)
         user.setCredential(credential);
@@ -226,7 +226,7 @@ public class ModelConversionHelper {
         Model model = modelRepository.getById(carDto.getModelId());
         Colour colour = coloursRepository.getById(carDto.getColourId());
         Engine engine = engineRepository.getById(carDto.getEngineId());
-        User user = customerRepository.getById(carDto.getCustomerId());
+        User user = userRepository.getById(carDto.getCustomerId());
 
         car.setModel(model);
         car.setRegistrationPlate(carDto.getPlate());
