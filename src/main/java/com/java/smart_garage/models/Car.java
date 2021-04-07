@@ -63,7 +63,6 @@ public class Car {
         this.id = id;
     }
 
-
     public void setRegistrationPlate(String registrationPlate) {
         this.registrationPlate = registrationPlate;
     }
@@ -88,7 +87,7 @@ public class Car {
         this.engine = engine;
     }
 
-    public void setCustomer(User user) {
+    public void setOwner(User user) {
         this.user = user;
     }
 
@@ -120,7 +119,7 @@ public class Car {
         return engine;
     }
 
-    public User getCustomer() {
+    public User getOwner() {
         return user;
     }
 

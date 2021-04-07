@@ -211,7 +211,7 @@ public class ModelConversionHelper {
     private void dtoToUserObject(UserDto userDto, User user) {
         Credential credential = credentialRepository.getById(userDto.getUserId());
         PersonalInfo personalInfo = personalInfoRepository.getById(userDto.getPersonalInfoId());
-        UserType userType = personalInfoRepository.getById(userDto.ge)
+        UserType userType = userTypeRepository.getById(userDto.getUserType());
         user.setCredential(credential);
         user.setPersonalInfo(personalInfo);
     }
@@ -226,7 +226,7 @@ public class ModelConversionHelper {
         Model model = modelRepository.getById(carDto.getModelId());
         Colour colour = coloursRepository.getById(carDto.getColourId());
         Engine engine = engineRepository.getById(carDto.getEngineId());
-        User user = userRepository.getById(carDto.getCustomerId());
+        User user = userRepository.getById(carDto.getOwnerId());
 
         car.setModel(model);
         car.setRegistrationPlate(carDto.getPlate());
@@ -234,7 +234,7 @@ public class ModelConversionHelper {
         car.setYear(carDto.getYear());
         car.setColour(colour);
         car.setEngine(engine);
-        car.setCustomer(user);
+        car.setOwner(user);
     }
 
     private void dtoToModelObject(ModelDto modelDto, Model model) {
