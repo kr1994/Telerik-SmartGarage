@@ -8,7 +8,7 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Car;
-import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +38,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void create(Car car, Credential credential) {
+    public void create(Car car, User user) {
         boolean duplicateExistsIdentification = true;
         boolean duplicateExistsIPlate = true;
 
-        if (!(credential.isEmployee())) {
+        if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new car.");
         }
 
@@ -79,8 +79,8 @@ public class CarServiceImpl implements CarService {
         repository.create(car);
     }
 
-    public void update(Car car, Credential credential) {
-        if (!credential.isEmployee()) {
+    public void update(Car car, User user) {
+        if (!user.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can update shipment.");
         }
 
@@ -88,8 +88,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void delete(int id, Credential credential) {
-        if (!(credential.isEmployee())) {
+    public void delete(int id, User user) {
+        if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a car.");
         }
         Car car = new Car();
