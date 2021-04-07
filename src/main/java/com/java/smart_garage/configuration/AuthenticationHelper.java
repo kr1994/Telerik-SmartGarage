@@ -1,6 +1,6 @@
 package com.java.smart_garage.configuration;
 
-
+import com.java.smart_garage.contracts.serviceContracts.CredentialService;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.AuthenticationHelperException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -21,10 +24,12 @@ public class AuthenticationHelper {
 
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
+    private final CredentialService credentialService;
     private final UserService userService;
 
     @Autowired
-    public AuthenticationHelper(UserService userService) {
+    public AuthenticationHelper(CredentialService credentialService, UserService userService) {
+        this.credentialService = credentialService;
         this.userService = userService;
     }
 
@@ -36,12 +41,13 @@ public class AuthenticationHelper {
 
         try {
             String username = headers.getFirst(AUTHORIZATION_HEADER_NAME);
-            return userService.getByUsername(username);
+            return credentialService.getByUsername(username);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username");
         }
     }
-    public User tryGetUser(HttpSession session) {
+
+    public Credential tryGetUser(HttpSession session) {
         String currentUserUsername = (String) session.getAttribute("currentUserUsername");
 
         if (currentUserUsername == null) {
@@ -49,27 +55,33 @@ public class AuthenticationHelper {
         }
 
         try {
-            return userService.getByUsername(currentUserUsername);
+            return credentialService.getByUsername(currentUserUsername);
         } catch (EntityNotFoundException e) {
             throw new UnauthorizedOperationException("No logged in user.");
         }
     }
 
-    public User verifyAuthorization(HttpSession session, String role) {
-        User user = tryGetUser(session);
+    public Credential verifyAuthorization(HttpSession session, String role) {
 
-        String userRoles = credential.getUserType().getType();
+        Credential credential = tryGetUser(session);
+        List<User> filteredUser = userService.getAllUsers().stream().
+                                  filter(u -> u.getCredential().equals(credential))
+                                  .collect(Collectors.toList());
+        User user = filteredUser.get(0);
+
+        String userRoles = user.getUserType().getType();
 
         if (!userRoles.equalsIgnoreCase(role)) {
-            throw new UnauthorizedOperationException("Users does not have the required authorization.");
+            throw new UnauthorizedOperationException("User does not have the required authorization.");
         }
 
         return credential;
+
     }
 
     public Credential verifyAuthentication(String username, String password){
         try{
-            Credential credential = userService.getByUsername(username);
+            Credential credential = credentialService.getByUsername(username);
 
             if(!credential.getPassword().equals(password)){
                 throw new AuthenticationHelperException("Wrong user/password.");
