@@ -1,7 +1,6 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.Credential;
 
 import java.util.List;
 

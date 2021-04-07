@@ -55,12 +55,13 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User update(User user,
                        Credential credential,
-                       PersonalInfo personalInfo) {
+                       PersonalInfo personalInfo,
+                       UserType userType) {
 
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            userUpdate(user, session, credential, personalInfo);
+            userUpdate(user, session, credential, personalInfo, userType);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
@@ -82,12 +83,15 @@ public class UserRepositoryImpl implements UserRepository {
     private void userUpdate(User user,
                             Session session,
                             Credential credential,
-                            PersonalInfo personalInfo) {
+                            PersonalInfo personalInfo,
+                            UserType userType) {
 
         user.setCredential(credential);
         user.setPersonalInfo(personalInfo);
+        user.setUserType(userType);
         session.update(credential);
         session.update(personalInfo);
+        session.update(userType);
         session.update(user);
     }
 
