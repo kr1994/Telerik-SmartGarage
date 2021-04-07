@@ -63,11 +63,7 @@ public class AuthenticationHelper {
     public Credential verifyAuthorization(HttpSession session, String role) {
 
         Credential credential = tryGetUser(session);
-        List<User> filteredUser = userService.getAllUsers().stream().
-                                  filter(u -> u.getCredential().equals(credential))
-                                  .collect(Collectors.toList());
-        User user = filteredUser.get(0);
-
+        User user = convertCredentialToUser(credential);
         String userRoles = user.getUserType().getType();
 
         if (!userRoles.equalsIgnoreCase(role)) {
@@ -87,8 +83,15 @@ public class AuthenticationHelper {
             }
 
             return credential;
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e){
             throw new AuthenticationHelperException("Wrong user/password.");
         }
+    }
+
+    public User convertCredentialToUser(Credential credential) {
+        List<User> filteredUser = userService.getAllUsers().stream().
+                filter(u -> u.getCredential().equals(credential))
+                .collect(Collectors.toList());
+        return filteredUser.get(0);
     }
 }
