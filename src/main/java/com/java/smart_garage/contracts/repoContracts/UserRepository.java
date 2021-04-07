@@ -22,6 +22,6 @@ public interface UserRepository {
 
     void delete(int id);
 
-    void filterUsersByFirstName(String searchKey);
+    List<User> filterUsersByFirstName(String searchKey);
 
 }

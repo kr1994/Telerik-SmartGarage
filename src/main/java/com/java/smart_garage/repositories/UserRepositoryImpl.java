@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -96,37 +97,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void filterUsersByFirstName(String searchKey) {
+    public List<User> filterUsersByFirstName(String searchKey) {
 
-        /*
         try (Session session = sessionFactory.openSession()) {
-            Query<Customer> query = session.createQuery("from User order by userId",
-                    Customer.class);
-
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-
-            query.
-
-            CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
-            Root<Customer> root = criteriaQuery.from(Customer.class);
-
-            //CriteriaBuilder.In<String> inClause = criteriaBuilder.in(root.get("firstName"));
-
-            //criteriaQuery.select(root).where(inClause);
-            //criteriaQuery.select(root).where(criteriaBuilder.gt(root.get("itemPrice"), 1000));
-            criteriaQuery.select(root).where(criteriaBuilder.like(root.get("firstName"), searchKey));
-
-
-
-            Subquery<Customer> subquery = criteriaQuery.subquery(Customer.class);
-            Root<Customer> customer = subquery.from(Customer.class);
-            subquery.select(customer)
-                    .distinct(true)
-                    .where(criteriaBuilder.like(customer.get("firstName"), "%" + searchKey + "%"));
-
-            criteriaQuery.select(customer)
-                    .where(criteriaBuilder.in(customer.get("firstName")).value(subquery));
-           }
-          */
+            Query<User> query = session.createQuery("from User u where personalInfo.firstName = :searchKey", User.class);
+            query.setParameter("searchKey", searchKey);
+            return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
+        }
     }
 }
