@@ -10,6 +10,7 @@ import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Car;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.CarDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -56,8 +57,9 @@ public class CarController {
     public Car create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CarDto carDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             Car car = modelConversionHelper.carFromDto(carDto);
-            service.create(car, credential);
+            service.create(car, user);
             return car;
         } catch (DuplicateEntityException | IncorrectPlateRegistrationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -69,8 +71,9 @@ public class CarController {
     public Car update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CarDto carDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             Car car = modelConversionHelper.carFromDto(carDto, id);
-            service.update(car, credential);
+            service.update(car, user);
             return car;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -84,7 +87,8 @@ public class CarController {
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            service.delete(id, credential);
+            User user = authenticationHelper.convertCredentialToUser(credential);
+            service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

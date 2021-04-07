@@ -51,9 +51,8 @@ public class UserController {
     @PostMapping
     public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
             User user = modelConversionHelper.customerFromDto(userDto);
-            service.create(user, credential);
+            service.create(user);
             return user;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -63,9 +62,8 @@ public class UserController {
     @PutMapping("/{id}")
     public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
             User user = modelConversionHelper.customerFromDto(userDto);
-            service.update(user, credential);
+            service.update(user);
             return user;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -76,7 +74,8 @@ public class UserController {
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            service.delete(id, credential);
+            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            service.delete(id, credentialUser);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
