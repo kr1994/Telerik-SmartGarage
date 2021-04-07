@@ -5,6 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,85 +23,72 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Credential> getAllUsers() {
+    public List<User> getAllUsers(){
         return repository.getAllUsers();
     }
 
     @Override
-    public Credential getById(int id) {
+    public User getById(int id){
         return repository.getById(id);
     }
 
     @Override
-    public Credential getByUsername(String username) {
-        return repository.getByUsername(username);
-    }
-
-    @Override
-    public void create(Credential credential, Credential employeeCredential) {
+    public void create(User user) {
         boolean duplicateExists = true;
-        if (!(employeeCredential.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee or the user can create the user");
-        }
-        try {
-            repository.getByUsername(credential.getUsername());
-        } catch (EntityNotFoundException e) {
-            duplicateExists = false;
-        }
-        try {
-            Credential existingCredential = repository.getByUsername(credential.getUsername());
-            if (existingCredential.getUsername().equals(credential.getUsername())) {
-                duplicateExists = true;
-            }
-        } catch (EntityNotFoundException e) {
-            duplicateExists = false;
+
+        if (!(user.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee or the user can create new user.");
         }
 
+        try {
+            repository.getById(user.getUserId());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
         if (duplicateExists) {
-            throw new DuplicateEntityException("User", "name", "user name", credential.getUsername(), credential.getUsername());
+            throw new DuplicateEntityException("User", "id", user.getUserId());
         }
 
-        repository.create(credential);
-
+        repository.create(user);
     }
 
+    //In progress
     @Override
-    public void update(Credential credential, Credential employeeCredential) {
+    public void update(User user) {
+        boolean duplicateExists = true;
 
-        boolean duplicateExistsUsername = true;
-
-
-        if (!(credential.isUser(credential.getUsername()) || employeeCredential.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee or the user can modify the user");
+        if (!(user.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee or the user can update user.");
         }
+
         try {
-            Credential existingCredential = repository.getByUsername(credential.getUsername());
-            if (existingCredential.getCredentialId() != credential.getCredentialId()) {
-                duplicateExistsUsername = true;
-            }
+            repository.getById(user.getUserId());
         } catch (EntityNotFoundException e) {
-            duplicateExistsUsername = false;
+            duplicateExists = false;
         }
 
-
-        if (duplicateExistsUsername) {
-            throw new DuplicateEntityException("User", "username", credential.getUsername());
-        }
-        repository.update(credential);
+        repository.update(user, user.getCredential(), user.getPersonalInfo(), user.getUserType());
     }
 
     @Override
-    public void delete(int id, Credential credential) {
-
-        if (!credential.isEmployee()) {
-            throw new UnauthorizedOperationException("Only employee can delete users.");
+    public void delete(int id, User userCredential) {
+        if (!(userCredential.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can delete user.");
         }
-        Credential deletedCredential = new Credential();
+        User user = new User();
         try {
-            deletedCredential = repository.getById(id);
+            user = repository.getById(id);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("User", "id", id);
         }
         repository.delete(id);
     }
+
+    public void filterUsersByFirstName(String searchKey) {
+        repository.filterUsersByFirstName(searchKey);
+    }
+
 }
+
+
+
