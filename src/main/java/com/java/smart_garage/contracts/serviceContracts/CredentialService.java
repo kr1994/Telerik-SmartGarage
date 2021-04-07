@@ -1,6 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface CredentialService {
 
     Credential getByUsername(String username);
 
-    void create(Credential credential, Credential employeeCredential);
+    void create(Credential credential, User employeeUser);
 
-    void update(Credential credential, Credential employeeCredential);
+    void update(Credential credential, User employeeUser);
 
-    void delete(int id, Credential credential);
+    void delete(int id, User employeeUser);
 }

@@ -80,9 +80,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void userUpdate(User user,
-                                Session session,
-                                Credential credential,
-                                PersonalInfo personalInfo) {
+                            Session session,
+                            Credential credential,
+                            PersonalInfo personalInfo) {
 
         user.setCredential(credential);
         user.setPersonalInfo(personalInfo);

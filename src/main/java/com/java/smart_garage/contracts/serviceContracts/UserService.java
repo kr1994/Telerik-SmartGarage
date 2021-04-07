@@ -11,11 +11,11 @@ public interface UserService {
 
     User getById(int id);
 
-    void create(User user, Credential credential);
+    void create(User user);
 
-    void update(User user, Credential credential);
+    void update(User user);
 
-    void delete(int id, Credential credential);
+    void delete(int id, User user);
 
     void filterUsersByFirstName(String searchKey);
 

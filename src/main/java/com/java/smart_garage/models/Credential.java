@@ -3,10 +3,8 @@ package com.java.smart_garage.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
-import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.EMPLOYEE;
 
 @Entity
 @Table(name = "credentials")
@@ -25,10 +23,8 @@ public class Credential {
     @Column(name = "password")
     private String password;
 
-
     public Credential() {
     }
-
 
     public Credential(int credentialId,
                       String username,
@@ -38,8 +34,7 @@ public class Credential {
         this.credentialId = credentialId;
         this.username = username;
         this.password = password;
-        }
-
+    }
 
     public void setCredentialId(int userId) {
         this.credentialId = userId;
@@ -53,9 +48,6 @@ public class Credential {
         this.password = password;
     }
 
-
-
-
     public int getCredentialId() {
         return credentialId;
     }
@@ -68,16 +60,14 @@ public class Credential {
         return password;
     }
 
-
-
-
     @JsonIgnore
     public boolean isUser(String userName) {
         return getUsername().equals(userName);
     }
+
     @JsonIgnore
     public boolean isUserId(int id) {
-        return getCredentialId()==id;
+        return getCredentialId() == id;
     }
 
 
