@@ -6,6 +6,7 @@ import com.java.smart_garage.contracts.serviceContracts.CredentialService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.CredentialDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -61,7 +62,8 @@ public class CredentialController {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
             Credential newCredential = modelConversionHelper.userFromDto(credentialDto);
-            service.create(newCredential, credential);
+            User user = authenticationHelper.convertCredentialToUser(credential);
+            service.create(newCredential, user);
             return newCredential;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -72,8 +74,9 @@ public class CredentialController {
     public Credential update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CredentialDto credentialDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            Credential updatedCredential = modelConversionHelper.userFromDto(credentialDto);  //Should be found by id
-            service.update(updatedCredential, credential);
+            Credential updatedCredential = modelConversionHelper.userFromDto(credentialDto);
+            User user = authenticationHelper.convertCredentialToUser(credential);
+            service.update(updatedCredential, user);
             return updatedCredential;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -84,7 +87,8 @@ public class CredentialController {
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            service.delete(id, credential);
+            User user = authenticationHelper.convertCredentialToUser(credential);
+            service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
