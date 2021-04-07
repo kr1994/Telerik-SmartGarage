@@ -15,10 +15,6 @@ public class CredentialDto {
     @Length(min = 8, max = 30)
     private String password;
 
-
-    @Positive(message = "User type Id must be positive.")
-    private int userType;
-
     public CredentialDto() {
     }
 
@@ -30,10 +26,6 @@ public class CredentialDto {
         this.password = password;
     }
 
-    public void setUserType(int userType) {
-        this.userType = userType;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -42,7 +34,4 @@ public class CredentialDto {
         return password;
     }
 
-    public int getUserType() {
-        return userType;
-    }
 }

@@ -19,6 +19,9 @@ public class UserDto {
     private int personalInfoId;
 
 
+    @Positive(message = "User type Id must be positive.")
+    private int userType;
+
 
     public UserDto() {
     }
@@ -31,11 +34,19 @@ public class UserDto {
         this.personalInfoId = personalInfoId;
     }
 
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
     public int getUserId() {
         return userId;
     }
 
     public int getPersonalInfoId() {
         return personalInfoId;
+    }
+
+    public int getUserType() {
+        return userType;
     }
 }
