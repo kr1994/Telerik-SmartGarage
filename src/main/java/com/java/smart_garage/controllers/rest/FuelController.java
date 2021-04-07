@@ -8,6 +8,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Fuel;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.FuelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -54,8 +55,9 @@ public class FuelController {
     public Fuel create(@RequestHeader HttpHeaders headers, @Valid @RequestBody FuelDto fuelDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             Fuel fuel = modelConversionHelper.fuelFromDto(fuelDto);
-            service.create(fuel, credential);
+            service.create(fuel, user);
             return fuel;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -66,7 +68,8 @@ public class FuelController {
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            service.delete(id, credential);
+            User user = authenticationHelper.convertCredentialToUser(credential);
+            service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

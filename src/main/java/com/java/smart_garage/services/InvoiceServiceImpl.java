@@ -8,6 +8,7 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Invoice;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +40,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void create(Invoice invoice, Credential credential) {
+    public void create(Invoice invoice, User user) {
         boolean duplicateExists = true;
 
-        if (!(credential.isEmployee())) {
+        if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new fuel.");
         }
 
@@ -59,8 +60,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void delete(int id, Credential credential) {
-        if (!(credential.isEmployee())) {
+    public void delete(int id, User user) {
+        if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a fuel.");
         }
         Invoice invoice = new Invoice();

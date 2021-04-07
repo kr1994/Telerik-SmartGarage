@@ -8,6 +8,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Invoice;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.InvoiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -64,8 +65,9 @@ public class InvoiceController {
     public Invoice create(@RequestHeader HttpHeaders headers, @Valid @RequestBody InvoiceDto invoiceDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             Invoice invoice = modelConversionHelper.invoiceFromDto(invoiceDto);
-            service.create(invoice, credential);
+            service.create(invoice, user);
             return invoice;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());

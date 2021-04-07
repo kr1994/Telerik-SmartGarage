@@ -42,7 +42,7 @@ public class FuelServiceImpl implements FuelService {
         boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create a new fuel.");
+            throw new UnauthorizedOperationException("Only employee can create new fuel.");
         }
 
         try {
@@ -60,7 +60,7 @@ public class FuelServiceImpl implements FuelService {
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee  can delete a fuel.");
+            throw new UnauthorizedOperationException("Only employee can delete fuel.");
         }
         Fuel fuel = new Fuel();
         try {
