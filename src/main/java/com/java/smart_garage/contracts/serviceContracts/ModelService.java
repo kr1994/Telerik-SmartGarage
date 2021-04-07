@@ -1,7 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface ModelService {
 
     Model getModelByName(String name);
 
-    void create(Model model, Credential credential);
+    void create(Model model, User credentialUser);
 
-    void delete(int id, Credential credential);
+    void delete(int id, User credentialUser);
 }
