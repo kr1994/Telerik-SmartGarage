@@ -8,6 +8,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Engine;
 import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.EngineDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -54,8 +55,9 @@ public class EngineController {
     public Engine create(@RequestHeader HttpHeaders headers, @Valid @RequestBody EngineDto engineDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.convertCredentialToUser(credential);
             Engine engine = modelConversionHelper.engineFromDto(engineDto);
-            service.create(engine, credential);
+            service.create(engine, user);
             return engine;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -65,7 +67,8 @@ public class EngineController {
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            service.delete(id, credential);
+            User user = authenticationHelper.convertCredentialToUser(credential);
+            service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

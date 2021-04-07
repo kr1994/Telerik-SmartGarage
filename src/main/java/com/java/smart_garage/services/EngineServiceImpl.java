@@ -6,7 +6,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Engine;
-import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +33,10 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public void create(Engine engine, Credential credential) {
+    public void create(Engine engine, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(credential.isEmployee())) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create new engine.");
         }
 
@@ -57,8 +57,8 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public void delete(int id, Credential credential) {
-        if (!(credential.isEmployee())) {
+    public void delete(int id, User credentialUser) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete an engine.");
         }
         Engine engine = new Engine();
