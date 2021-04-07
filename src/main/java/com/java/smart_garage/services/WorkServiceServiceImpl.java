@@ -5,6 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.WorkServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.WorkService;
 import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,10 @@ public class WorkServiceServiceImpl implements WorkServiceService {
     }
 
     @Override
-    public void create(WorkService workService, Credential credential) {
+    public void create(WorkService workService, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(credential.isEmployee())) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create new work service.");
         }
 
@@ -58,9 +59,9 @@ public class WorkServiceServiceImpl implements WorkServiceService {
     }
 
     @Override
-    public void update(WorkService workService, Credential employeeCredential) {
+    public void update(WorkService workService, User credentialUser) {
 
-        if (!(employeeCredential.isEmployee())) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can modify the work service!");
         }
         try {
@@ -73,8 +74,8 @@ public class WorkServiceServiceImpl implements WorkServiceService {
     }
 
     @Override
-    public void delete(int id, Credential credential) {
-        if (!(credential.isEmployee())) {
+    public void delete(int id, User credentialUser) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete work service.");
         }
         WorkService workService = new WorkService();
