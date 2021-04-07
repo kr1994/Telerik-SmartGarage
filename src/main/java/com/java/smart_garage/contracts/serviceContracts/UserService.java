@@ -17,6 +17,6 @@ public interface UserService {
 
     void delete(int id, Credential credential);
 
-    void filterCustomersByFirstName(String searchKey);
+    void filterUsersByFirstName(String searchKey);
 
 }
