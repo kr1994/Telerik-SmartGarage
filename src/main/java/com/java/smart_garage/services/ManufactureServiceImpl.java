@@ -6,7 +6,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Manufacturer;
-import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +38,10 @@ public class ManufactureServiceImpl implements ManufactureService {
     }
 
     @Override
-    public void create(Manufacturer manufacturer, Credential employeeCredential) {
+    public void create(Manufacturer manufacturer, User employeeUser) {
         boolean duplicateExists = true;
 
-        if (!(employeeCredential.isEmployee())) {
+        if (!(employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new manufacturer.");
         }
         try {
@@ -57,8 +57,8 @@ public class ManufactureServiceImpl implements ManufactureService {
     }
 
     @Override
-    public void delete(int id, Credential employeeCredential) {
-        if (!(employeeCredential.isEmployee())) {
+    public void delete(int id, User employeeUser) {
+        if (!(employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a manufacturer.");
         }
         Manufacturer manufacturer = new Manufacturer();
