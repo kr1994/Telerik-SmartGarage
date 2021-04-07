@@ -25,8 +25,6 @@ public class Credential {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "")
-    private List<User> allUsers;
 
     public Credential() {
     }
