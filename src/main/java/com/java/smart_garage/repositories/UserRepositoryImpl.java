@@ -23,32 +23,32 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<Credential> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User order by userId",
-                    User.class);
+            Query<Credential> query = session.createQuery("from Credential order by credentialId",
+                    Credential.class);
             return query.list();
         }
     }
 
     @Override
-    public User getById(int id) {
+    public Credential getById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            User user = session.get(User.class, id);
-            if (user == null) {
+            Credential credential = session.get(Credential.class, id);
+            if (credential == null) {
                 throw new EntityNotFoundException("User", "id", id);
             }
-            return user;
+            return credential;
         }
     }
 
     @Override
-    public User getByUsername(String username) {
+    public Credential getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where username like concat('%', :name, '%')",
-                    User.class);
+            Query<Credential> query = session.createQuery("from Credential where username like concat('%', :name, '%')",
+                    Credential.class);
             query.setParameter("name", username);
-            List<User> result = query.list();
+            List<Credential> result = query.list();
             if (result.size() == 0) {
                 throw new EntityNotFoundException("User", "name", username);
             }
@@ -57,34 +57,34 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User create(User user) {
+    public Credential create(Credential credential) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(user);
+            session.save(credential);
         }
 
-        return user;
+        return credential;
     }
 
     @Override
-    public User update(User user) {
+    public Credential update(Credential credential) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            session.update(user);
+            session.update(credential);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
             throw new RuntimeException(e.toString());
         }
 
-        return user;
+        return credential;
     }
 
     @Override
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(User.class, id));
+            session.delete(session.get(Credential.class, id));
             session.getTransaction().commit();
         }
     }

@@ -5,8 +5,8 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.dto.UserDto;
+import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.dto.CredentialDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,12 +34,12 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<Credential> getAllUsers(){
         return service.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable int id) {
+    public Credential getById(@PathVariable int id) {
         try {
             return service.getById(id);
         } catch (EntityNotFoundException e) {
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/username")
-    public User getByUsername(@RequestParam String username) {
+    public Credential getByUsername(@RequestParam String username) {
         try {
             return service.getByUsername(username);
         } catch (EntityNotFoundException e) {
@@ -57,24 +57,24 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
+    public Credential create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CredentialDto credentialDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            User newUser = modelConversionHelper.userFromDto(userDto);
-            service.create(newUser, user);
-            return newUser;
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            Credential newCredential = modelConversionHelper.userFromDto(credentialDto);
+            service.create(newCredential, credential);
+            return newCredential;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
+    public Credential update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CredentialDto credentialDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            User updatedUser = modelConversionHelper.userFromDto(userDto);  //Should be found by id
-            service.update(updatedUser, user);
-            return updatedUser;
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            Credential updatedCredential = modelConversionHelper.userFromDto(credentialDto);  //Should be found by id
+            service.update(updatedCredential, credential);
+            return updatedCredential;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -83,8 +83,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

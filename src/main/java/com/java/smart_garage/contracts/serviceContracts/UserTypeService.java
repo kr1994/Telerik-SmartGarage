@@ -1,6 +1,6 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.UserType;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public interface UserTypeService {
 
     UserType getByName(String name);
 
-    void create(UserType type, User user);
+    void create(UserType type, Credential credential);
 
-    void delete(int id, User user);
+    void delete(int id, Credential credential);
 }

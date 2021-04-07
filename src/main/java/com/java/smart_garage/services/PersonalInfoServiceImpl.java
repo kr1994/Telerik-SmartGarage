@@ -6,7 +6,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.PersonalInfo;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +48,10 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     }
 
     @Override
-    public void create(PersonalInfo personalInfo, User user) {
+    public void create(PersonalInfo personalInfo, Credential credential) {
         boolean duplicateExists = true;
 
-        if (!(user.isEmployee())) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create new personal information.");
         }
 
@@ -68,9 +68,9 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     }
 
     @Override
-    public void update(PersonalInfo personalInfo, User employeeUser) {
+    public void update(PersonalInfo personalInfo, Credential employeeCredential) {
 
-        if (!(employeeUser.isEmployee())) {
+        if (!(employeeCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can modify the personal information!");
         }
         try {
@@ -83,8 +83,8 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     }
 
     @Override
-    public void delete(int id, User user) {
-        if (!(user.isEmployee())) {
+    public void delete(int id, Credential credential) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete personal information.");
         }
         PersonalInfo personalInfo = new PersonalInfo();

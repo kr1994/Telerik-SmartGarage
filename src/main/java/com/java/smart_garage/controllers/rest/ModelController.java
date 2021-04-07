@@ -6,7 +6,7 @@ import com.java.smart_garage.contracts.serviceContracts.ModelService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.ModelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -51,9 +51,9 @@ public class ModelController {
     @PostMapping
     public Model create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ModelDto modelDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             Model model = modelConversionHelper.modelFromDto(modelDto);
-            service.create(model, user);
+            service.create(model, credential);
             return model;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -62,8 +62,8 @@ public class ModelController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

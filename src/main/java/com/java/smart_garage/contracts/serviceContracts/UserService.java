@@ -1,20 +1,20 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    List<Credential> getAllUsers();
 
-    User getById(int id);
+    Credential getById(int id);
 
-    User getByUsername(String username);
+    Credential getByUsername(String username);
 
-    void create(User user, User employeeUser);
+    void create(Credential credential, Credential employeeCredential);
 
-    void update(User user, User employeeUser);
+    void update(Credential credential, Credential employeeCredential);
 
-    void delete(int id, User user);
+    void delete(int id, Credential credential);
 }

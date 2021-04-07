@@ -5,6 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.AuthenticationHelperException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +28,7 @@ public class AuthenticationHelper {
         this.userService = userService;
     }
 
-    public User tryGetUser(HttpHeaders headers) {
+    public Credential tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION_HEADER_NAME)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     "The request resource requires authorization.");
@@ -57,24 +58,24 @@ public class AuthenticationHelper {
     public User verifyAuthorization(HttpSession session, String role) {
         User user = tryGetUser(session);
 
-        String userRoles = user.getUserType().getType();
+        String userRoles = credential.getUserType().getType();
 
         if (!userRoles.equalsIgnoreCase(role)) {
             throw new UnauthorizedOperationException("Users does not have the required authorization.");
         }
 
-        return user;
+        return credential;
     }
 
-    public User verifyAuthentication(String username,String password){
+    public Credential verifyAuthentication(String username, String password){
         try{
-            User user = userService.getByUsername(username);
+            Credential credential = userService.getByUsername(username);
 
-            if(!user.getPassword().equals(password)){
+            if(!credential.getPassword().equals(password)){
                 throw new AuthenticationHelperException("Wrong user/password.");
             }
 
-            return user;
+            return credential;
         }catch (EntityNotFoundException e){
             throw new AuthenticationHelperException("Wrong user/password.");
         }

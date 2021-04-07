@@ -1,6 +1,6 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.PersonalInfo;
 
 import java.util.List;
@@ -17,9 +17,9 @@ public interface PersonalInfoService {
 
     PersonalInfo getByEmail(String email);
 
-    void create(PersonalInfo service, User user);
+    void create(PersonalInfo service, Credential credential);
 
-    void update(PersonalInfo service, User user);
+    void update(PersonalInfo service, Credential credential);
 
-    void delete(int id, User user);
+    void delete(int id, Credential credential);
 }

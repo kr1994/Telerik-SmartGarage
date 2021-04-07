@@ -1,11 +1,6 @@
 package com.java.smart_garage.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.Objects;
-
-import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.EMPLOYEE;
 
 @Entity
 @Table(name = "cars")
@@ -41,8 +36,8 @@ public class Car {
     private Engine engine;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "owner_id")
+    private User user;
 
     public Car() {
     }
@@ -53,7 +48,7 @@ public class Car {
                String identifications,
                int year, Colour colour,
                Engine engine,
-               Customer customer) {
+               User user) {
         this.id = id;
         this.model = model;
         this.registrationPlate = registrationPlate;
@@ -61,7 +56,7 @@ public class Car {
         this.year = year;
         this.colour = colour;
         this.engine = engine;
-        this.customer = customer;
+        this.user = user;
     }
 
     public void setId(int id) {
@@ -93,8 +88,8 @@ public class Car {
         this.engine = engine;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomer(User user) {
+        this.user = user;
     }
 
     public int getId() {
@@ -125,8 +120,8 @@ public class Car {
         return engine;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getCustomer() {
+        return user;
     }
 
 

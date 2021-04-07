@@ -24,70 +24,70 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<User> getAllUsers() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Customer> query = session.createQuery("from Customer order by customerId",
-                    Customer.class);
+            Query<User> query = session.createQuery("from User order by userId",
+                    User.class);
             return query.list();
         }
     }
 
     @Override
-    public Customer getById(int id) {
+    public User getById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Customer customer = session.get(Customer.class, id);
-            if (customer == null) {
-                throw new EntityNotFoundException("Customer", "id", id);
+            User user = session.get(User.class, id);
+            if (user == null) {
+                throw new EntityNotFoundException("User", "id", id);
             }
-            return customer;
+            return user;
         }
     }
 
     @Override
-    public Customer create(Customer customer) {
+    public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(customer);
+            session.save(user);
         }
 
-        return customer;
+        return user;
     }
 
     @Override
-    public Customer update(Customer customer,
-                           User user,
-                           PersonalInfo personalInfo) {
+    public User update(User user,
+                       Credential credential,
+                       PersonalInfo personalInfo) {
 
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            customerUpdate(customer, session, user, personalInfo);
+            customerUpdate(user, session, credential, personalInfo);
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             tx.rollback();
             throw new RuntimeException(e.toString());
         }
 
-        return customer;
+        return user;
     }
 
     @Override
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Customer.class, id));
+            session.delete(session.get(User.class, id));
             session.getTransaction().commit();
         }
     }
 
-    private void customerUpdate(Customer customer,
+    private void customerUpdate(User user,
                                 Session session,
-                                User user,
+                                Credential credential,
                                 PersonalInfo personalInfo) {
 
-        customer.setUser(user);
-        customer.setPersonalInfo(personalInfo);
-        session.update(user);
+        user.setCredential(credential);
+        user.setPersonalInfo(personalInfo);
+        session.update(credential);
         session.update(personalInfo);
-        session.update(customer);
+        session.update(user);
     }
 }

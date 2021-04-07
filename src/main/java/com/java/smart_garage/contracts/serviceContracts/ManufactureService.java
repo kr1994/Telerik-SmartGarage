@@ -1,7 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.Manufacturer;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface ManufactureService {
 
     Manufacturer getByName(String name);
 
-    void create(Manufacturer manufacturer, User employeeUser);
+    void create(Manufacturer manufacturer, Credential employeeCredential);
 
-    void delete(int id, User employeeUser);
+    void delete(int id, Credential employeeCredential);
 }

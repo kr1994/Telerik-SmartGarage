@@ -5,9 +5,8 @@ import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Car;
 import com.java.smart_garage.models.CarService;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +42,10 @@ public class CarServiceServiceImpl implements CarServiceService {
     public double getCarServicesPrice(int id) {return repository.getCarServicesPrice(id);}
 
     @Override
-    public void create(CarService carService, User user) {
+    public void create(CarService carService, Credential credential) {
         boolean duplicateExists = true;
 
-        if (!(user.isEmployee())) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new car service.");
         }
 
@@ -63,8 +62,8 @@ public class CarServiceServiceImpl implements CarServiceService {
     }
 
     @Override
-    public void delete(int id, User user) {
-        if (!(user.isEmployee())) {
+    public void delete(int id, Credential credential) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a car.");
         }
         CarService carService = new CarService();

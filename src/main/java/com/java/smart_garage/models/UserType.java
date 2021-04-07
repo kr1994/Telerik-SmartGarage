@@ -3,7 +3,7 @@ package com.java.smart_garage.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_types")
+@Table(name = "types")
 public class UserType {
 
     @Id

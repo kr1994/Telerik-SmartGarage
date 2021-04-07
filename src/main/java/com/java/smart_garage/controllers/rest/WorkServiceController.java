@@ -5,7 +5,7 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.WorkServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.WorkService;
 import com.java.smart_garage.models.dto.WorkServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +60,9 @@ public class WorkServiceController {
     @PostMapping
     public WorkService create(@RequestHeader HttpHeaders headers, @Valid @RequestBody WorkServiceDto workServiceDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             WorkService workService = modelConversionHelper.workServiceFromDto(workServiceDto);
-            service.create(workService, user);
+            service.create(workService, credential);
             return workService;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -72,9 +72,9 @@ public class WorkServiceController {
     @PutMapping("/{id}")
     public WorkService update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody WorkServiceDto workServiceDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             WorkService workService = modelConversionHelper.workServiceFromDto(workServiceDto);  //Should be found by id
-            service.update(workService, user);
+            service.update(workService, credential);
             return workService;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -84,8 +84,8 @@ public class WorkServiceController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

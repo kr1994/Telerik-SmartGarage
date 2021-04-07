@@ -6,7 +6,7 @@ import com.java.smart_garage.contracts.serviceContracts.ManufactureService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Manufacturer;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.ManufacturerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -51,9 +51,9 @@ public class ManufacturerController {
     @PostMapping
     public Manufacturer create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ManufacturerDto manufacturerDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             Manufacturer manufacturer = modelConversionHelper.manufacturerFromDto(manufacturerDto);
-            service.create(manufacturer, user);
+            service.create(manufacturer, credential);
             return manufacturer;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -62,8 +62,8 @@ public class ManufacturerController {
 
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

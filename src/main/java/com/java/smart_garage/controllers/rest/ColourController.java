@@ -7,7 +7,7 @@ import com.java.smart_garage.contracts.serviceContracts.ColourService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Colour;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.ColourDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -60,9 +60,9 @@ public class ColourController {
     @PostMapping
     public Colour create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ColourDto colourDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             Colour colour = modelConversionHelper.colourFromDto(colourDto);
-            service.create(colour, user);
+            service.create(colour, credential);
             return colour;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -71,8 +71,8 @@ public class ColourController {
     @DeleteMapping("/{id}")
     public void deleteColour(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

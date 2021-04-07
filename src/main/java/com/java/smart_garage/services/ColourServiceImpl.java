@@ -6,7 +6,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Colour;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +37,10 @@ public class ColourServiceImpl implements ColourService {
     }
 
     @Override
-    public void create(Colour colour, User user) {
+    public void create(Colour colour, Credential credential) {
         boolean duplicateExists = true;
 
-        if (!(user.isEmployee())) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create a new colour.");
         }
 
@@ -57,8 +57,8 @@ public class ColourServiceImpl implements ColourService {
     }
 
     @Override
-    public void delete(int id, User user) {
-        if (!(user.isEmployee())) {
+    public void delete(int id, Credential credential) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a colour.");
         }
         Colour colour = new Colour();

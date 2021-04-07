@@ -5,9 +5,9 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.CustomerService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Customer;
 import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.dto.CustomerDto;
+import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,12 +35,12 @@ public class CustomerController {
     }
 
     @GetMapping("/")
-    public List<Customer> getAllCustomers(){
+    public List<User> getAllCustomers(){
         return service.getAllCustomers();
     }
 
     @GetMapping("/{id}")
-    public Customer getById(@PathVariable int id) {
+    public User getById(@PathVariable int id) {
         try {
             return service.getById(id);
         } catch (EntityNotFoundException e) {
@@ -49,24 +49,24 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CustomerDto customerDto) {
+    public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            Customer customer = modelConversionHelper.customerFromDto(customerDto);
-            service.create(customer, user);
-            return customer;
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = modelConversionHelper.customerFromDto(userDto);
+            service.create(user, credential);
+            return user;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public Customer update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CustomerDto customerDto) {
+    public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            Customer customer = modelConversionHelper.customerFromDto(customerDto);
-            service.update(customer, user);
-            return customer;
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = modelConversionHelper.customerFromDto(userDto);
+            service.update(user, credential);
+            return user;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -75,8 +75,8 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

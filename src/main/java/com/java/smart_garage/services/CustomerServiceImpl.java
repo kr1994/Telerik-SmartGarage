@@ -5,8 +5,8 @@ import com.java.smart_garage.contracts.serviceContracts.CustomerService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Customer;
 import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,61 +23,61 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> getAllCustomers(){
-        return repository.getAllCustomers();
+    public List<User> getAllCustomers(){
+        return repository.getAllUsers();
     }
 
     @Override
-    public Customer getById(int id){
+    public User getById(int id){
         return repository.getById(id);
     }
 
     @Override
-    public void create(Customer customer, User user) {
+    public void create(User user, Credential credential) {
         boolean duplicateExists = true;
 
-        if (!(user.isEmployee())) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can create new customer.");
         }
 
         try {
-            repository.getById(customer.getCustomerId());
+            repository.getById(user.getUserId());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Customer", "id", customer.getCustomerId());
+            throw new DuplicateEntityException("Customer", "id", user.getUserId());
         }
 
-        repository.create(customer);
+        repository.create(user);
     }
 
     //In progress
     @Override
-    public void update(Customer customer, User user) {
+    public void update(User user, Credential credential) {
         boolean duplicateExists = true;
 
-        if (!(user.isEmployee())) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can update new customer.");
         }
 
         try {
-            repository.getById(customer.getCustomerId());
+            repository.getById(user.getUserId());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
 
-        repository.update(customer, user, customer.getPersonalInfo());
+        repository.update(user, credential, user.getPersonalInfo());
     }
 
     @Override
-    public void delete(int id, User user) {
-        if (!(user.isEmployee())) {
+    public void delete(int id, Credential credential) {
+        if (!(credential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete customer.");
         }
-        Customer customer = new Customer();
+        User user = new User();
         try {
-            customer = repository.getById(id);
+            user = repository.getById(id);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Customer", "id", id);
         }

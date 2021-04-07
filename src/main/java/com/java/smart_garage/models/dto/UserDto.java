@@ -1,48 +1,41 @@
 package com.java.smart_garage.models.dto;
 
-import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.java.smart_garage.models.UserType;
 
-import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-
 
 public class UserDto {
 
-    @NotBlank
-    private String username;
+    @NotNull
+    @Positive(message = "User Id must be positive.")
+    private int userId;
 
-    @NotBlank
-    @Length(min = 8, max = 30)
-    private String password;
+    @NotNull
+    @Positive(message = "Personal Info Id must be positive.")
+    private int personalInfoId;
 
 
-    @Positive(message = "User type Id must be positive.")
-    private int userType;
 
     public UserDto() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPersonalInfoId(int personalInfoId) {
+        this.personalInfoId = personalInfoId;
     }
 
-    public void setUserType(int userType) {
-        this.userType = userType;
+    public int getUserId() {
+        return userId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public int getUserType() {
-        return userType;
+    public int getPersonalInfoId() {
+        return personalInfoId;
     }
 }

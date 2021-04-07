@@ -6,7 +6,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +38,11 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public void create(Model model, User user) {
+    public void create(Model model, Credential credential) {
 
         boolean duplicateExists = true;
 
-        if (!user.isEmployee()) {
+        if (!credential.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can create models.");
         }
         try {
@@ -60,9 +60,9 @@ public class ModelServiceImpl implements ModelService {
 
 
     @Override
-    public void delete(int id, User user) {
+    public void delete(int id, Credential credential) {
 
-        if (!user.isEmployee()) {
+        if (!credential.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can delete model.");
         }
         Model model = new Model();

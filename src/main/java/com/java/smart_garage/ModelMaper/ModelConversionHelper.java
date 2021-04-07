@@ -165,17 +165,17 @@ public class ModelConversionHelper {
         dtoToCarObject(carDto, car);
         return car;
     }
-    public User userFromDto(UserDto userDto) {
+    public Credential userFromDto(CredentialDto credentialDto) {
 
-        User users = new User();
-        dtoToUserObject(userDto, users);
+        Credential users = new Credential();
+        dtoToUserObject(credentialDto, users);
         return users;
     }
 
-    public User userFromDto(UserDto userDto, int id) {
-        User user = userRepository.getById(id);
-        dtoToUserObject(userDto, user);
-        return user;
+    public Credential userFromDto(CredentialDto credentialDto, int id) {
+        Credential credential = userRepository.getById(id);
+        dtoToUserObject(credentialDto, credential);
+        return credential;
     }
 
     public Invoice invoiceFromDto(InvoiceDto invoiceDto){
@@ -184,16 +184,16 @@ public class ModelConversionHelper {
         return invoice;
     }
 
-    public Customer customerFromDto(CustomerDto customerDto){
-        Customer customer = new Customer();
-        dtoToCustomerObject(customerDto,customer);
-        return customer;
+    public User customerFromDto(UserDto userDto){
+        User user = new User();
+        dtoToUserObject(userDto, user);
+        return user;
     }
 
-    public Customer customerFromDto(CustomerDto customerDto, int id) {
-        Customer customer = new Customer();
-        dtoToCustomerObject(customerDto, customer);
-        return customer;
+    public User customerFromDto(UserDto userDto, int id) {
+        User user = new User();
+        dtoToUserObject(userDto, user);
+        return user;
     }
 
     public PersonalInfo personalInfoFromDto(PersonalInfoDto personalInfoDto) {
@@ -208,25 +208,25 @@ public class ModelConversionHelper {
         return personalInfo;
     }
 
-    private void dtoToCustomerObject(CustomerDto customerDto, Customer customer) {
-        User user = userRepository.getById(customerDto.getUserId());
-        PersonalInfo personalInfo = personalInfoRepository.getById(customerDto.getPersonalInfoId());
-        customer.setUser(user);
-        customer.setPersonalInfo(personalInfo);
+    private void dtoToUserObject(UserDto userDto, User user) {
+        Credential credential = userRepository.getById(userDto.getUserId());
+        PersonalInfo personalInfo = personalInfoRepository.getById(userDto.getPersonalInfoId());
+        UserType userType = personalInfoRepository.getById(userDto.ge)
+        user.setCredential(credential);
+        user.setPersonalInfo(personalInfo);
     }
 
-    private void dtoToUserObject(UserDto userDto, User user) {
-        UserType userType = userTypeRepository.getById(userDto.getUserType());
-        user.setUsername(userDto.getUsername());
-        user.setPassword(Md5Hashing.md5(userDto.getPassword()));
-        user.setUserType(userType);
+    private void dtoToUserObject(CredentialDto credentialDto, Credential credential) {
+        credential.setUsername(credentialDto.getUsername());
+        credential.setPassword(Md5Hashing.md5(credentialDto.getPassword()));
+
     }
 
     private void dtoToCarObject(CarDto carDto, Car car) {
         Model model = modelRepository.getById(carDto.getModelId());
         Colour colour = coloursRepository.getById(carDto.getColourId());
         Engine engine = engineRepository.getById(carDto.getEngineId());
-        Customer customer = customerRepository.getById(carDto.getCustomerId());
+        User user = customerRepository.getById(carDto.getCustomerId());
 
         car.setModel(model);
         car.setRegistrationPlate(carDto.getPlate());
@@ -234,7 +234,7 @@ public class ModelConversionHelper {
         car.setYear(carDto.getYear());
         car.setColour(colour);
         car.setEngine(engine);
-        car.setCustomer(customer);
+        car.setCustomer(user);
     }
 
     private void dtoToModelObject(ModelDto modelDto, Model model) {

@@ -9,7 +9,7 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Car;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.CarDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -55,9 +55,9 @@ public class CarController {
     @PostMapping
     public Car create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CarDto carDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             Car car = modelConversionHelper.carFromDto(carDto);
-            service.create(car, user);
+            service.create(car, credential);
             return car;
         } catch (DuplicateEntityException | IncorrectPlateRegistrationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -68,9 +68,9 @@ public class CarController {
     @PutMapping("/{id}")
     public Car update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CarDto carDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             Car car = modelConversionHelper.carFromDto(carDto, id);
-            service.update(car, user);
+            service.update(car, credential);
             return car;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -83,8 +83,8 @@ public class CarController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

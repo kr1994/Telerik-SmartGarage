@@ -1,7 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.CarService;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ public interface CarServiceService  {  // Too complex name
 
     CarService getById(int id);
 
-    void create(CarService carService, User user);
+    void create(CarService carService, Credential credential);
 
-    public void delete(int id, User user);
+    public void delete(int id, Credential credential);
 
 }

@@ -1,7 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.Colour;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface ColourService {
 
     Colour getByName(String name);
 
-    void create(Colour colour, User user);
+    void create(Colour colour, Credential credential);
 
-    void delete(int id, User user);
+    void delete(int id, Credential credential);
 }

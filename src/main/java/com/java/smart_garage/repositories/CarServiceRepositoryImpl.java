@@ -10,7 +10,9 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CarServiceRepositoryImpl implements CarServiceRepository {
@@ -33,6 +35,7 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
     public List<CarService> getAllCarServicesByCustomer(int id) {
         try (Session session = sessionFactory.openSession()) {
             Query<CarService> query = session.createQuery("from CarService cs where cs.car.customer.id = :id order by carServicesId", CarService.class);
+            query.setParameter("id", id);
             return query.list();
         }
     }
@@ -56,6 +59,29 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
                 price = price + carService.getService().getWorkServicePrice();
             }
             return price;
+        }
+    }
+
+    public List<CarService> filterByDateAndCarId(Optional<Date> startingDate, Optional<Date> endingDate,int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<CarService> query = null;
+
+            if ((startingDate.isPresent()) && (endingDate.isPresent())) {
+                query = session.createQuery("from CarService cs where invoice.date>= :startingDate and invoice.date<=:endingDate and  cs.car.id = :id ",CarService.class);
+                query.setParameter("startingDate", startingDate);
+                query.setParameter("endingDate", endingDate);
+                query.setParameter("id", id);
+            } else if ((startingDate.isPresent())) {
+                query = session.createQuery("from CarService cs where invoice.date>= :startingDate and cs.car.id = :id", CarService.class);
+                query.setParameter("startingDate", startingDate);
+                query.setParameter("id", id);
+            } else if ((endingDate.isPresent())) {
+                query = session.createQuery("from CarService cs where invoice.date<= :endingDate and cs.car.id = :id", CarService.class);
+                query.setParameter("endingDate", endingDate);
+                query.setParameter("id", id);
+            }
+
+            return query.list();
         }
     }
 

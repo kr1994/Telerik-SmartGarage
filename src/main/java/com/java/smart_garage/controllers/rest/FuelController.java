@@ -7,10 +7,8 @@ import com.java.smart_garage.contracts.serviceContracts.FuelService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Fuel;
-import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.FuelDto;
-import com.java.smart_garage.models.dto.ModelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -55,9 +53,9 @@ public class FuelController {
     @PostMapping
     public Fuel create(@RequestHeader HttpHeaders headers, @Valid @RequestBody FuelDto fuelDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             Fuel fuel = modelConversionHelper.fuelFromDto(fuelDto);
-            service.create(fuel, user);
+            service.create(fuel, credential);
             return fuel;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -67,8 +65,8 @@ public class FuelController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

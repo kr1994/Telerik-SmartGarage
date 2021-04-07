@@ -6,7 +6,7 @@ import com.java.smart_garage.contracts.serviceContracts.PersonalInfoService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.PersonalInfo;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.PersonalInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -78,9 +78,9 @@ public class PersonalInfoController {
     @PostMapping
     public PersonalInfo create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PersonalInfoDto personalInfoDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             PersonalInfo personalInfo = modelConversionHelper.personalInfoFromDto(personalInfoDto);
-            service.create(personalInfo, user);
+            service.create(personalInfo, credential);
             return personalInfo;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -90,9 +90,9 @@ public class PersonalInfoController {
     @PutMapping("/{id}")
     public PersonalInfo update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PersonalInfoDto personalInfoDto) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
+            Credential credential = authenticationHelper.tryGetUser(headers);
             PersonalInfo personalInfo = modelConversionHelper.personalInfoFromDto(personalInfoDto);  //Should be found by id
-            service.update(personalInfo, user);
+            service.update(personalInfo, credential);
             return personalInfo;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -101,8 +101,8 @@ public class PersonalInfoController {
 
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authenticationHelper.tryGetUser(headers);
-            service.delete(id, user);
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            service.delete(id, credential);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
