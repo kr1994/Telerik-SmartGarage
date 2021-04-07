@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PlateValidationServiceImp implements PlateValidationService {
+public class PlateValidationServiceImpl implements PlateValidationService {
 
     private final CityRepository cityRepository;
 
     @Autowired
-    public PlateValidationServiceImp(CityRepository cityRepository) {
+    public PlateValidationServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
 
