@@ -1,11 +1,9 @@
 package com.java.smart_garage.contracts.repoContracts;
 
-import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.PersonalInfo;
-import com.java.smart_garage.models.Credential;
-import com.java.smart_garage.models.UserType;
+import com.java.smart_garage.models.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
 
@@ -22,6 +20,11 @@ public interface UserRepository {
 
     void delete(int id);
 
-    List<User> filterUsersByFirstName(String searchKey);
+    List<User> filterCustomers(Optional<String> firstName,
+                               Optional<String> lastName,
+                               Optional<String> email,
+                               Optional<String> phoneNumber,
+                               Optional<Model> modelCar,
+                               Optional<Integer> visitsInRange);
 
 }

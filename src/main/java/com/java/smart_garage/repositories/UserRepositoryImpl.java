@@ -10,7 +10,9 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -97,11 +99,95 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> filterUsersByFirstName(String searchKey) {
+    public List<User> filterCustomers(Optional<String> firstName,
+                                      Optional<String> lastName,
+                                      Optional<String> email,
+                                      Optional<String> phoneNumber,
+                                      Optional<Model> modelCar,
+                                      Optional<Integer> visitsInRange) {
 
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User u where personalInfo.firstName = :searchKey", User.class);
-            query.setParameter("searchKey", searchKey);
+            Query<User> query = null;
+            if (firstName.isPresent() && lastName.isPresent() && email.isPresent() && phoneNumber.isPresent()
+                    && modelCar.isPresent() && visitsInRange.isPresent()) {
+                query = session.createQuery("from User u join Car c where u.personalInfo.firstName = :firstName" +
+                        " and u.personalInfo.lastName = :lastName and u.personalInfo.email = :email " +
+                        " and u.personalInfo.phoneNumber = :phoneNumber and c.model = :modelCar", User.class);
+                query.setParameter("firstName", firstName);
+                query.setParameter("lastName", lastName);
+                query.setParameter("email", email);
+                query.setParameter("phoneNumber", phoneNumber);
+                query.setParameter("modelCar", modelCar);
+            } else {
+                int countParameters = 0;
+                String queryStr = "from User u ";
+
+                if (modelCar.isPresent()) {
+                    queryStr += "join Car c where c.model = :modelCar";
+                    countParameters++;
+                }
+
+                if (firstName.isPresent()) {
+                    if (countParameters > 0) {
+                        queryStr += " and u.personalInfo.firstName = :firstName";
+                    } else {
+                        queryStr += "where u.personalInfo.firstName = :firstName";
+                    }
+                    countParameters++;
+                }
+
+                if (lastName.isPresent()) {
+                    if (countParameters > 0) {
+                        queryStr += " and u.personalInfo.lastName = :lastName";
+                    } else {
+                        queryStr += "where u.personalInfo.lastName = :lastName";
+                    }
+                    countParameters++;
+                }
+
+                if (email.isPresent()) {
+                    if (countParameters > 0) {
+                        queryStr += " and u.personalInfo.email = :email";
+                    } else {
+                        queryStr += "where u.personalInfo.email = :email";
+                    }
+                    countParameters++;
+                }
+
+                if (phoneNumber.isPresent()) {
+                    if (countParameters > 0) {
+                        queryStr += " and u.personalInfo.phoneNumber = :phoneNumber";
+                    } else {
+                        queryStr += "where u.personalInfo.phoneNumber = :phoneNumber";
+                    }
+                    countParameters++;
+                }
+
+                query = session.createQuery(queryStr);
+
+                if (firstName.isPresent()) {
+                    query.setParameter("firstName", firstName);
+                }
+
+                if (lastName.isPresent()) {
+                    query.setParameter("lastName", lastName);
+                }
+
+                if (email.isPresent()) {
+                    query.setParameter("email", email);
+                }
+
+                if (phoneNumber.isPresent()) {
+                    query.setParameter("phoneNumber", phoneNumber);
+                }
+
+                if (modelCar.isPresent()) {
+                    query.setParameter("modelCar", modelCar);
+                }
+
+            }
+
+
             return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
         }
     }

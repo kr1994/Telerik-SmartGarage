@@ -1,8 +1,10 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
+import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -16,6 +18,11 @@ public interface UserService {
 
     void delete(int id, User user);
 
-    void filterUsersByFirstName(String searchKey);
+    void filterCustomers(Optional<String> firstName,
+                         Optional<String> lastName,
+                         Optional<String> email,
+                         Optional<String> phoneNumber,
+                         Optional<Model> modelCar,
+                         Optional<Integer> visitsInRange);
 
 }
