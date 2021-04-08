@@ -84,13 +84,13 @@ public class UserController {
         }
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/filter/customers")
     public List<User> filterCustomers(@RequestHeader HttpHeaders headers,
                                       @RequestParam(required = false) Optional<String> firstName,
                                       @RequestParam(required = false) Optional<String> lastName,
                                       @RequestParam(required = false) Optional<String> email,
                                       @RequestParam(required = false) Optional<String> phoneNumber,
-                                      @RequestParam(required = false) Optional<Model>  carModel,
+                                      @RequestParam(required = false) Optional<Model> carModel,
                                       @RequestParam(required = false) Optional<Integer> visitsInRange) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
