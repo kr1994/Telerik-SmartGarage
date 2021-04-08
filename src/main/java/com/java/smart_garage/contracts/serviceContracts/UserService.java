@@ -18,11 +18,12 @@ public interface UserService {
 
     void delete(int id, User user);
 
-    void filterCustomers(Optional<String> firstName,
-                         Optional<String> lastName,
-                         Optional<String> email,
-                         Optional<String> phoneNumber,
-                         Optional<Model> modelCar,
-                         Optional<Integer> visitsInRange);
+    List<User> filterCustomers(Optional<String> firstName,
+                               Optional<String> lastName,
+                               Optional<String> email,
+                               Optional<String> phoneNumber,
+                               Optional<Model> modelCar,
+                               Optional<Integer> visitsInRange,
+                               User userCredential);
 
 }

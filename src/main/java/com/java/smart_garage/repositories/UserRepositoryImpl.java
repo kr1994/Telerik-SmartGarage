@@ -187,7 +187,6 @@ public class UserRepositoryImpl implements UserRepository {
 
             }
 
-
             return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
         }
     }

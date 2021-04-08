@@ -85,14 +85,19 @@ public class UserServiceImpl implements UserService {
         repository.delete(id);
     }
 
-    public void filterCustomers(Optional<String> firstName,
-                                Optional<String> lastName,
-                                Optional<String> email,
-                                Optional<String> phoneNumber,
-                                Optional<Model> modelCar,
-                                Optional<Integer> visitsInRange) {
+    public List<User> filterCustomers(Optional<String> firstName,
+                                      Optional<String> lastName,
+                                      Optional<String> email,
+                                      Optional<String> phoneNumber,
+                                      Optional<Model> modelCar,
+                                      Optional<Integer> visitsInRange,
+                                      User userCredential) {
 
-        repository.filterCustomers(firstName, lastName, email, phoneNumber, modelCar, visitsInRange);
+        if (!(userCredential.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can filter customers.");
+        }
+        return repository.filterCustomers(firstName, lastName, email,
+                phoneNumber, modelCar, visitsInRange);
     }
 
 }

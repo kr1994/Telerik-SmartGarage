@@ -5,6 +5,8 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.CarService;
+import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.dto.UserDto;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("smartgarage/users")
@@ -77,6 +80,24 @@ public class UserController {
             User credentialUser = authenticationHelper.convertCredentialToUser(credential);
             service.delete(id, credentialUser);
         } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/filter")
+    public List<User> filterCustomers(@RequestHeader HttpHeaders headers,
+                                      @RequestParam(required = false) Optional<String> firstName,
+                                      @RequestParam(required = false) Optional<String> lastName,
+                                      @RequestParam(required = false) Optional<String> email,
+                                      @RequestParam(required = false) Optional<String> phoneNumber,
+                                      @RequestParam(required = false) Optional<Model>  carModel,
+                                      @RequestParam(required = false) Optional<Integer> visitsInRange) {
+        try {
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            return service.filterCustomers(firstName, lastName, email, phoneNumber, carModel, visitsInRange, credentialUser);
+        }
+        catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
