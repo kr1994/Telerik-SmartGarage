@@ -4,6 +4,7 @@ import com.java.smart_garage.configuration.Md5Hashing;
 import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.*;
+import com.java.smart_garage.models.viewDto.CarServiceViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -165,16 +166,30 @@ public class ModelConversionHelper {
         dtoToCarObject(carDto, car);
         return car;
     }
-    public Credential userFromDto(CredentialDto credentialDto) {
+
+    public CarServiceViewDto objectToView(CarService carService){
+        CarServiceViewDto carServiceViewDto = new CarServiceViewDto();
+        carServiceViewDto.setCarModel(carService.getCar().getModel().getModelName());
+        carServiceViewDto.setCarManufacturer(carService.getCar().getModel().getManufacturer().getManufacturerName());
+        carServiceViewDto.setCarRegPlate(carService.getCar().getRegistrationPlate());
+        carServiceViewDto.setCarIdNumber(carService.getCar().getIdentifications());
+        carServiceViewDto.setCarOwner(carService.getCar().getOwner().getPersonalInfo().getLastName());
+        carServiceViewDto.setCarOwnerEmail(carService.getCar().getOwner().getPersonalInfo().getEmail());
+        carServiceViewDto.setServiceName(carService.getService().getWorkServiceName());
+        carServiceViewDto.setServicePrice(carService.getService().getWorkServicePrice());
+        carServiceViewDto.setServiceDate(carService.getInvoice().getDate());
+        return carServiceViewDto;
+    }
+    public Credential credentialFromDto(CredentialDto credentialDto) {
 
         Credential users = new Credential();
-        dtoToUserObject(credentialDto, users);
+        dtoToCredentialObject(credentialDto, users);
         return users;
     }
 
-    public Credential userFromDto(CredentialDto credentialDto, int id) {
+    public Credential credentialFromDto(CredentialDto credentialDto, int id) {
         Credential credential = credentialRepository.getById(id);
-        dtoToUserObject(credentialDto, credential);
+        dtoToCredentialObject(credentialDto, credential);
         return credential;
     }
 
@@ -184,15 +199,15 @@ public class ModelConversionHelper {
         return invoice;
     }
 
-    public User customerFromDto(UserDto userDto){
+    public User userFromDto(UserDto userDto){
         User user = new User();
-        dtoToUserObject(userDto, user);
+        dtoToCredentialObject(userDto, user);
         return user;
     }
 
-    public User customerFromDto(UserDto userDto, int id) {
+    public User userFromDto(UserDto userDto, int id) {
         User user = new User();
-        dtoToUserObject(userDto, user);
+        dtoToCredentialObject(userDto, user);
         return user;
     }
 
@@ -208,15 +223,16 @@ public class ModelConversionHelper {
         return personalInfo;
     }
 
-    private void dtoToUserObject(UserDto userDto, User user) {
+    private void dtoToCredentialObject(UserDto userDto, User user) {
         Credential credential = credentialRepository.getById(userDto.getUserId());
         PersonalInfo personalInfo = personalInfoRepository.getById(userDto.getPersonalInfoId());
         UserType userType = userTypeRepository.getById(userDto.getUserType());
         user.setCredential(credential);
         user.setPersonalInfo(personalInfo);
+        user.setUserType(userType);
     }
 
-    private void dtoToUserObject(CredentialDto credentialDto, Credential credential) {
+    private void dtoToCredentialObject(CredentialDto credentialDto, Credential credential) {
         credential.setUsername(credentialDto.getUsername());
         credential.setPassword(Md5Hashing.md5(credentialDto.getPassword()));
 
@@ -236,6 +252,7 @@ public class ModelConversionHelper {
         car.setEngine(engine);
         car.setOwner(user);
     }
+
 
     private void dtoToModelObject(ModelDto modelDto, Model model) {
         Manufacturer manufacturer = manufacturerRepository.getById(modelDto.getManufacturer());
@@ -259,6 +276,8 @@ public class ModelConversionHelper {
         engine.setFuel(fuel);
         engine.setCubicCapacity(engineDto.getCc());
     }
+
+
 
     private void dtoToPersonalInfoObject(PersonalInfoDto personalInfoDto, PersonalInfo personalInfo) {
         personalInfo.setFirstName(personalInfoDto.getFirstName());

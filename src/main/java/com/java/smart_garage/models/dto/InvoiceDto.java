@@ -1,17 +1,18 @@
 package com.java.smart_garage.models.dto;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 
 public class InvoiceDto {
 
-    private LocalDate date;
+    private Date date;
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

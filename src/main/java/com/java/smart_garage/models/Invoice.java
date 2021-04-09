@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -17,12 +18,12 @@ public class Invoice {
 
     @DateTimeFormat
     @Column(name = "date")
-    private LocalDate date;
+    private Date date;
 
     public Invoice() {
     }
 
-    public Invoice(int invoiceId, LocalDate date) {
+    public Invoice(int invoiceId, Date date) {
         this.invoiceId = invoiceId;
         this.date = date;
     }
@@ -31,7 +32,7 @@ public class Invoice {
         this.invoiceId = invoiceId;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -39,7 +40,7 @@ public class Invoice {
         return invoiceId;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 }

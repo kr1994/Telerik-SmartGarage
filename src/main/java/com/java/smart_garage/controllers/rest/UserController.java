@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping
     public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
         try {
-            User user = modelConversionHelper.customerFromDto(userDto);
+            User user = modelConversionHelper.userFromDto(userDto);
             service.create(user);
             return user;
         } catch (DuplicateEntityException e) {
@@ -62,7 +62,7 @@ public class UserController {
     @PutMapping("/{id}")
     public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
         try {
-            User user = modelConversionHelper.customerFromDto(userDto);
+            User user = modelConversionHelper.userFromDto(userDto);
             service.update(user);
             return user;
         } catch (DuplicateEntityException e) {

@@ -1,5 +1,7 @@
 package com.java.smart_garage.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -31,9 +33,11 @@ public class Car {
     @JoinColumn(name = "colour_id")
     private Colour colour;
 
+
     @ManyToOne
     @JoinColumn(name = "engine_id")
     private Engine engine;
+
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

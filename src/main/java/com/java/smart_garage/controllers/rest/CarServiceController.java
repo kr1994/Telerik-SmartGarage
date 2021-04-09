@@ -9,6 +9,7 @@ import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.CarServiceDto;
+import com.java.smart_garage.models.viewDto.CarServiceViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("smartgarage/service")
@@ -36,8 +40,15 @@ public class CarServiceController {
     }
 
     @GetMapping
-    public List<CarService> getAllServices(){
-        return service.getAllCarServices();
+    public List<CarServiceViewDto> getAllServices(){
+
+        List<CarService> carServices = service.getAllCarServices();
+
+        List<CarServiceViewDto> views = new ArrayList<>();
+        for (CarService carService : carServices) {
+            views.add(modelConversionHelper.objectToView(carService));
+        }
+        return views;
     }
 
     @GetMapping("/{id}")
@@ -74,6 +85,18 @@ public class CarServiceController {
     public double getCarServicesPrice(@PathVariable int id) {
         try {
             return service.getCarServicesPrice(id);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/car/filter/{id}")
+    public List<CarService> filterBy(@RequestParam Optional<Date> startingDate,
+                                     @RequestParam Optional<Date> endingDate,
+                                     @PathVariable int id){
+        try{
+            return service.filterByDateAndCarId(startingDate,endingDate,id);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

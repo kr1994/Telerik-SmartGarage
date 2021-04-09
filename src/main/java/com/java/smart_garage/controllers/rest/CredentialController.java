@@ -61,7 +61,7 @@ public class CredentialController {
     public Credential create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CredentialDto credentialDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            Credential newCredential = modelConversionHelper.userFromDto(credentialDto);
+            Credential newCredential = modelConversionHelper.credentialFromDto(credentialDto);
             User user = authenticationHelper.convertCredentialToUser(credential);
             service.create(newCredential, user);
             return newCredential;
@@ -74,7 +74,7 @@ public class CredentialController {
     public Credential update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CredentialDto credentialDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
-            Credential updatedCredential = modelConversionHelper.userFromDto(credentialDto);
+            Credential updatedCredential = modelConversionHelper.credentialFromDto(credentialDto);
             User user = authenticationHelper.convertCredentialToUser(credential);
             service.update(updatedCredential, user);
             return updatedCredential;
