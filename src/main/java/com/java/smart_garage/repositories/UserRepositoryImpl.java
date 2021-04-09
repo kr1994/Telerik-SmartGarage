@@ -99,15 +99,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> filterCustomers(Optional<String> firstName,
+    public List<PersonalInfo> filterCustomers(Optional<String> firstName,
                                       Optional<String> lastName,
                                       Optional<String> email,
-                                      Optional<String> phoneNumber,
-                                      Optional<Model> modelCar,
-                                      Optional<Integer> visitsInRange) {
+                                      Optional<String> phoneNumber) {
 
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = null;
+
+            /*
             if (firstName.isPresent() && lastName.isPresent() && email.isPresent() && phoneNumber.isPresent()
                     && modelCar.isPresent() && visitsInRange.isPresent()) {
                 query = session.createQuery("from User u join Car c where u.personalInfo.firstName = :firstName" +
@@ -119,75 +118,79 @@ public class UserRepositoryImpl implements UserRepository {
                 query.setParameter("phoneNumber", phoneNumber);
                 query.setParameter("modelCar", modelCar);
             } else {
-                int countParameters = 0;
-                String queryStr = "from User u ";
 
-                if (modelCar.isPresent()) {
-                    queryStr += "join Car c where c.model = :modelCar";
-                    countParameters++;
+             */
+            int countParameters = 0;
+            String queryStr = "from PersonalInfo p ";
+
+            /*
+            if (modelCar.isPresent()) {
+                queryStr += "join Car c where c.model = :modelCar";
+                countParameters++;
+            }
+            */
+            if (firstName.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += " and p.firstName = :firstName";
+                } else {
+                    queryStr += "where p.firstName = :firstName";
                 }
-
-                if (firstName.isPresent()) {
-                    if (countParameters > 0) {
-                        queryStr += " and u.personalInfo.firstName = :firstName";
-                    } else {
-                        queryStr += "where u.personalInfo.firstName = :firstName";
-                    }
-                    countParameters++;
-                }
-
-                if (lastName.isPresent()) {
-                    if (countParameters > 0) {
-                        queryStr += " and u.personalInfo.lastName = :lastName";
-                    } else {
-                        queryStr += "where u.personalInfo.lastName = :lastName";
-                    }
-                    countParameters++;
-                }
-
-                if (email.isPresent()) {
-                    if (countParameters > 0) {
-                        queryStr += " and u.personalInfo.email = :email";
-                    } else {
-                        queryStr += "where u.personalInfo.email = :email";
-                    }
-                    countParameters++;
-                }
-
-                if (phoneNumber.isPresent()) {
-                    if (countParameters > 0) {
-                        queryStr += " and u.personalInfo.phoneNumber = :phoneNumber";
-                    } else {
-                        queryStr += "where u.personalInfo.phoneNumber = :phoneNumber";
-                    }
-                    countParameters++;
-                }
-
-                query = session.createQuery(queryStr);
-
-                if (firstName.isPresent()) {
-                    query.setParameter("firstName", firstName);
-                }
-
-                if (lastName.isPresent()) {
-                    query.setParameter("lastName", lastName);
-                }
-
-                if (email.isPresent()) {
-                    query.setParameter("email", email);
-                }
-
-                if (phoneNumber.isPresent()) {
-                    query.setParameter("phoneNumber", phoneNumber);
-                }
-
-                if (modelCar.isPresent()) {
-                    query.setParameter("modelCar", modelCar);
-                }
-
+                countParameters++;
             }
 
-            return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
+            if (lastName.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += " and p.lastName = :lastName";
+                } else {
+                    queryStr += "where p.lastName = :lastName";
+                }
+                countParameters++;
+            }
+
+            if (email.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += " and p.email = :email";
+                } else {
+                    queryStr += "where p.email = :email";
+                }
+                countParameters++;
+            }
+
+            if (phoneNumber.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += " and p.phoneNumber = :phoneNumber";
+                } else {
+                    queryStr += "where p.phoneNumber = :phoneNumber";
+                }
+                countParameters++;
+            }
+
+            Query<PersonalInfo> query = session.createQuery(queryStr, PersonalInfo.class);
+
+            if (firstName.isPresent()) {
+                query.setParameter("firstName", firstName.get());
+            }
+
+            if (lastName.isPresent()) {
+                query.setParameter("lastName", lastName.get());
+            }
+
+            if (email.isPresent()) {
+                query.setParameter("email", email.get());
+            }
+
+            if (phoneNumber.isPresent()) {
+                query.setParameter("phoneNumber", phoneNumber.get());
+            }
+
+
+            //query.setParameter("modelCar", modelCar.orElse(""));
+
+
+            /*  } */
+
+            //return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
+            return query.list();
         }
     }
 }

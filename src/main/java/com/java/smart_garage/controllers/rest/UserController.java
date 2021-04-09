@@ -5,10 +5,7 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.CarService;
-import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -85,17 +82,15 @@ public class UserController {
     }
 
     @GetMapping("/filter/customers")
-    public List<User> filterCustomers(@RequestHeader HttpHeaders headers,
-                                      @RequestParam(required = false) Optional<String> firstName,
-                                      @RequestParam(required = false) Optional<String> lastName,
-                                      @RequestParam(required = false) Optional<String> email,
-                                      @RequestParam(required = false) Optional<String> phoneNumber,
-                                      @RequestParam(required = false) Optional<Model> carModel,
-                                      @RequestParam(required = false) Optional<Integer> visitsInRange) {
+    public List<PersonalInfo> filterCustomers(@RequestHeader HttpHeaders headers,
+                                              @RequestParam(required = false) Optional<String> firstName,
+                                              @RequestParam(required = false) Optional<String> lastName,
+                                              @RequestParam(required = false) Optional<String> email,
+                                              @RequestParam(required = false) Optional<String> phoneNumber) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
             User credentialUser = authenticationHelper.convertCredentialToUser(credential);
-            return service.filterCustomers(firstName, lastName, email, phoneNumber, carModel, visitsInRange, credentialUser);
+            return service.filterCustomers(firstName, lastName, email, phoneNumber, credentialUser);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
