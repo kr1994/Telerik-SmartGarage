@@ -13,7 +13,7 @@ public class CarService {
 
     @OneToOne
     @JoinColumn(name = "car_id")
-    private Car car;
+    private Automobile automobile;
 
     @ManyToOne
     @JoinColumn(name = "service_id")
@@ -27,9 +27,9 @@ public class CarService {
     private Invoice invoice;
 
 
-    public CarService(int carServicesId, Car car, WorkService service, Invoice invoice) {
+    public CarService(int carServicesId, Automobile automobile, WorkService service, Invoice invoice) {
         this.carServicesId = carServicesId;
-        this.car = car;
+        this.automobile = automobile;
         this.service = service;
         this.invoice = invoice;
     }
@@ -39,8 +39,8 @@ public class CarService {
         this.carServicesId = carServicesId;
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCar(Automobile automobile) {
+        this.automobile = automobile;
     }
 
     public void setService(WorkService service) {
@@ -55,8 +55,8 @@ public class CarService {
         return carServicesId;
     }
 
-    public Car getCar() {
-        return car;
+    public Automobile getCar() {
+        return automobile;
     }
 
     public WorkService getService() {

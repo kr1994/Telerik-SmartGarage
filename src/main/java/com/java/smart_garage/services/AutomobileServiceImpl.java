@@ -1,13 +1,13 @@
 package com.java.smart_garage.services;
 
-import com.java.smart_garage.contracts.repoContracts.CarRepository;
-import com.java.smart_garage.contracts.serviceContracts.CarService;
+import com.java.smart_garage.contracts.repoContracts.AutomobileRepository;
+import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
 import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Car;
+import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,30 +15,30 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CarServiceImpl implements CarService {
-    private final CarRepository repository;
+public class AutomobileServiceImpl implements AutomobileService {
+    private final AutomobileRepository repository;
     private final PlateValidationService plateValidationService;
 
 
     @Autowired
-    public CarServiceImpl(CarRepository repository, PlateValidationService plateValidationService) {
+    public AutomobileServiceImpl(AutomobileRepository repository, PlateValidationService plateValidationService) {
         this.repository = repository;
 
         this.plateValidationService = plateValidationService;
     }
 
     @Override
-    public List<Car> getAllCars() {
+    public List<Automobile> getAllCars() {
         return repository.getAllCars();
     }
 
     @Override
-    public Car getById(int id) {
+    public Automobile getById(int id) {
         return repository.getById(id);
     }
 
     @Override
-    public void create(Car car, User user) {
+    public void create(Automobile automobile, User user) {
         boolean duplicateExistsIdentification = true;
         boolean duplicateExistsIPlate = true;
 
@@ -47,44 +47,44 @@ public class CarServiceImpl implements CarService {
         }
 
         try {
-            repository.getByIdentifications(car.getIdentifications());
+            repository.getByIdentifications(automobile.getIdentifications());
         } catch (EntityNotFoundException e) {
             duplicateExistsIdentification = false;
         }
         try {
-            repository.getByPlate(car.getRegistrationPlate());
+            repository.getByPlate(automobile.getRegistrationPlate());
         } catch (EntityNotFoundException e) {
             duplicateExistsIPlate = false;
         }
 
 
-        if (!plateValidationService.trueCityIndexPlate(car.getRegistrationPlate())) {
-            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
+        if (!plateValidationService.trueCityIndexPlate(automobile.getRegistrationPlate())) {
+            throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
         }
-        if (!plateValidationService.trueNumberPlate(car.getRegistrationPlate()))
-            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
+        if (!plateValidationService.trueNumberPlate(automobile.getRegistrationPlate()))
+            throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
 
-        if (!plateValidationService.check(car.getRegistrationPlate())) {
-            throw new IncorrectPlateRegistrationException(car.getRegistrationPlate());
+        if (!plateValidationService.check(automobile.getRegistrationPlate())) {
+            throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
         }
 
         if (duplicateExistsIdentification) {
-            throw new DuplicateEntityException("Car", "identification number", car.getIdentifications());
+            throw new DuplicateEntityException("Car", "identification number", automobile.getIdentifications());
         }
         if (duplicateExistsIPlate) {
-            throw new DuplicateEntityException("Car", "plate", car.getRegistrationPlate());
+            throw new DuplicateEntityException("Car", "plate", automobile.getRegistrationPlate());
         }
 
 
-        repository.create(car);
+        repository.create(automobile);
     }
 
-    public void update(Car car, User user) {
+    public void update(Automobile automobile, User user) {
         if (!user.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can update shipment.");
         }
 
-        repository.update(car);
+        repository.update(automobile);
     }
 
     @Override
@@ -92,9 +92,9 @@ public class CarServiceImpl implements CarService {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a car.");
         }
-        Car car = new Car();
+        Automobile automobile = new Automobile();
         try {
-            car = repository.getById(id);
+            automobile = repository.getById(id);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Car", "id", id);
         }

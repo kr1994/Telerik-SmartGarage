@@ -5,7 +5,7 @@ import com.java.smart_garage.models.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-public class CarDto {
+public class AutomobileDto {
 
     @NotNull
     @Positive(message = "Model Id must be positive.")
@@ -33,7 +33,7 @@ public class CarDto {
     @Positive(message = "Owner Id must be positive.")
     private int ownerId;
 
-    public CarDto() {
+    public AutomobileDto() {
     }
 
     public void setModelId(int modelId) {

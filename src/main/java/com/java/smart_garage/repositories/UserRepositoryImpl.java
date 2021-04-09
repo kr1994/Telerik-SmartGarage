@@ -110,7 +110,7 @@ public class UserRepositoryImpl implements UserRepository {
             Query<User> query = null;
             if (firstName.isPresent() && lastName.isPresent() && email.isPresent() && phoneNumber.isPresent()
                     && modelCar.isPresent() && visitsInRange.isPresent()) {
-                query = session.createQuery("from User u join Car c where u.personalInfo.firstName = :firstName" +
+                query = session.createQuery("from User u join Automobile c where u.personalInfo.firstName = :firstName" +
                         " and u.personalInfo.lastName = :lastName and u.personalInfo.email = :email " +
                         " and u.personalInfo.phoneNumber = :phoneNumber and c.model = :modelCar", User.class);
                 query.setParameter("firstName", firstName);

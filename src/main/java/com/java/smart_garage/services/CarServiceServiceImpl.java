@@ -1,5 +1,6 @@
 package com.java.smart_garage.services;
 
+import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
@@ -7,11 +8,14 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.viewDto.CarServiceViewDto;
+import com.java.smart_garage.models.viewDto.WorkServiceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +23,26 @@ import java.util.Optional;
 public class CarServiceServiceImpl implements CarServiceService {
 
     private final CarServiceRepository repository;
+    private final ModelConversionHelper conversionHelper;
 
     @Autowired
-    public CarServiceServiceImpl(CarServiceRepository repository) {
+    public CarServiceServiceImpl(CarServiceRepository repository, ModelConversionHelper conversionHelper) {
         this.repository = repository;
+        this.conversionHelper = conversionHelper;
     }
 
     @Override
     public List<CarService> getAllCarServices(){
         return repository.getAllCarServices();
+    }
+
+    public List<WorkServiceView> getAllCarServicesByView(int id){
+        List<CarService> carServices = repository.getAllCarServicesByCar(id);
+        List<WorkServiceView> workService = new ArrayList<>();
+        for (CarService carService : carServices) {
+            workService.add(conversionHelper.objectToViewWork(carService));
+        }
+        return workService;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.java.smart_garage.contracts.serviceContracts;
 import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.viewDto.WorkServiceView;
 
 
 import java.sql.Date;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public interface CarServiceService {  // Too complex name
 
     List<CarService> getAllCarServices();
+
+    List<WorkServiceView> getAllCarServicesByView(int id);
 
     List<CarService> getAllCarServicesByCustomer(int id);
 
