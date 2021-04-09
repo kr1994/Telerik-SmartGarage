@@ -90,7 +90,7 @@ public class AutomobileServiceImpl implements AutomobileService {
     @Override
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee  can delete a car.");
+            throw new UnauthorizedOperationException("Only employee can delete a car.");
         }
         Automobile automobile = new Automobile();
         try {
