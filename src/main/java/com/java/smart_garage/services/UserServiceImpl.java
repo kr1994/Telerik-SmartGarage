@@ -5,11 +5,13 @@ import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -83,8 +85,19 @@ public class UserServiceImpl implements UserService {
         repository.delete(id);
     }
 
-    public void filterUsersByFirstName(String searchKey) {
-        repository.filterUsersByFirstName(searchKey);
+    public List<User> filterCustomers(Optional<String> firstName,
+                                      Optional<String> lastName,
+                                      Optional<String> email,
+                                      Optional<String> phoneNumber,
+                                      Optional<Model> modelCar,
+                                      Optional<Integer> visitsInRange,
+                                      User userCredential) {
+
+        if (!(userCredential.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can filter customers.");
+        }
+        return repository.filterCustomers(firstName, lastName, email,
+                phoneNumber, modelCar, visitsInRange);
     }
 
 }

@@ -28,8 +28,7 @@ public class Credential {
 
     public Credential(int credentialId,
                       String username,
-                      String password,
-                      UserType userType) {
+                      String password) {
 
         this.credentialId = credentialId;
         this.username = username;
@@ -70,29 +69,6 @@ public class Credential {
         return getCredentialId() == id;
     }
 
-
-    /*
-    public void filterCustomersByFirstName() {
-        CriteriaQuery<Customer> criteriaQuery =
-                criteriaBuilder.createQuery(Customer.class);
-        Root<Customer> root = criteriaQuery.from(Customer.class);
-        CriteriaBuilder.In<String> inClause = criteriaBuilder.in(root.get("firstName"));
-        for (String title : titles) {
-            inClause.value(title);
-        }
-        criteriaQuery.select(root).where(inClause);
-
-        Subquery<User> subquery = criteriaQuery.subquery(User.class);
-        Root<User> user = subquery.from(User.class);
-        subquery.select(user)
-                .distinct(true)
-                .where(criteriaBuilder.like(user.get("name"), "%" + searchKey + "%"));
-
-        criteriaQuery.select(customer)
-                .where(criteriaBuilder.in(customer.get("firstName")).value(subquery));
-    }
-
-    */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
