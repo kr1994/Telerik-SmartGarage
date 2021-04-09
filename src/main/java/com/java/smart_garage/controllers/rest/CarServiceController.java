@@ -2,9 +2,11 @@ package com.java.smart_garage.controllers.rest;
 
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
+import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
 import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
@@ -27,28 +29,31 @@ import java.util.Optional;
 public class CarServiceController {
 
     private final CarServiceService service;
+    private final AutomobileService automobileService;
     private final ModelConversionHelper modelConversionHelper;
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
     public CarServiceController(CarServiceService service,
-                                ModelConversionHelper modelConversionHelper,
+                                AutomobileService automobileService, ModelConversionHelper modelConversionHelper,
                                 AuthenticationHelper authenticationHelper) {
         this.service = service;
+        this.automobileService = automobileService;
         this.modelConversionHelper = modelConversionHelper;
         this.authenticationHelper = authenticationHelper;
     }
 
     @GetMapping
     public List<CarServiceViewDto> getAllServices(){
+        List<Automobile> cars = automobileService.getAllCars();
 
-        List<CarService> carServices = service.getAllCarServices();
+        List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
-        List<CarServiceViewDto> views = new ArrayList<>();
-        for (CarService carService : carServices) {
-            views.add(modelConversionHelper.objectToView(carService));
+        for (Automobile car : cars) {
+            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(car.getId())));
         }
-        return views;
+
+        return carServiceViewDto;
     }
 
     @GetMapping("/{id}")

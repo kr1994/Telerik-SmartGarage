@@ -1,6 +1,9 @@
 package com.java.smart_garage.models.viewDto;
 
+import com.java.smart_garage.models.WorkService;
+
 import java.util.Date;
+import java.util.List;
 
 public class CarServiceViewDto {
 
@@ -17,11 +20,8 @@ public class CarServiceViewDto {
 
     private String carOwnerEmail;
 
-    private String serviceName;
+    private List<WorkServiceView> workServices;
 
-    private double servicePrice;
-
-    private Date serviceDate;
 
 
     public CarServiceViewDto() {
@@ -51,17 +51,10 @@ public class CarServiceViewDto {
         this.carOwnerEmail = carOwnerEmail;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public void setWorkServices(List<WorkServiceView> workServices) {
+        this.workServices = workServices;
     }
 
-    public void setServicePrice(double servicePrice) {
-        this.servicePrice = servicePrice;
-    }
-
-    public void setServiceDate(Date serviceDate) {
-        this.serviceDate = serviceDate;
-    }
 
     public String getCarModel() {
         return carModel;
@@ -87,15 +80,8 @@ public class CarServiceViewDto {
         return carOwnerEmail;
     }
 
-    public String getServiceName() {
-        return serviceName;
+    public List<WorkServiceView> getWorkServices() {
+        return workServices;
     }
 
-    public double getServicePrice() {
-        return servicePrice;
-    }
-
-    public Date getServiceDate() {
-        return serviceDate;
-    }
 }

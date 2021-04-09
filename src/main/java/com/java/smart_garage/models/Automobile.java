@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cars")
-public class Car {
+public class Automobile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,16 +43,16 @@ public class Car {
     @JoinColumn(name = "owner_id")
     private User user;
 
-    public Car() {
+    public Automobile() {
     }
 
-    public Car(int id,
-               Model model,
-               String registrationPlate,
-               String identifications,
-               int year, Colour colour,
-               Engine engine,
-               User user) {
+    public Automobile(int id,
+                      Model model,
+                      String registrationPlate,
+                      String identifications,
+                      int year, Colour colour,
+                      Engine engine,
+                      User user) {
         this.id = id;
         this.model = model;
         this.registrationPlate = registrationPlate;

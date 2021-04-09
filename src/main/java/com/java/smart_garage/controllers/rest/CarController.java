@@ -2,16 +2,16 @@ package com.java.smart_garage.controllers.rest;
 
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
-import com.java.smart_garage.contracts.serviceContracts.CarService;
+import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
 import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Car;
+import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.dto.CarDto;
+import com.java.smart_garage.models.dto.AutomobileDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,13 +25,13 @@ import java.util.List;
 @RequestMapping("smartgarage/cars")
 public class CarController {
 
-    private final CarService service;
+    private final AutomobileService service;
     private final ModelConversionHelper modelConversionHelper;
     private final AuthenticationHelper authenticationHelper;
 
 
     @Autowired
-    public CarController(CarService service,
+    public CarController(AutomobileService service,
                          ModelConversionHelper modelConversionHelper,
                          AuthenticationHelper authenticationHelper, PlateValidationService plateValidationService) {
         this.service = service;
@@ -40,12 +40,12 @@ public class CarController {
     }
 
     @GetMapping
-    public List<Car> getAllCars(){
+    public List<Automobile> getAllCars(){
         return  service.getAllCars();
     }
 
     @GetMapping("/{id}")
-    public Car getByCarId(@PathVariable int id) {
+    public Automobile getByCarId(@PathVariable int id) {
         try {
             return service.getById(id);
         }
@@ -54,13 +54,13 @@ public class CarController {
         }
     }
     @PostMapping
-    public Car create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CarDto carDto) {
+    public Automobile create(@RequestHeader HttpHeaders headers, @Valid @RequestBody AutomobileDto automobileDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
             User user = authenticationHelper.convertCredentialToUser(credential);
-            Car car = modelConversionHelper.carFromDto(carDto);
-            service.create(car, user);
-            return car;
+            Automobile automobile = modelConversionHelper.carFromDto(automobileDto);
+            service.create(automobile, user);
+            return automobile;
         } catch (DuplicateEntityException | IncorrectPlateRegistrationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -68,13 +68,13 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
-    public Car update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CarDto carDto) {
+    public Automobile update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody AutomobileDto automobileDto) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
             User user = authenticationHelper.convertCredentialToUser(credential);
-            Car car = modelConversionHelper.carFromDto(carDto, id);
-            service.update(car, user);
-            return car;
+            Automobile automobile = modelConversionHelper.carFromDto(automobileDto, id);
+            service.update(automobile, user);
+            return automobile;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {

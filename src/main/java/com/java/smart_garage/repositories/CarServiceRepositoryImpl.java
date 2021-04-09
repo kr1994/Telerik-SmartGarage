@@ -2,7 +2,7 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Car;
+import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.models.CarService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,10 +31,11 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
         }
     }
 
+
     @Override
     public List<CarService> getAllCarServicesByCustomer(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<CarService> query = session.createQuery("from CarService cs where cs.car.user.id = :id order by carServicesId", CarService.class);
+            Query<CarService> query = session.createQuery("from CarService cs where cs.automobile.id  = :id order by carServicesId", CarService.class);
             query.setParameter("id", id);
             return query.list();
         }
@@ -43,7 +44,7 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
     @Override
     public List<CarService> getAllCarServicesByCar(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<CarService> query = session.createQuery("from CarService cs where cs.car.id = :id order by carServicesId", CarService.class);
+            Query<CarService> query = session.createQuery("from CarService cs where cs.automobile.id = :id order by carServicesId", CarService.class);
             query.setParameter("id", id);
             return query.list();
         }
@@ -52,7 +53,7 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
     public double getCarServicesPrice(int id) {
         try (Session session = sessionFactory.openSession()) {
             double price = 0;
-            Query<CarService> query = session.createQuery("from CarService cs where cs.car.id = :id order by carServicesId", CarService.class);
+            Query<CarService> query = session.createQuery("from CarService cs where cs.automobile.id  = :id order by carServicesId", CarService.class);
             query.setParameter("id", id);
             List<CarService> carServices = query.list();
             for (CarService carService : carServices) {
@@ -67,16 +68,16 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
             Query<CarService> query = null;
 
             if ((startingDate.isPresent()) && (endingDate.isPresent())) {
-                query = session.createQuery("from CarService cs where invoice.date>= :startingDate and invoice.date<= :endingDate and  cs.car.id = :id ",CarService.class);
+                query = session.createQuery("from CarService cs where invoice.date>= :startingDate and invoice.date<= :endingDate and  cs.automobile.id  = :id ",CarService.class);
                 query.setParameter("startingDate", startingDate.get());
                 query.setParameter("endingDate", endingDate.get());
                 query.setParameter("id", id);
             } else if ((startingDate.isPresent())) {
-                query = session.createQuery("from CarService cs where invoice.date >= :startingDate and cs.car.id = :id", CarService.class);
+                query = session.createQuery("from CarService cs where invoice.date >= :startingDate and cs.automobile.id  = :id", CarService.class);
                 query.setParameter("startingDate", startingDate.get());
                 query.setParameter("id", id);
             } else if ((endingDate.isPresent())) {
-                query = session.createQuery("from CarService cs where invoice.date<= :endingDate and cs.car.id = :id", CarService.class);
+                query = session.createQuery("from CarService cs where invoice.date<= :endingDate and cs.automobile.id  = :id", CarService.class);
                 query.setParameter("endingDate", endingDate.get());
                 query.setParameter("id", id);
             } else {
@@ -114,7 +115,7 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Car.class, id));
+            session.delete(session.get(Automobile.class, id));
             session.getTransaction().commit();
         }
     }
