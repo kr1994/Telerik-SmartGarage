@@ -8,7 +8,6 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.viewDto.CarServiceViewDto;
 import com.java.smart_garage.models.viewDto.WorkServiceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +35,28 @@ public class CarServiceServiceImpl implements CarServiceService {
         return repository.getAllCarServices();
     }
 
-    public List<WorkServiceView> getAllCarServicesByView(int id){
-        List<CarService> carServices = repository.getAllCarServicesByCar(id);
-        List<WorkServiceView> workService = new ArrayList<>();
-        for (CarService carService : carServices) {
-            workService.add(conversionHelper.objectToViewWork(carService));
-        }
-        return workService;
+    public List<WorkServiceView> getAllCarServicesByView(int id,Optional<String> currency){
+        String value = "BGN";
+        List<WorkServiceView> workServiceView= new ArrayList<>();
+        if(currency.isEmpty()){
+            List<CarService> carServices = repository.getAllCarServicesByCar(id);
+            try {
+                double multiplier = conversionHelper.getCurrency(value);
+                workServiceView = listWorkServices(carServices,multiplier);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            String valueToChange = currency.toString().substring(9,12);
+
+            List<CarService> carServices = repository.getAllCarServicesByCar(id);
+            try {
+                double multiplier = conversionHelper.getCurrency(valueToChange);
+                workServiceView = listWorkServices(carServices, multiplier);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }return workServiceView;
     }
 
     @Override
@@ -97,6 +111,15 @@ public class CarServiceServiceImpl implements CarServiceService {
         }
         repository.delete(id);
     }
+
+    private List<WorkServiceView> listWorkServices(List<CarService> carServices, double currency){
+        List<WorkServiceView> workService = new ArrayList<>();
+        for (CarService carService : carServices) {
+            workService.add(conversionHelper.objectToViewWork(carService,currency));
+        }
+        return workService;
+    }
+
 
 }
 

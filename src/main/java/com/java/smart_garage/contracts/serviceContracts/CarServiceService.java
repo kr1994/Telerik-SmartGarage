@@ -14,7 +14,7 @@ public interface CarServiceService {  // Too complex name
 
     List<CarService> getAllCarServices();
 
-    List<WorkServiceView> getAllCarServicesByView(int id);
+    List<WorkServiceView> getAllCarServicesByView(int id,Optional<String> currency);
 
     List<CarService> getAllCarServicesByCustomer(int id);
 
