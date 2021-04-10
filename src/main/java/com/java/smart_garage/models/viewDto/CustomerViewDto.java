@@ -7,8 +7,6 @@ import java.util.List;
 
 public class CustomerViewDto {
 
-
-
     private String firstName;
 
     private String lastName;

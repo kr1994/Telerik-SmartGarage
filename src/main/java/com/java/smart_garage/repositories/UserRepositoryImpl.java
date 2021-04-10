@@ -133,6 +133,7 @@ public class UserRepositoryImpl implements UserRepository {
         Root<PersonalInfo> root = query.from(PersonalInfo.class);
         List<Predicate> list = new ArrayList<>();
 
+
         if (modelAutomobile.isPresent()) {
             /* List<Automobile> automobiles = automobileRepository.getByOwner(firstName);
 
