@@ -20,11 +20,9 @@ public interface UserRepository {
 
     void delete(int id);
 
-    List<User> filterCustomers(Optional<String> firstName,
+    List<PersonalInfo> filterCustomers(Optional<String> firstName,
                                Optional<String> lastName,
                                Optional<String> email,
-                               Optional<String> phoneNumber,
-                               Optional<Model> modelCar,
-                               Optional<Integer> visitsInRange);
+                               Optional<String> phoneNumber);
 
 }
