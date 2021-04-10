@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,11 +87,15 @@ public class UserController {
                                               @RequestParam(required = false) Optional<String> firstName,
                                               @RequestParam(required = false) Optional<String> lastName,
                                               @RequestParam(required = false) Optional<String> email,
-                                              @RequestParam(required = false) Optional<String> phoneNumber) {
+                                              @RequestParam(required = false) Optional<String> phoneNumber,
+                                              @RequestParam(required = false) Optional<String> model,
+                                              @RequestParam(required = false) Optional<Date> dateFrom,
+                                              @RequestParam(required = false) Optional<Date> dateTo) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
             User credentialUser = authenticationHelper.convertCredentialToUser(credential);
-            return service.filterCustomers(firstName, lastName, email, phoneNumber, credentialUser);
+            return service.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom,
+                    dateTo, credentialUser);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

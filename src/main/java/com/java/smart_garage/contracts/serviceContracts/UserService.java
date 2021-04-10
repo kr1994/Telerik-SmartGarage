@@ -4,6 +4,7 @@ import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.models.User;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,9 @@ public interface UserService {
                                        Optional<String> lastName,
                                        Optional<String> email,
                                        Optional<String> phoneNumber,
+                                       Optional<String> model,
+                                       Optional<Date> dateFrom,
+                                       Optional<Date> dateTo,
                                        User userCredential);
 
 }

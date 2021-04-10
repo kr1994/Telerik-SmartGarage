@@ -2,6 +2,7 @@ package com.java.smart_garage.contracts.repoContracts;
 
 import com.java.smart_garage.models.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,11 @@ public interface UserRepository {
     void delete(int id);
 
     List<PersonalInfo> filterCustomers(Optional<String> firstName,
-                               Optional<String> lastName,
-                               Optional<String> email,
-                               Optional<String> phoneNumber);
+                                       Optional<String> lastName,
+                                       Optional<String> email,
+                                       Optional<String> phoneNumber,
+                                       Optional<String> model,
+                                       Optional<Date> dateFrom,
+                                       Optional<Date> dateTo);
 
 }

@@ -106,7 +106,10 @@ public class UserRepositoryImpl implements UserRepository {
     public List<PersonalInfo> filterCustomers(Optional<String> firstName,
                                               Optional<String> lastName,
                                               Optional<String> email,
-                                              Optional<String> phoneNumber) {
+                                              Optional<String> phoneNumber,
+                                              Optional<String> model,
+                                              Optional<Date> dateFrom,
+                                              Optional<Date> dateTo) {
 
         try (Session session = sessionFactory.openSession()) {
 
@@ -141,16 +144,12 @@ public class UserRepositoryImpl implements UserRepository {
             Predicate csAutomobilePredicate = cb.and(cb.equal(csRoot.get("automobile"), "car_id"));
             Predicate automobileUserPredicate = cb.and(cb.equal(automobileRoot.get("user"), "user_id"));
             Predicate userPersonalInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "personalInfo_id"));
-
             Predicate automobileModelPredicate = cb.and(cb.equal(automobileRoot.get("model"), "placeholder"),
                                                  cb.equal(automobileRoot.get("user"), "placeholder"));
             Predicate userInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "placeholder"));
 
-
             return Arrays.asList(csInvoicePredicate, csAutomobilePredicate, automobileUserPredicate,
                     userPersonalInfoPredicate, automobileModelPredicate, userInfoPredicate);
-
-
 
     }
 

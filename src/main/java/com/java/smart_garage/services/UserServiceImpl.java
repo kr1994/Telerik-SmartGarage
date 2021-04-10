@@ -11,6 +11,7 @@ import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,12 +91,15 @@ public class UserServiceImpl implements UserService {
                                               Optional<String> lastName,
                                               Optional<String> email,
                                               Optional<String> phoneNumber,
+                                              Optional<String> model,
+                                              Optional<Date> dateFrom,
+                                              Optional<Date> dateTo,
                                               User userCredential) {
 
         if (!(userCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can filter customers.");
         }
-        return repository.filterCustomers(firstName, lastName, email, phoneNumber);
+        return repository.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom, dateTo);
     }
 
 }
