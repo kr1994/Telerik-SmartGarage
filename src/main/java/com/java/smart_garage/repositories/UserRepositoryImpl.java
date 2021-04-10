@@ -11,12 +11,10 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -121,36 +119,79 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    private List<Predicate> getFilterResults(CriteriaBuilder cb) {
+
+
+            CriteriaQuery query = cb.createQuery(/* Your combined target type, e.g. MyQueriedBuildDetails.class, containing buildNumber, duration, code health, etc.*/);
+
+            //Root<PersonalInfo> personalInfoRoot = query.from(PersonalInfo.class);
+            Root<Automobile> automobileRoot = query.from(Automobile.class);
+            Root<Model> modelInfoRoot = query.from(Model.class);
+            Root<User> userRoot = query.from(User.class);
+            Root<CarService> csRoot = query.from(CarService.class);
+
+            Join<Invoice, CarService> csInvoiceJoin = csRoot.join("invoice", JoinType.INNER);
+            Join<Automobile, CarService> csAutomobileJoin = csRoot.join("automobile", JoinType.INNER);
+            Join<User, Automobile> automobileUserJoin = automobileRoot.join("user", JoinType.INNER);
+            Join<PersonalInfo, User> userPersonalInfoJoin = userRoot.join("personalInfo", JoinType.INNER);
+
+            Predicate csInvoicePredicate = cb.and(cb.equal(csRoot.get("invoice"), "invoice_id"),
+                                                  cb.lessThanOrEqualTo(csInvoiceJoin.get("date"), "2021-06-06"),
+                                                  cb.greaterThanOrEqualTo(csInvoiceJoin.get("date"), "placeholder for date"));
+            Predicate csAutomobilePredicate = cb.and(cb.equal(csRoot.get("automobile"), "car_id"));
+            Predicate automobileUserPredicate = cb.and(cb.equal(automobileRoot.get("user"), "user_id"));
+            Predicate userPersonalInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "personalInfo_id"));
+
+            Predicate automobileModelPredicate = cb.and(cb.equal(automobileRoot.get("model"), "placeholder"),
+                                                 cb.equal(automobileRoot.get("user"), "placeholder"));
+            Predicate userInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "placeholder"));
+
+
+            return Arrays.asList(csInvoicePredicate, csAutomobilePredicate, automobileUserPredicate,
+                    userPersonalInfoPredicate, automobileModelPredicate, userInfoPredicate);
+
+
+
+    }
+
+
+
     private Predicate getCarPredicate(CriteriaBuilder criteriaBuilder,
                                       CriteriaQuery<PersonalInfo> query,
                                       AutomobileRepository automobileRepository,
-                                      Optional<String> modelAutomobile) {
+                                      Optional<String> modelAutomobile,
+                                      List<Optional<Date>> visits) {
 
         try (Session session = sessionFactory.openSession()) {
-            Query<PersonalInfo> queryForName = session.createQuery("from Model m join Automobile a join User u " +
-                    "join PersonalInfo p where a.model.modelName = :modelAutomobile", PersonalInfo.class);
+
+            if (modelAutomobile.isPresent()) {
+                Query<PersonalInfo> queryForName = session.createQuery("from Model m join Automobile a " +
+                        "join User u join PersonalInfo p where a.model.modelName = :modelAutomobile and " +
+                        "u.userType != :employee", PersonalInfo.class);
+
+                queryForName.setParameter("modelAutomobile", modelAutomobile.get());
+                queryForName.setParameter("employee", "Employee");
+            }
+
+
+            if (visits.get(0).isPresent()) {
+                Date dateFrom = visits.get(0).get();
+                Date dateTo = visits.get(1).get();
+                Query<PersonalInfo> queryForVisits = session.createQuery("from Automobile a join CarService cs " +
+                        "join Invoice i join User u join PersonalInfo p where i.date >= :dateFrom and " +
+                        " i.date <= :dateTo and u.userType != :employee", PersonalInfo.class);
+
+                queryForVisits.setParameter("dateFrom", dateFrom);
+                queryForVisits.setParameter("dateTo", dateTo);
+                queryForVisits.setParameter("employee", "Employee");
+            }
+
         }
         Root<PersonalInfo> root = query.from(PersonalInfo.class);
         List<Predicate> list = new ArrayList<>();
 
 
-        if (modelAutomobile.isPresent()) {
-            /* List<Automobile> automobiles = automobileRepository.getByOwner(firstName);
 
-               Automobile automobile = automobiles
-                    .stream()
-                    .filter(a -> a.getModel().equals(modelAutomobile))
-                    .collect(Collectors.toList()).get(0);
-
-
-
-                Predicate automobilePredicate = criteriaBuilder.equal(root.get("firstName"), firstName);
-                list.add(automobilePredicate);
-              */
-                //throw new EntityNotFoundException("Model ", "not found!");
-
-
-        }
         return criteriaBuilder.and(list.toArray(Predicate[]::new));
     }
 
