@@ -9,7 +9,13 @@ import com.java.smart_garage.models.viewDto.WorkServiceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ModelConversionHelper {
@@ -179,14 +185,17 @@ public class ModelConversionHelper {
         carServiceViewDto.setCarOwner(automobile.getOwner().getPersonalInfo().getLastName());
         carServiceViewDto.setCarOwnerEmail(automobile.getOwner().getPersonalInfo().getEmail());
         carServiceViewDto.setWorkServices(workServiceViews);
+        carServiceViewDto.setTotalPrice(Math.round(carServiceRepository.getCarServicesPrice(automobile.getId())*workServiceViews.get(0).getMultiplier()));
         return carServiceViewDto;
     }
 
 
-    public WorkServiceView  objectToViewWork(CarService workService){
+    public WorkServiceView  objectToViewWork(CarService workService, double nameCurrency){
         WorkServiceView workServiceView = new WorkServiceView();
+        double currency = workService.getService().getWorkServicePrice()*nameCurrency;
+        workServiceView.setMultiplier(nameCurrency);
         workServiceView.setServiceName(workService.getService().getWorkServiceName());
-        workServiceView.setPrice(workService.getService().getWorkServicePrice());
+        workServiceView.setPrice(Math.round(currency));
         workServiceView.setDate(workService.getInvoice().getDate());
         return workServiceView;
     }
@@ -300,4 +309,38 @@ public class ModelConversionHelper {
         invoice.setDate(invoiceDto.getDate());
     }
 
+    private static Map<String, Double> currencyValues() throws Exception {
+        URL url = new URL("http://data.fixer.io/api/latest?access_key=5880fa2d2647553a6f7f6f196e2f085b");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer content = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        String someString = content.toString().substring(81, content.toString().length() - 2);
+
+        Map<String, Double> myMap = new HashMap<String, Double>();
+        String s = someString;
+        String[] pairs = s.split(",");
+        for (int i = 0; i < pairs.length; i++) {
+            String pair = pairs[i];
+            String[] keyValue = pair.split(":");
+            myMap.put(keyValue[0].substring(1, 4), Double.valueOf(keyValue[1]));
+        }
+        in.close();
+        return myMap;
+    }
+
+    public double getCurrency(String value) throws Exception {
+        Map<String, Double> myMap = currencyValues();
+        double currency = 0;
+        for (String s : myMap.keySet()) {
+           if(value.equals(s)){
+             currency = myMap.get(s);
+           }
+        }return currency;
+    }
 }

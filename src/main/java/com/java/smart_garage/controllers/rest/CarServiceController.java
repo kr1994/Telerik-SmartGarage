@@ -33,6 +33,8 @@ public class CarServiceController {
     private final ModelConversionHelper modelConversionHelper;
     private final AuthenticationHelper authenticationHelper;
 
+
+
     @Autowired
     public CarServiceController(CarServiceService service,
                                 AutomobileService automobileService, ModelConversionHelper modelConversionHelper,
@@ -44,13 +46,13 @@ public class CarServiceController {
     }
 
     @GetMapping
-    public List<CarServiceViewDto> getAllServices(){
+    public List<CarServiceViewDto> getAllServices(@RequestParam Optional<String> currency){
         List<Automobile> cars = automobileService.getAllCars();
 
         List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
         for (Automobile car : cars) {
-            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(car.getId())));
+            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(car.getId(),currency)));
         }
 
         return carServiceViewDto;
@@ -77,9 +79,9 @@ public class CarServiceController {
     }
 
     @GetMapping("/car/{id}")
-    public List<CarService> getAllServicesForCar(@PathVariable int id) {
+    public CarServiceViewDto getAllServicesForCar(@PathVariable int id,@RequestParam Optional<String> currency) {
         try {
-            return service.getAllCarServicesByCar(id);
+            return modelConversionHelper.objectToView(automobileService.getById(id),service.getAllCarServicesByView(id,currency));
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

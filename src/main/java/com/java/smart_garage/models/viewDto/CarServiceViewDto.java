@@ -1,8 +1,5 @@
 package com.java.smart_garage.models.viewDto;
 
-import com.java.smart_garage.models.WorkService;
-
-import java.util.Date;
 import java.util.List;
 
 public class CarServiceViewDto {
@@ -22,6 +19,7 @@ public class CarServiceViewDto {
 
     private List<WorkServiceView> workServices;
 
+    private double totalPrice;
 
 
     public CarServiceViewDto() {
@@ -55,6 +53,9 @@ public class CarServiceViewDto {
         this.workServices = workServices;
     }
 
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public String getCarModel() {
         return carModel;
@@ -84,4 +85,7 @@ public class CarServiceViewDto {
         return workServices;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 }
