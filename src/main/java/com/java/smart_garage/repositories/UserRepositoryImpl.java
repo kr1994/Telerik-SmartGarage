@@ -115,17 +115,23 @@ public class UserRepositoryImpl implements UserRepository {
 
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
+            List<Predicate> predicates = getFilterModelAndDateResults(criteriaBuilder);
             Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
-            return session.createQuery(query.where(predicate)).getResultList();
+            predicates.add(predicate);
+            return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
+                    predicates.get(3), predicates.get(4), predicates.get(5), predicates.get(6))).getResultList();
+
+            //return session.createQuery(query.where(predicate)).getResultList();
 
             //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
         }
     }
 
-    private List<Predicate> getFilterResults(CriteriaBuilder cb) {
+    private List<Predicate> getFilterModelAndDateResults(CriteriaBuilder cb) {
 
+        try (Session session = sessionFactory.openSession()) {
 
-            CriteriaQuery query = cb.createQuery(/* Your combined target type, e.g. MyQueriedBuildDetails.class, containing buildNumber, duration, code health, etc.*/);
+            CriteriaQuery query = cb.createQuery(); /* Your combined target type, e.g. MyQueriedBuildDetails.class, containing buildNumber, duration, code health, etc.*/
 
             //Root<PersonalInfo> personalInfoRoot = query.from(PersonalInfo.class);
             Root<Automobile> automobileRoot = query.from(Automobile.class);
@@ -139,22 +145,54 @@ public class UserRepositoryImpl implements UserRepository {
             Join<PersonalInfo, User> userPersonalInfoJoin = userRoot.join("personalInfo", JoinType.INNER);
 
             Predicate csInvoicePredicate = cb.and(cb.equal(csRoot.get("invoice"), "invoice_id"),
-                                                  cb.lessThanOrEqualTo(csInvoiceJoin.get("date"), "2021-06-06"),
-                                                  cb.greaterThanOrEqualTo(csInvoiceJoin.get("date"), "placeholder for date"));
+                    cb.lessThanOrEqualTo(csInvoiceJoin.get("date"), "2021-06-06"),
+                    cb.greaterThanOrEqualTo(csInvoiceJoin.get("date"), "placeholder for date"));
             Predicate csAutomobilePredicate = cb.and(cb.equal(csRoot.get("automobile"), "car_id"));
             Predicate automobileUserPredicate = cb.and(cb.equal(automobileRoot.get("user"), "user_id"));
             Predicate userPersonalInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "personalInfo_id"));
             Predicate automobileModelPredicate = cb.and(cb.equal(automobileRoot.get("model"), "placeholder"),
-                                                 cb.equal(automobileRoot.get("user"), "placeholder"));
+                    cb.equal(automobileRoot.get("user"), "placeholder"));
             Predicate userInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "placeholder"));
 
             return Arrays.asList(csInvoicePredicate, csAutomobilePredicate, automobileUserPredicate,
                     userPersonalInfoPredicate, automobileModelPredicate, userInfoPredicate);
-
+        }
     }
 
+    private Predicate getPredicate(CriteriaBuilder criteriaBuilder,
+                                   CriteriaQuery<PersonalInfo> query,
+                                   Optional<String> firstName,
+                                   Optional<String> lastName,
+                                   Optional<String> email,
+                                   Optional<String> phoneNumber) {
 
+        Root<PersonalInfo> root = query.from(PersonalInfo.class);
+        List<Predicate> list = new ArrayList<>();
 
+        if (firstName.isPresent() && !firstName.get().isEmpty()) {
+            Predicate firstNamePredicate = criteriaBuilder.like(root.get("firstName"), "%" + firstName.get() + "%");
+            list.add(firstNamePredicate);
+        }
+
+        if (lastName.isPresent() && !lastName.get().isEmpty()) {
+            Predicate lastNamePredicate = criteriaBuilder.like(root.get("lastName"), "%" + lastName.get() + "%");
+            list.add(lastNamePredicate);
+        }
+
+        if (email.isPresent()) {
+            Predicate emailPredicate = criteriaBuilder.equal(root.get("email"), email.get());
+            list.add(emailPredicate);
+        }
+
+        if (phoneNumber.isPresent()) {
+            Predicate phoneNumberPredicate = criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber.get());
+            list.add(phoneNumberPredicate);
+        }
+
+        return criteriaBuilder.and(list.toArray(Predicate[]::new));
+    }
+
+    /*
     private Predicate getCarPredicate(CriteriaBuilder criteriaBuilder,
                                       CriteriaQuery<PersonalInfo> query,
                                       AutomobileRepository automobileRepository,
@@ -189,43 +227,7 @@ public class UserRepositoryImpl implements UserRepository {
         Root<PersonalInfo> root = query.from(PersonalInfo.class);
         List<Predicate> list = new ArrayList<>();
 
-
-
         return criteriaBuilder.and(list.toArray(Predicate[]::new));
-    }
-
-    private Predicate getPredicate(CriteriaBuilder criteriaBuilder,
-                                   CriteriaQuery<PersonalInfo> query,
-                                   Optional<String> firstName,
-                                   Optional<String> lastName,
-                                   Optional<String> email,
-                                   Optional<String> phoneNumber) {
-
-        Root<PersonalInfo> root = query.from(PersonalInfo.class);
-        List<Predicate> list = new ArrayList<>();
-
-        if (firstName.isPresent() && !firstName.get().isEmpty()) {
-            Predicate firstNamePredicate = criteriaBuilder.like(root.get("firstName"), "%" + firstName.get() + "%");
-            list.add(firstNamePredicate);
-        }
-
-        if (lastName.isPresent() && !lastName.get().isEmpty()) {
-            Predicate lastNamePredicate = criteriaBuilder.like(root.get("lastName"), "%" + lastName.get() + "%");
-            list.add(lastNamePredicate);
-        }
-
-        if (email.isPresent()) {
-            Predicate emailPredicate = criteriaBuilder.equal(root.get("email"), email.get());
-            list.add(emailPredicate);
-        }
-
-        if (phoneNumber.isPresent()) {
-            Predicate phoneNumberPredicate = criteriaBuilder.equal(root.get("phoneNumber"), phoneNumber.get());
-            list.add(phoneNumberPredicate);
-        }
-
-        return criteriaBuilder.and(list.toArray(Predicate[]::new));
-
     }
 
     private List<PersonalInfo> getPersonalInfoList(Optional<String> firstName, Optional<String> lastName, Optional<String> email, Optional<String> phoneNumber, Session session) {
@@ -290,4 +292,6 @@ public class UserRepositoryImpl implements UserRepository {
         //return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
         return query.list();
     }
+
+    */
 }
