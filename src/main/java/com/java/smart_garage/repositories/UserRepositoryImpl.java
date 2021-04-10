@@ -115,7 +115,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
-            List<Predicate> predicates = getFilterModelAndDateResults(criteriaBuilder);
+            List<Predicate> predicates = getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo);
             Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
             predicates.add(predicate);
             return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
@@ -127,7 +127,10 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    private List<Predicate> getFilterModelAndDateResults(CriteriaBuilder cb) {
+    private List<Predicate> getFilterModelAndDateResults(CriteriaBuilder cb,
+                                                         Optional<String> model,
+                                                         Optional<Date> dateFrom,
+                                                         Optional<Date> dateTo) {
 
         try (Session session = sessionFactory.openSession()) {
 
@@ -139,23 +142,36 @@ public class UserRepositoryImpl implements UserRepository {
             Root<User> userRoot = query.from(User.class);
             Root<CarService> csRoot = query.from(CarService.class);
 
-            Join<Invoice, CarService> csInvoiceJoin = csRoot.join("invoice", JoinType.INNER);
-            Join<Automobile, CarService> csAutomobileJoin = csRoot.join("automobile", JoinType.INNER);
-            Join<User, Automobile> automobileUserJoin = automobileRoot.join("user", JoinType.INNER);
-            Join<PersonalInfo, User> userPersonalInfoJoin = userRoot.join("personalInfo", JoinType.INNER);
+            List<Predicate> result = new ArrayList<Predicate>();
 
-            Predicate csInvoicePredicate = cb.and(cb.equal(csRoot.get("invoice"), "invoice_id"),
-                    cb.lessThanOrEqualTo(csInvoiceJoin.get("date"), "2021-06-06"),
-                    cb.greaterThanOrEqualTo(csInvoiceJoin.get("date"), "placeholder for date"));
-            Predicate csAutomobilePredicate = cb.and(cb.equal(csRoot.get("automobile"), "car_id"));
-            Predicate automobileUserPredicate = cb.and(cb.equal(automobileRoot.get("user"), "user_id"));
-            Predicate userPersonalInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "personalInfo_id"));
-            Predicate automobileModelPredicate = cb.and(cb.equal(automobileRoot.get("model"), "placeholder"),
-                    cb.equal(automobileRoot.get("user"), "placeholder"));
-            Predicate userInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "placeholder"));
+            if (dateFrom.isPresent() && dateTo.isPresent()) {
 
-            return Arrays.asList(csInvoicePredicate, csAutomobilePredicate, automobileUserPredicate,
-                    userPersonalInfoPredicate, automobileModelPredicate, userInfoPredicate);
+                Join<Invoice, CarService> csInvoiceJoin = csRoot.join("invoice", JoinType.INNER);
+                Join<Automobile, CarService> csAutomobileJoin = csRoot.join("automobile", JoinType.INNER);
+                Join<User, Automobile> automobileUserJoin = automobileRoot.join("user", JoinType.INNER);
+                Join<PersonalInfo, User> userPersonalInfoJoin = userRoot.join("personalInfo", JoinType.INNER);
+
+                Predicate csInvoicePredicate = cb.and(cb.equal(csRoot.get("invoice"), "invoice_id"),
+                        cb.lessThanOrEqualTo(csInvoiceJoin.get("date"), dateTo.get()),
+                        cb.greaterThanOrEqualTo(csInvoiceJoin.get("date"), dateFrom.get()));
+                Predicate csAutomobilePredicate = cb.and(cb.equal(csRoot.get("automobile"), "car_id"));
+                Predicate automobileUserPredicate = cb.and(cb.equal(automobileRoot.get("user"), "owner_id"));
+                Predicate userPersonalInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "info_id"));
+                result.add(csInvoicePredicate);
+                result.add(csAutomobilePredicate);
+                result.add(automobileUserPredicate);
+                result.add(userPersonalInfoPredicate);
+            }
+
+            if (model.isPresent()) {
+                Predicate automobileModelPredicate = cb.and(cb.equal(automobileRoot.get("model"), model),
+                        cb.equal(automobileRoot.get("user"), "placeholder"));
+                Predicate userInfoPredicate = cb.and(cb.equal(userRoot.get("personalInfo"), "placeholder"));
+                result.add(automobileModelPredicate);
+                result.add(userInfoPredicate);
+            }
+
+            return result;
         }
     }
 
