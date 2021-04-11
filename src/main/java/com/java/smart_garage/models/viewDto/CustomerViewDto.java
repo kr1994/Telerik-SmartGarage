@@ -1,8 +1,9 @@
 package com.java.smart_garage.models.viewDto;
 
 import com.java.smart_garage.models.Model;
+import com.java.smart_garage.models.UserType;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class CustomerViewDto {
@@ -18,6 +19,8 @@ public class CustomerViewDto {
     private Model carModel;
 
     private List<Date> visitsInRange;
+
+    private UserType userType;
 
     public CustomerViewDto() {
 
@@ -45,6 +48,14 @@ public class CustomerViewDto {
 
     public void setVisitsInRange(List<Date> visitsInRange) {
         this.visitsInRange = visitsInRange;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public UserType getUserType() {
+        return userType;
     }
 
     public String getFirstName() {

@@ -3,6 +3,7 @@ package com.java.smart_garage.repositories;
 import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
+import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -122,6 +123,7 @@ public class UserRepositoryImpl implements UserRepository {
             //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
          */
             List<PersonalInfo> result = new ArrayList<PersonalInfo>();
+            List<CustomerViewDto> resultDto = new ArrayList<CustomerViewDto>();
             Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
             PersonalInfoRepository pir = new PersonalInfoRepositoryImpl(sessionFactory);
             List<PersonalInfo> allPersonalInformation = pir.getAllPersonalInformations();
