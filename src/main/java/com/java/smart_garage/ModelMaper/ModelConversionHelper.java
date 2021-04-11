@@ -5,6 +5,7 @@ import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.*;
 import com.java.smart_garage.models.viewDto.CarServiceViewDto;
+import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import com.java.smart_garage.models.viewDto.WorkServiceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -247,6 +249,24 @@ public class ModelConversionHelper {
         return personalInfo;
     }
 
+    public CustomerViewDto personalInfoToCustomerViewDtoObject (PersonalInfo pi, String model, List<Date> visits) {
+        CustomerViewDto cvd = new CustomerViewDto();
+        cvd.setFirstName(pi.getFirstName());
+        cvd.setLastName(pi.getLastName());
+        cvd.setEmail(pi.getEmail());
+        cvd.setPhoneNumber(pi.getPhoneNumber());
+        User user = userRepository.getByEmail(pi.getEmail());
+        cvd.setUserType(user.getUserType());
+        List<Automobile> automobiles = automobileRepository.getByOwner(pi.getFirstName());
+        for (Automobile a : automobiles) {
+            if (a.getModel().getModelName().equals(model)) {
+                cvd.setCarModel(a.getModel());
+            }
+        }
+        cvd.setVisitsInRange(visits);
+        return cvd;
+    }
+
     private void dtoToCredentialObject(UserDto userDto, User user) {
         Credential credential = credentialRepository.getById(userDto.getUserId());
         PersonalInfo personalInfo = personalInfoRepository.getById(userDto.getPersonalInfoId());
@@ -300,8 +320,6 @@ public class ModelConversionHelper {
         engine.setFuel(fuel);
         engine.setCubicCapacity(engineDto.getCc());
     }
-
-
 
     private void dtoToPersonalInfoObject(PersonalInfoDto personalInfoDto, PersonalInfo personalInfo) {
         personalInfo.setFirstName(personalInfoDto.getFirstName());

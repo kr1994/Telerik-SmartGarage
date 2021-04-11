@@ -1,9 +1,10 @@
 package com.java.smart_garage.repositories;
 
-import com.java.smart_garage.contracts.repoContracts.AutomobileRepository;
-import com.java.smart_garage.contracts.repoContracts.UserRepository;
+import com.java.smart_garage.ModelMaper.ModelConversionHelper;
+import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
+import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,22 +12,20 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
+    private final ModelConversionHelper modelConversionHelper;
 
     @Autowired
-    public UserRepositoryImpl(SessionFactory sessionFactory) {
+    public UserRepositoryImpl(SessionFactory sessionFactory, ModelConversionHelper modelConversionHelper) {
         this.sessionFactory = sessionFactory;
+        this.modelConversionHelper = modelConversionHelper;
     }
 
 
@@ -47,6 +46,39 @@ public class UserRepositoryImpl implements UserRepository {
                 throw new EntityNotFoundException("User", "id", id);
             }
             return user;
+        }
+    }
+
+    @Override
+    public List<User> getByFirstName(String firstName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.firstName = :firstName order by u.id",
+                    User.class);
+            query.setParameter("firstName", firstName);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> getByLastName(String lastName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.lastName = :lastName order by u.id",
+                    User.class);
+            query.setParameter("lastName", lastName);
+            return query.list();
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.email = :email order by u.id",
+                    User.class);
+            query.setParameter("email", email);
+            return query.list().get(0);
         }
     }
 
@@ -103,7 +135,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<PersonalInfo> filterCustomers(Optional<String> firstName,
+    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
                                               Optional<String> lastName,
                                               Optional<String> email,
                                               Optional<String> phoneNumber,
@@ -112,10 +144,10 @@ public class UserRepositoryImpl implements UserRepository {
                                               Optional<Date> dateTo) {
 
         try (Session session = sessionFactory.openSession()) {
-
+/*
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
-            List<Predicate> predicates = getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo);
+            List<Predicate> predicates = List.copyOf(getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo));
             Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
             predicates.add(predicate);
             return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
@@ -124,9 +156,127 @@ public class UserRepositoryImpl implements UserRepository {
             //return session.createQuery(query.where(predicate)).getResultList();
 
             //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
+         */
+            List<PersonalInfo> result = new ArrayList<PersonalInfo>();
+            List<CustomerViewDto> resultDto = new ArrayList<CustomerViewDto>();
+            Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
+            PersonalInfoRepository pir = new PersonalInfoRepositoryImpl(sessionFactory);
+            List<PersonalInfo> allPersonalInformation = pir.getAllPersonalInformations();
+            Set<Date> visits = new HashSet<>();
+            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
+                Set<PersonalInfo> namesSet = new HashSet<PersonalInfo>();
+                for (PersonalInfo pi: allPersonalInformation) {
+
+                    if (firstName.isPresent()) {
+                        if (pi.getFirstName().equals(firstName.get())) {
+                            namesSet.add(pi);
+                        }
+                    }
+
+                    if (lastName.isPresent()) {
+                        if (pi.getLastName().equals(lastName.get())) {
+                            namesSet.add(pi);
+                        }
+                    }
+
+                    if (email.isPresent()) {
+                        if (pi.getEmail().equals(email.get())) {
+                            namesSet.add(pi);
+                        }
+                    }
+
+                    if (phoneNumber.isPresent()) {
+                        if (pi.getPhoneNumber().equals(phoneNumber.get())) {
+                            namesSet.add(pi);
+                        }
+                    }
+                }
+
+                resultSet.addAll(namesSet);
+
+            }
+
+            if (model.isPresent()) {
+                ModelRepository mr = new ModelRepositoryImpl(sessionFactory);
+                AutomobileRepository ar = new AutomobileRepositoryImpl(sessionFactory);
+                Model modelObject = mr.getByName(model.get());
+
+                List<Automobile> automobiles = ar.getAllCars().stream()
+                                               .filter(a -> a.getModel().getModelName().equals(modelObject.getModelName()))
+                                               .collect(Collectors.toList());
+
+                Set<User> owners = new HashSet<User>();
+                for (Automobile a: automobiles) {
+                    owners.add(a.getOwner());
+                }
+
+                Set<PersonalInfo> modelsSet = new HashSet<PersonalInfo>();
+                for (User u: owners) {
+                    if (!u.isEmployee()) {
+                        modelsSet.add(u.getPersonalInfo());
+                    }
+                }
+
+                resultSet.addAll(modelsSet);
+
+            }
+
+            if (dateFrom.isPresent() && dateTo.isPresent()) {
+                InvoiceRepository ir = new InvoiceRepositoryImpl(sessionFactory);
+                List<Invoice> invoices = ir.getAllInvoices().stream()
+                                         .filter(i -> i.getDate().before(dateTo.get()) && i.getDate().after(dateFrom.get()))
+                                         .collect(Collectors.toList());
+
+
+                for (Invoice invoice : invoices) {
+                    visits.add(invoice.getDate());
+                }
+                CarServiceRepository csr = new CarServiceRepositoryImpl(sessionFactory);
+                List<CarService> allCarServices = csr.getAllCarServices();
+                Set<CarService> carServices = new HashSet<>();
+
+                for (Invoice i: invoices) {
+                    for (CarService cs: allCarServices) {
+                        if (cs.getInvoice().getInvoiceId() == i.getInvoiceId()) {
+                            carServices.add(cs);
+                        }
+                    }
+                }
+
+                Set<Automobile> cars = new HashSet<>();
+                for (CarService cs: carServices) {
+                    cars.add(cs.getCar());
+                }
+
+                Set<User> owners = new HashSet<User>();
+                for (Automobile a: cars) {
+                    owners.add(a.getOwner());
+                }
+
+                Set<PersonalInfo> datesSet = new HashSet<PersonalInfo>();
+                for (User u: owners) {
+                    if (!u.isEmployee()) {
+                        datesSet.add(u.getPersonalInfo());
+                    }
+                }
+                resultSet.addAll(datesSet);
+            }
+            result.addAll(resultSet);
+
+            for (PersonalInfo pi: resultSet) {
+                CustomerViewDto cvd = new CustomerViewDto();
+                modelConversionHelper.personalInfoToCustomerViewDtoObject(pi,
+                        model.orElse(""), new ArrayList<>(visits));
+                resultDto.add(cvd);
+            }
+
+            return resultDto;
         }
+
     }
 
+
+        /*
     private List<Predicate> getFilterModelAndDateResults(CriteriaBuilder cb,
                                                          Optional<String> model,
                                                          Optional<Date> dateFrom,
@@ -134,7 +284,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         try (Session session = sessionFactory.openSession()) {
 
-            CriteriaQuery query = cb.createQuery(); /* Your combined target type, e.g. MyQueriedBuildDetails.class, containing buildNumber, duration, code health, etc.*/
+            CriteriaQuery query = cb.createQuery();
 
             //Root<PersonalInfo> personalInfoRoot = query.from(PersonalInfo.class);
             Root<Automobile> automobileRoot = query.from(Automobile.class);
@@ -208,7 +358,7 @@ public class UserRepositoryImpl implements UserRepository {
         return criteriaBuilder.and(list.toArray(Predicate[]::new));
     }
 
-    /*
+
     private Predicate getCarPredicate(CriteriaBuilder criteriaBuilder,
                                       CriteriaQuery<PersonalInfo> query,
                                       AutomobileRepository automobileRepository,
