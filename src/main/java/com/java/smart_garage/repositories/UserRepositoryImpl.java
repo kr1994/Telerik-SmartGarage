@@ -1,5 +1,6 @@
 package com.java.smart_garage.repositories;
 
+import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
@@ -11,7 +12,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.*;
 import java.util.*;
 import java.sql.Date;
 import java.util.stream.Collectors;
@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
+    private final ModelConversionHelper modelConversionHelper;
 
     @Autowired
-    public UserRepositoryImpl(SessionFactory sessionFactory) {
+    public UserRepositoryImpl(SessionFactory sessionFactory, ModelConversionHelper modelConversionHelper) {
         this.sessionFactory = sessionFactory;
+        this.modelConversionHelper = modelConversionHelper;
     }
 
 
@@ -44,6 +46,39 @@ public class UserRepositoryImpl implements UserRepository {
                 throw new EntityNotFoundException("User", "id", id);
             }
             return user;
+        }
+    }
+
+    @Override
+    public List<User> getByFirstName(String firstName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.firstName = :firstName order by u.id",
+                    User.class);
+            query.setParameter("firstName", firstName);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> getByLastName(String lastName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.lastName = :lastName order by u.id",
+                    User.class);
+            query.setParameter("lastName", lastName);
+            return query.list();
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.email = :email order by u.id",
+                    User.class);
+            query.setParameter("email", email);
+            return query.list().get(0);
         }
     }
 
@@ -100,7 +135,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<PersonalInfo> filterCustomers(Optional<String> firstName,
+    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
                                               Optional<String> lastName,
                                               Optional<String> email,
                                               Optional<String> phoneNumber,
@@ -127,7 +162,7 @@ public class UserRepositoryImpl implements UserRepository {
             Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
             PersonalInfoRepository pir = new PersonalInfoRepositoryImpl(sessionFactory);
             List<PersonalInfo> allPersonalInformation = pir.getAllPersonalInformations();
-
+            Set<Date> visits = new HashSet<>();
             if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
                 Set<PersonalInfo> namesSet = new HashSet<PersonalInfo>();
                 for (PersonalInfo pi: allPersonalInformation) {
@@ -192,7 +227,7 @@ public class UserRepositoryImpl implements UserRepository {
                                          .filter(i -> i.getDate().before(dateTo.get()) && i.getDate().after(dateFrom.get()))
                                          .collect(Collectors.toList());
 
-                List<Date> visits = new ArrayList<Date>();
+
                 for (Invoice invoice : invoices) {
                     visits.add(invoice.getDate());
                 }
@@ -227,7 +262,15 @@ public class UserRepositoryImpl implements UserRepository {
                 resultSet.addAll(datesSet);
             }
             result.addAll(resultSet);
-            return result;
+
+            for (PersonalInfo pi: resultSet) {
+                CustomerViewDto cvd = new CustomerViewDto();
+                modelConversionHelper.personalInfoToCustomerViewDtoObject(pi,
+                        model.orElse(""), new ArrayList<>(visits));
+                resultDto.add(cvd);
+            }
+
+            return resultDto;
         }
 
     }

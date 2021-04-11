@@ -7,6 +7,7 @@ import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.UserDto;
+import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -83,14 +84,14 @@ public class UserController {
     }
 
     @GetMapping("/filter/customers")
-    public List<PersonalInfo> filterCustomers(@RequestHeader HttpHeaders headers,
-                                              @RequestParam(required = false) Optional<String> firstName,
-                                              @RequestParam(required = false) Optional<String> lastName,
-                                              @RequestParam(required = false) Optional<String> email,
-                                              @RequestParam(required = false) Optional<String> phoneNumber,
-                                              @RequestParam(required = false) Optional<String> model,
-                                              @RequestParam(required = false) Optional<Date> dateFrom,
-                                              @RequestParam(required = false) Optional<Date> dateTo) {
+    public List<CustomerViewDto> filterCustomers(@RequestHeader HttpHeaders headers,
+                                                 @RequestParam(required = false) Optional<String> firstName,
+                                                 @RequestParam(required = false) Optional<String> lastName,
+                                                 @RequestParam(required = false) Optional<String> email,
+                                                 @RequestParam(required = false) Optional<String> phoneNumber,
+                                                 @RequestParam(required = false) Optional<String> model,
+                                                 @RequestParam(required = false) Optional<Date> dateFrom,
+                                                 @RequestParam(required = false) Optional<Date> dateTo) {
         try {
             Credential credential = authenticationHelper.tryGetUser(headers);
             User credentialUser = authenticationHelper.convertCredentialToUser(credential);

@@ -8,6 +8,7 @@ import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,14 +88,14 @@ public class UserServiceImpl implements UserService {
         repository.delete(id);
     }
 
-    public List<PersonalInfo> filterCustomers(Optional<String> firstName,
-                                              Optional<String> lastName,
-                                              Optional<String> email,
-                                              Optional<String> phoneNumber,
-                                              Optional<String> model,
-                                              Optional<Date> dateFrom,
-                                              Optional<Date> dateTo,
-                                              User userCredential) {
+    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
+                                                 Optional<String> lastName,
+                                                 Optional<String> email,
+                                                 Optional<String> phoneNumber,
+                                                 Optional<String> model,
+                                                 Optional<Date> dateFrom,
+                                                 Optional<Date> dateTo,
+                                                 User userCredential) {
 
         if (!(userCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can filter customers.");
