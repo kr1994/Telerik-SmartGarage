@@ -196,29 +196,31 @@ public class UserRepositoryImpl implements UserRepository {
                 }
                 CarServiceRepository csr = new CarServiceRepositoryImpl(sessionFactory);
                 List<CarService> allCarServices = csr.getAllCarServices();
-                List<CarService> carServices = new ArrayList<CarService>();
+                Set<CarService> carServices = new HashSet<>();
 
                 for (Invoice i: invoices) {
                     for (CarService cs: allCarServices) {
-                        if (cs.getInvoice().equals(i)) {
+                        if (cs.getInvoice().getInvoiceId() == i.getInvoiceId()) {
                             carServices.add(cs);
                         }
                     }
                 }
 
-                List<Automobile> cars = new ArrayList<Automobile>();
+                Set<Automobile> cars = new HashSet<>();
                 for (CarService cs: carServices) {
                     cars.add(cs.getCar());
                 }
 
-                List<User> owners = new ArrayList<User>();
+                Set<User> owners = new HashSet<User>();
                 for (Automobile a: cars) {
                     owners.add(a.getOwner());
                 }
 
                 Set<PersonalInfo> datesSet = new HashSet<PersonalInfo>();
                 for (User u: owners) {
-                    datesSet.add(u.getPersonalInfo());
+                    if (!u.isEmployee()) {
+                        datesSet.add(u.getPersonalInfo());
+                    }
                 }
                 resultSet.addAll(datesSet);
             }
