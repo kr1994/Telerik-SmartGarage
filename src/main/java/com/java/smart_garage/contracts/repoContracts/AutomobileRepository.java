@@ -13,6 +13,8 @@ public interface AutomobileRepository {
 
     Automobile getByPlate(String name);
 
+    List<Automobile> customerId(int id);
+
     Automobile create(Automobile automobile);
 
     Automobile update(Automobile automobile);

@@ -10,6 +10,8 @@ public interface AutomobileService {
 
     Automobile getById(int id);
 
+    List<Automobile> getAllCarsByOwner(int id);
+
     void create(Automobile automobile, User user);
 
     void update(Automobile automobile, User user);

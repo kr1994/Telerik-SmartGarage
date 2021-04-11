@@ -43,6 +43,20 @@ public class AutomobileRepositoryImpl implements AutomobileRepository {
     }
 
     @Override
+    public List<Automobile> customerId(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Automobile> query = session.createQuery("from Automobile where user.id = :id",
+                    Automobile.class);
+            query.setParameter("id", id);
+            List<Automobile> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("Owner", "with", id);
+            }
+            return result;
+        }
+    }
+
+    @Override
     public Automobile getByIdentifications(String name) {
         try (Session session = sessionFactory.openSession()) {
             Query<Automobile> query = session.createQuery("from Automobile where identifications like :name",
