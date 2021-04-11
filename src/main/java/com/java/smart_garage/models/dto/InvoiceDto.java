@@ -1,7 +1,7 @@
 package com.java.smart_garage.models.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 
 
 public class InvoiceDto {
