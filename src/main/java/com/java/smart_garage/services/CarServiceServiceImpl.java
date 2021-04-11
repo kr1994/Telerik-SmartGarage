@@ -35,11 +35,11 @@ public class CarServiceServiceImpl implements CarServiceService {
         return repository.getAllCarServices();
     }
 
-    public List<WorkServiceView> getAllCarServicesByView(int id,Optional<String> currency){
+    public List<WorkServiceView> getAllCarServicesByView(Optional<Date> startingDate, Optional<Date> endingDate,int id,Optional<String> currency){
         String value = "BGN";
         List<WorkServiceView> workServiceView= new ArrayList<>();
         if(currency.isEmpty()){
-            List<CarService> carServices = repository.getAllCarServicesByCar(id);
+            List<CarService> carServices = repository.filterByDateAndCarId(startingDate,endingDate,id);
             try {
                 double multiplier = conversionHelper.getCurrency(value);
                 workServiceView = listWorkServices(carServices,multiplier);
@@ -49,7 +49,7 @@ public class CarServiceServiceImpl implements CarServiceService {
         }else {
             String valueToChange = currency.toString().substring(9,12);
 
-            List<CarService> carServices = repository.getAllCarServicesByCar(id);
+            List<CarService> carServices = repository.filterByDateAndCarId(startingDate,endingDate,id);
             try {
                 double multiplier = conversionHelper.getCurrency(valueToChange);
                 workServiceView = listWorkServices(carServices, multiplier);
@@ -73,10 +73,10 @@ public class CarServiceServiceImpl implements CarServiceService {
     @Override
     public double getCarServicesPrice(int id) {return repository.getCarServicesPrice(id);}
 
-    @Override
-    public List<CarService> filterByDateAndCarId(Optional<Date> startingDate, Optional<Date> endingDate, int id){
-        return  repository.filterByDateAndCarId(startingDate,endingDate,id);
-    }
+//    @Override
+//    public List<WorkServiceView> filterByDateAndCarId(Optional<Date> startingDate, Optional<Date> endingDate, int id, Optional<String> currency){
+//        return  repository.filterByDateAndCarId(startingDate,endingDate,id);
+//    }
 
     @Override
     public void create(CarService carService, User user) {

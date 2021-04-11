@@ -47,13 +47,14 @@ public class CarServiceController {
     }
 
     @GetMapping
-    public List<CarServiceViewDto> getAllServices(@RequestParam Optional<String> currency){
+    public List<CarServiceViewDto> getAllServices(@RequestParam Optional<Date> startingDate,
+                                                  @RequestParam Optional<Date> endingDate,@RequestParam Optional<String> currency){
         List<Automobile> cars = automobileService.getAllCars();
 
         List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
         for (Automobile car : cars) {
-            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(car.getId(),currency)));
+            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
         }
 
         return carServiceViewDto;
@@ -70,14 +71,15 @@ public class CarServiceController {
     }
 
     @GetMapping("/customer/{id}")
-    public List<CarServiceViewDto> getByCarCustomer(@PathVariable int id,@RequestParam Optional<String> currency) {
+    public List<CarServiceViewDto> getByCarCustomer(@RequestParam Optional<Date> startingDate,
+                                                    @RequestParam Optional<Date> endingDate,@PathVariable int id,@RequestParam Optional<String> currency) {
         try {
             List<Automobile> cars = automobileService.getAllCarsByOwner(id);
 
             List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
             for (Automobile car : cars) {
-                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(car.getId(),currency)));
+                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
             }
             return carServiceViewDto;
         }
@@ -87,9 +89,10 @@ public class CarServiceController {
     }
 
     @GetMapping("/car/{id}")
-    public CarServiceViewDto getAllServicesForCar(@PathVariable int id,@RequestParam Optional<String> currency) {
+    public CarServiceViewDto getAllServicesForCar(@RequestParam Optional<Date> startingDate,
+                                                  @RequestParam Optional<Date> endingDate,@PathVariable int id,@RequestParam Optional<String> currency) {
         try {
-            return modelConversionHelper.objectToView(automobileService.getById(id),service.getAllCarServicesByView(id,currency));
+            return modelConversionHelper.objectToView(automobileService.getById(id),service.getAllCarServicesByView(startingDate,endingDate,id,currency));
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -106,17 +109,24 @@ public class CarServiceController {
         }
     }
 
-    @GetMapping("/car/filter/{id}")
-    public List<CarService> filterBy(@RequestParam Optional<Date> startingDate,
-                                     @RequestParam Optional<Date> endingDate,
-                                     @PathVariable int id){
-        try{
-            return service.filterByDateAndCarId(startingDate,endingDate,id);
-        }
-        catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
+//    @GetMapping("/car/filter/{id}")
+//    public List<CarServiceViewDto> filterBy(@RequestParam Optional<Date> startingDate,
+//                                     @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
+//                                     @PathVariable int id){
+//        try{
+//            List<Automobile> cars = automobileService.getAllCarsByOwner(id);
+//
+//            List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
+//
+//            for (Automobile car : cars) {
+//                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.(startingDate,endingDate,car.getId(),currency)));
+//            }
+//            return carServiceViewDto;
+//        }
+//        catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
 
     @PostMapping
     public CarService create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CarServiceDto carServiceDto) {
