@@ -33,6 +33,11 @@ public class AutomobileServiceImpl implements AutomobileService {
     }
 
     @Override
+    public List<Automobile> getAllCarsByOwner(int id) {
+        return repository.customerId(id);
+    }
+
+    @Override
     public Automobile getById(int id) {
         return repository.getById(id);
     }

@@ -185,7 +185,12 @@ public class ModelConversionHelper {
         carServiceViewDto.setCarOwner(automobile.getOwner().getPersonalInfo().getLastName());
         carServiceViewDto.setCarOwnerEmail(automobile.getOwner().getPersonalInfo().getEmail());
         carServiceViewDto.setWorkServices(workServiceViews);
-        carServiceViewDto.setTotalPrice(Math.round(carServiceRepository.getCarServicesPrice(automobile.getId())*workServiceViews.get(0).getMultiplier()));
+        if(!workServiceViews.isEmpty()) {
+            carServiceViewDto.setTotalPrice(Math.round(carServiceRepository.getCarServicesPrice(automobile.getId()) * workServiceViews.get(0).getMultiplier()));
+        }
+        else {
+            carServiceViewDto.setTotalPrice(0);
+        }
         return carServiceViewDto;
     }
 
