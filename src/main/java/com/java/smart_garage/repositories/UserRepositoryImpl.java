@@ -3,13 +3,14 @@ package com.java.smart_garage.repositories;
 import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
+import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import java.sql.Date;
 import java.util.*;
 
 @Repository
@@ -44,38 +45,38 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-//    @Override
-//    public List<User> getByFirstName(String firstName) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-//                            "where u.personalInfo.firstName = :firstName order by u.id",
-//                    User.class);
-//            query.setParameter("firstName", firstName);
-//            return query.list();
-//        }
-//    }
-//
-//    @Override
-//    public List<User> getByLastName(String lastName) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-//                            "where u.personalInfo.lastName = :lastName order by u.id",
-//                    User.class);
-//            query.setParameter("lastName", lastName);
-//            return query.list();
-//        }
-//    }
-//
-//    @Override
-//    public User getByEmail(String email) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-//                            "where u.personalInfo.email = :email order by u.id",
-//                    User.class);
-//            query.setParameter("email", email);
-//            return query.list().get(0);
-//        }
-//    }
+    @Override
+    public List<User> getByFirstName(String firstName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.firstName = :firstName order by u.id",
+                    User.class);
+            query.setParameter("firstName", firstName);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> getByLastName(String lastName) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.lastName = :lastName order by u.id",
+                    User.class);
+            query.setParameter("lastName", lastName);
+            return query.list();
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+                            "where u.personalInfo.email = :email order by u.id",
+                    User.class);
+            query.setParameter("email", email);
+            return query.list().get(0);
+        }
+    }
 
     @Override
     public User create(User user) {
@@ -129,29 +130,30 @@ public class UserRepositoryImpl implements UserRepository {
         session.update(user);
     }
 
-//    @Override
-//    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-//                                              Optional<String> lastName,
-//                                              Optional<String> email,
-//                                              Optional<String> phoneNumber,
-//                                              Optional<String> model,
-//                                              Optional<Date> dateFrom,
-//                                              Optional<Date> dateTo) {
-//
-//        try (Session session = sessionFactory.openSession()) {
-///*
-//            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//            CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
-//            List<Predicate> predicates = List.copyOf(getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo));
-//            Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
-//            predicates.add(predicate);
-//            return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
-//                    predicates.get(3), predicates.get(4), predicates.get(5), predicates.get(6))).getResultList();
-//
-//            //return session.createQuery(query.where(predicate)).getResultList();
-//
-//            //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
-//         */
+    @Override
+    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
+                                                 Optional<String> lastName,
+                                                 Optional<String> email,
+                                                 Optional<String> phoneNumber,
+                                                 Optional<String> model,
+                                                 Optional<Date> dateFrom,
+                                                 Optional<Date> dateTo) {
+
+        try (Session session = sessionFactory.openSession()) {
+/*
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
+            List<Predicate> predicates = List.copyOf(getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo));
+            Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
+            predicates.add(predicate);
+            return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
+                    predicates.get(3), predicates.get(4), predicates.get(5), predicates.get(6))).getResultList();
+
+            //return session.createQuery(query.where(predicate)).getResultList();
+
+            //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
+         */
+
 //            List<PersonalInfo> result = new ArrayList<PersonalInfo>();
 //            List<CustomerViewDto> resultDto = new ArrayList<CustomerViewDto>();
 //            Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
@@ -266,9 +268,135 @@ public class UserRepositoryImpl implements UserRepository {
 //            }
 //
 //            return resultDto;
-//        }
-//
-//    }
+
+            int countParameters = 0;
+            String queryStr = "from User u where ";
+            Query<User> queryForModel;
+
+            if (firstName.isPresent()) {
+                queryStr += " personalInfo.firstName = :firstName";
+            }
+
+            if (lastName.isPresent()) {
+                queryStr += " personalInfo.lastName = :lastName";
+            }
+
+            if (email.isPresent()) {
+                queryStr += " personalInfo.email = :email";
+            }
+
+            if (phoneNumber.isPresent()) {
+                queryStr += " personalInfo.phoneNumber = :phoneNumber";
+            }
+
+            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
+                queryStr += " and userType.type = :customer";
+            }
+
+            Query<User> queryForPi = session.createQuery(queryStr, User.class);
+
+            if (firstName.isPresent()) {
+                queryForPi.setParameter("firstName", firstName.get());
+            }
+
+            if (lastName.isPresent()) {
+                queryForPi.setParameter("lastName", lastName.get());
+            }
+
+            if (email.isPresent()) {
+                queryForPi.setParameter("email", email.get());
+            }
+
+            if (phoneNumber.isPresent()) {
+                queryForPi.setParameter("phoneNumber", phoneNumber.get());
+            }
+
+            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
+                queryForPi.setParameter("customer", "Customer");
+            }
+
+            List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
+            if (!queryForPi.getResultList().isEmpty()) {
+                for (User u: queryForPi.getResultList()) {
+                    CustomerViewDto cvd = new CustomerViewDto();
+                    cvd.setFirstName(u.getPersonalInfo().getFirstName());
+                    cvd.setLastName(u.getPersonalInfo().getLastName());
+                    cvd.setEmail(u.getPersonalInfo().getEmail());
+                    cvd.setPhoneNumber(u.getPersonalInfo().getPhoneNumber());
+                    result.add(cvd);
+                }
+            }
+
+
+            if (model.isPresent()) {
+                queryForModel = session.createQuery("from User u join Automobile a " +
+                        "where a.model.modelName = :model and u.userType.type = :customer", User.class);
+
+                queryForModel.setParameter("model", model.get());
+                queryForModel.setParameter("customer", "Customer");
+
+                for (User u: queryForModel.getResultList()) {
+                    if (!result.isEmpty()) {
+                        for (CustomerViewDto cvd: result) {
+                            if (cvd.getEmail().equals(u.getPersonalInfo().getEmail())) {
+                                cvd.setCarModel(model.get());
+                            } else {
+                                result.remove(cvd);
+                            }
+                        }
+                    } else {
+                        CustomerViewDto cvd = new CustomerViewDto();
+                        cvd.setCarModel(model.get());
+                        result.add(cvd);
+                    }
+
+                }
+            }
+
+            if (dateFrom.isPresent() && dateTo.isPresent()) {
+                Date dateStart = dateFrom.get();
+                Date dateEnd = dateTo.get();
+                List<Date> visits = new ArrayList<Date>();
+                Query<User> queryForVisitors = session.createQuery("select u from User u join Automobile a " +
+                        "join CarService cs where cs.invoice.date >= :dateStart and cs.invoice.date <= :dateEnd " +
+                        "and cs.automobile.user.userType.type = :customer", User.class);
+
+                queryForVisitors.setParameter("dateStart", dateStart);
+                queryForVisitors.setParameter("dateEnd", dateEnd);
+                queryForVisitors.setParameter("customer", "Customer");
+
+                Query<Date> queryForVisits = session.createQuery("select i.date from Invoice i " +
+                        "join CarService cs join Automobile a join User u join PersonalInfo p " +
+                        "where i.date >= :dateStart and i.date <= :dateEnd and u.userType.type = :customer ",
+                        Date.class);
+
+
+                //visits.
+                for (User u: queryForVisitors.getResultList()) {
+                    if (!result.isEmpty()) {
+                        for (CustomerViewDto cvd: result) {
+                            if (cvd.getEmail().equals(u.getPersonalInfo().getEmail())) {
+                                cvd.setVisitsInRange(visits);
+                            } else {
+                                result.remove(cvd);
+                            }
+                        }
+                    } else {
+                        CustomerViewDto cvd = new CustomerViewDto();
+                        cvd.setCarModel(model.get());
+                        result.add(cvd);
+                    }
+
+                }
+            }
+
+
+            //return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
+            return result;
+
+        }
+
+    }
 
 
         /*
@@ -362,14 +490,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         try (Session session = sessionFactory.openSession()) {
 
-            if (modelAutomobile.isPresent()) {
-                Query<PersonalInfo> queryForName = session.createQuery("from Model m join Automobile a " +
-                        "join User u join PersonalInfo p where a.model.modelName = :modelAutomobile and " +
-                        "u.userType != :employee", PersonalInfo.class);
 
-                queryForName.setParameter("modelAutomobile", modelAutomobile.get());
-                queryForName.setParameter("employee", "Employee");
-            }
 
 
             if (visits.get(0).isPresent()) {
@@ -391,68 +512,6 @@ public class UserRepositoryImpl implements UserRepository {
         return criteriaBuilder.and(list.toArray(Predicate[]::new));
     }
 
-    private List<PersonalInfo> getPersonalInfoList(Optional<String> firstName, Optional<String> lastName, Optional<String> email, Optional<String> phoneNumber, Session session) {
-        int countParameters = 0;
-        String queryStr = "from PersonalInfo p ";
-
-        if (firstName.isPresent()) {
-            if (countParameters > 0) {
-                queryStr += " and p.firstName = :firstName";
-            } else {
-                queryStr += "where p.firstName = :firstName";
-            }
-            countParameters++;
-        }
-
-        if (lastName.isPresent()) {
-            if (countParameters > 0) {
-                queryStr += " and p.lastName = :lastName";
-            } else {
-                queryStr += "where p.lastName = :lastName";
-            }
-            countParameters++;
-        }
-
-        if (email.isPresent()) {
-            if (countParameters > 0) {
-                queryStr += " and p.email = :email";
-            } else {
-                queryStr += "where p.email = :email";
-            }
-            countParameters++;
-        }
-
-        if (phoneNumber.isPresent()) {
-            if (countParameters > 0) {
-                queryStr += " and p.phoneNumber = :phoneNumber";
-            } else {
-                queryStr += "where p.phoneNumber = :phoneNumber";
-            }
-            countParameters++;
-        }
-
-        Query<PersonalInfo> query = session.createQuery(queryStr, PersonalInfo.class);
-
-        if (firstName.isPresent()) {
-            query.setParameter("firstName", firstName.get());
-        }
-
-        if (lastName.isPresent()) {
-            query.setParameter("lastName", lastName.get());
-        }
-
-        if (email.isPresent()) {
-            query.setParameter("email", email.get());
-        }
-
-        if (phoneNumber.isPresent()) {
-            query.setParameter("phoneNumber", phoneNumber.get());
-        }
-
-
-        //return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
-        return query.list();
-    }
 
     */
 }

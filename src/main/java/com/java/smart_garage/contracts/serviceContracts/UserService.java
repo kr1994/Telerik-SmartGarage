@@ -21,13 +21,13 @@ public interface UserService {
 
     void delete(int id, User user);
 
-//    List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-//                                          Optional<String> lastName,
-//                                          Optional<String> email,
-//                                          Optional<String> phoneNumber,
-//                                          Optional<String> model,
-//                                          Optional<Date> dateFrom,
-//                                          Optional<Date> dateTo,
-//                                          User userCredential);
+    List<CustomerViewDto> filterCustomers(Optional<String> firstName,
+                                          Optional<String> lastName,
+                                          Optional<String> email,
+                                          Optional<String> phoneNumber,
+                                          Optional<String> model,
+                                          Optional<Date> dateFrom,
+                                          Optional<Date> dateTo,
+                                          User userCredential);
 
 }

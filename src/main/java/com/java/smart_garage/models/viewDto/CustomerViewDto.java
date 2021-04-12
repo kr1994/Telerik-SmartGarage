@@ -16,7 +16,7 @@ public class CustomerViewDto {
 
     private String phoneNumber;
 
-    private Model carModel;
+    private String carModel;
 
     private List<Date> visitsInRange;
 
@@ -42,7 +42,7 @@ public class CustomerViewDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setCarModel(Model carModel) {
+    public void setCarModel(String carModel) {
         this.carModel = carModel;
     }
 
@@ -74,7 +74,7 @@ public class CustomerViewDto {
         return phoneNumber;
     }
 
-    public Model getCarModel() {
+    public String getCarModel() {
         return carModel;
     }
 
