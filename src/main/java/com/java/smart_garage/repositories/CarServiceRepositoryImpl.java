@@ -92,7 +92,7 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
     public CarService getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             CarService carService = session.get(CarService.class, id);
-            if(carService==null){
+            if (carService == null){
                 throw new EntityNotFoundException("CarService", "id", id);
             }
             return carService;
