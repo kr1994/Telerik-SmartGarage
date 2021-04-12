@@ -155,121 +155,6 @@ public class UserRepositoryImpl implements UserRepository {
             //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
          */
 
-//            List<PersonalInfo> result = new ArrayList<PersonalInfo>();
-//            List<CustomerViewDto> resultDto = new ArrayList<CustomerViewDto>();
-//            Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
-//            PersonalInfoRepository pir = new PersonalInfoRepositoryImpl(sessionFactory);
-//            List<PersonalInfo> allPersonalInformation = pir.getAllPersonalInformations();
-//            Set<Date> visits = new HashSet<>();
-//            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
-//                Set<PersonalInfo> namesSet = new HashSet<PersonalInfo>();
-//                for (PersonalInfo pi: allPersonalInformation) {
-//
-//                    if (firstName.isPresent()) {
-//                        if (pi.getFirstName().equals(firstName.get())) {
-//                            namesSet.add(pi);
-//                        }
-//                    }
-//
-//                    if (lastName.isPresent()) {
-//                        if (pi.getLastName().equals(lastName.get())) {
-//                            namesSet.add(pi);
-//                        }
-//                    }
-//
-//                    if (email.isPresent()) {
-//                        if (pi.getEmail().equals(email.get())) {
-//                            namesSet.add(pi);
-//                        }
-//                    }
-//
-//                    if (phoneNumber.isPresent()) {
-//                        if (pi.getPhoneNumber().equals(phoneNumber.get())) {
-//                            namesSet.add(pi);
-//                        }
-//                    }
-//                }
-//
-//                resultSet.addAll(namesSet);
-//
-//            }
-//
-//            if (model.isPresent()) {
-//                ModelRepository mr = new ModelRepositoryImpl(sessionFactory);
-//                AutomobileRepository ar = new AutomobileRepositoryImpl(sessionFactory);
-//                Model modelObject = mr.getByName(model.get());
-//
-//                List<Automobile> automobiles = ar.getAllCars().stream()
-//                                               .filter(a -> a.getModel().getModelName().equals(modelObject.getModelName()))
-//                                               .collect(Collectors.toList());
-//
-//                Set<User> owners = new HashSet<User>();
-//                for (Automobile a: automobiles) {
-//                    owners.add(a.getOwner());
-//                }
-//
-//                Set<PersonalInfo> modelsSet = new HashSet<PersonalInfo>();
-//                for (User u: owners) {
-//                    if (!u.isEmployee()) {
-//                        modelsSet.add(u.getPersonalInfo());
-//                    }
-//                }
-//
-//                resultSet.addAll(modelsSet);
-//
-//            }
-//
-//            if (dateFrom.isPresent() && dateTo.isPresent()) {
-//                InvoiceRepository ir = new InvoiceRepositoryImpl(sessionFactory);
-//                List<Invoice> invoices = ir.getAllInvoices().stream()
-//                                         .filter(i -> i.getDate().before(dateTo.get()) && i.getDate().after(dateFrom.get()))
-//                                         .collect(Collectors.toList());
-//
-//
-//                for (Invoice invoice : invoices) {
-//                    visits.add(invoice.getDate());
-//                }
-//                CarServiceRepository csr = new CarServiceRepositoryImpl(sessionFactory);
-//                List<CarService> allCarServices = csr.getAllCarServices();
-//                Set<CarService> carServices = new HashSet<>();
-//
-//                for (Invoice i: invoices) {
-//                    for (CarService cs: allCarServices) {
-//                        if (cs.getInvoice().getInvoiceId() == i.getInvoiceId()) {
-//                            carServices.add(cs);
-//                        }
-//                    }
-//                }
-//
-//                Set<Automobile> cars = new HashSet<>();
-//                for (CarService cs: carServices) {
-//                    cars.add(cs.getCar());
-//                }
-//
-//                Set<User> owners = new HashSet<User>();
-//                for (Automobile a: cars) {
-//                    owners.add(a.getOwner());
-//                }
-//
-//                Set<PersonalInfo> datesSet = new HashSet<PersonalInfo>();
-//                for (User u: owners) {
-//                    if (!u.isEmployee()) {
-//                        datesSet.add(u.getPersonalInfo());
-//                    }
-//                }
-//                resultSet.addAll(datesSet);
-//            }
-//            result.addAll(resultSet);
-//
-//            for (PersonalInfo pi: resultSet) {
-//                CustomerViewDto cvd = new CustomerViewDto();
-//                modelConversionHelper.personalInfoToCustomerViewDtoObject(pi,
-//                        model.orElse(""), new ArrayList<>(visits));
-//                resultDto.add(cvd);
-//            }
-//
-//            return resultDto;
-
             List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
             if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
                 String queryStr = "from User u where ";
@@ -321,23 +206,24 @@ public class UserRepositoryImpl implements UserRepository {
                         cvd.setLastName(u.getPersonalInfo().getLastName());
                         cvd.setEmail(u.getPersonalInfo().getEmail());
                         cvd.setPhoneNumber(u.getPersonalInfo().getPhoneNumber());
+                        cvd.setUserType(u.getUserType());
                         result.add(cvd);
                     }
                 }
             }
-            Query<User> queryForModel;
+            Query<Automobile> queryForModel;
 
             if (model.isPresent()) {
-                queryForModel = session.createQuery("select u from User u join Automobile a " +
-                        "where a.model.modelName = :model and u.userType.type = :customer", User.class);
+                queryForModel = session.createQuery("select a from Automobile a " +
+                        "where a.model.modelName = :model and a.user.userType.type = :customer", Automobile.class);
 
                 queryForModel.setParameter("model", model.get());
                 queryForModel.setParameter("customer", "Customer");
 
-                for (User u: queryForModel.getResultList()) {
+                for (Automobile a: queryForModel.getResultList()) {
                     if (!result.isEmpty()) {
                         for (CustomerViewDto cvd: result) {
-                            if (cvd.getEmail().equals(u.getPersonalInfo().getEmail())) {
+                            if (cvd.getEmail().equals(a.getOwner().getPersonalInfo().getEmail())) {
                                 cvd.setCarModel(model.get());
                             } else {
                                 result.remove(cvd);
@@ -345,10 +231,11 @@ public class UserRepositoryImpl implements UserRepository {
                         }
                     } else {
                         CustomerViewDto cvd = new CustomerViewDto();
-                        cvd.setFirstName(u.getPersonalInfo().getFirstName());
-                        cvd.setLastName(u.getPersonalInfo().getLastName());
-                        cvd.setEmail(u.getPersonalInfo().getEmail());
-                        cvd.setPhoneNumber(u.getPersonalInfo().getPhoneNumber());
+                        cvd.setFirstName(a.getOwner().getPersonalInfo().getFirstName());
+                        cvd.setLastName(a.getOwner().getPersonalInfo().getLastName());
+                        cvd.setEmail(a.getOwner().getPersonalInfo().getEmail());
+                        cvd.setPhoneNumber(a.getOwner().getPersonalInfo().getPhoneNumber());
+                        cvd.setUserType(a.getOwner().getUserType());
                         cvd.setCarModel(model.get());
                         result.add(cvd);
                     }
@@ -369,10 +256,6 @@ public class UserRepositoryImpl implements UserRepository {
                 queryForVisitors.setParameter("customer", "Customer");
 
                 List<CarService> carServices = new ArrayList<CarService>();
-
-//                Query<java.util.Date> queryForVisits = session.createQuery("select i.date from Invoice i " +
-//                        "join CarService cs where i.date >= :dateStart and i.date <= :dateEnd and " +
-//                        "cs.automobile.user.userType.type = :customer ", java.util.Date.class);
 
                 Query<CarService> queryForVisits = session.createQuery("from CarService cs " +
                          "where invoice.date >= :dateStart and invoice.date <= :dateEnd and " +
@@ -395,19 +278,20 @@ public class UserRepositoryImpl implements UserRepository {
                         }
                     } else {
                         CustomerViewDto cvd = new CustomerViewDto();
+                        cvd.setFirstName(cs.getCar().getOwner().getPersonalInfo().getFirstName());
+                        cvd.setLastName(cs.getCar().getOwner().getPersonalInfo().getLastName());
+                        cvd.setEmail(cs.getCar().getOwner().getPersonalInfo().getEmail());
+                        cvd.setPhoneNumber(cs.getCar().getOwner().getPersonalInfo().getPhoneNumber());
+                        cvd.setUserType(cs.getCar().getOwner().getUserType());
+                        cvd.setCarModel(cs.getCar().getModel().getModelName());
                         cvd.setVisitsInRange(List.of(cs.getInvoice().getDate()));
                         result.add(cvd);
                     }
 
                 }
             }
-
-
-            //return query.stream().filter(u -> !(u.isEmployee())).collect(Collectors.toList());
             return result;
-
         }
-
     }
 
 
