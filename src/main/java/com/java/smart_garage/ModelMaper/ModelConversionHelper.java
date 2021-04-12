@@ -249,23 +249,23 @@ public class ModelConversionHelper {
         return personalInfo;
     }
 
-    public CustomerViewDto personalInfoToCustomerViewDtoObject (PersonalInfo pi, String model, List<Date> visits) {
-        CustomerViewDto cvd = new CustomerViewDto();
-        cvd.setFirstName(pi.getFirstName());
-        cvd.setLastName(pi.getLastName());
-        cvd.setEmail(pi.getEmail());
-        cvd.setPhoneNumber(pi.getPhoneNumber());
-        User user = userRepository.getByEmail(pi.getEmail());
-        cvd.setUserType(user.getUserType());
-        List<Automobile> automobiles = automobileRepository.getByOwner(pi.getFirstName());
-        for (Automobile a : automobiles) {
-            if (a.getModel().getModelName().equals(model)) {
-                cvd.setCarModel(a.getModel());
-            }
-        }
-        cvd.setVisitsInRange(visits);
-        return cvd;
-    }
+//    public CustomerViewDto personalInfoToCustomerViewDtoObject (PersonalInfo pi, String model, List<Date> visits) {
+//        CustomerViewDto cvd = new CustomerViewDto();
+//        cvd.setFirstName(pi.getFirstName());
+//        cvd.setLastName(pi.getLastName());
+//        cvd.setEmail(pi.getEmail());
+//        cvd.setPhoneNumber(pi.getPhoneNumber());
+//        User user = userRepository.getByEmail(pi.getEmail());
+//        cvd.setUserType(user.getUserType());
+//        List<Automobile> automobiles = automobileRepository.getByOwner(pi.getEmail());
+//        for (Automobile a : automobiles) {
+//            if (a.getModel().getModelName().equals(model)) {
+//                cvd.setCarModel(a.getModel());
+//            }
+//        }
+//        cvd.setVisitsInRange(visits);
+//        return cvd;
+//    }
 
     private void dtoToCredentialObject(UserDto userDto, User user) {
         Credential credential = credentialRepository.getById(userDto.getUserId());

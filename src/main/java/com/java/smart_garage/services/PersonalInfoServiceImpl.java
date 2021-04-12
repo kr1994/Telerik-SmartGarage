@@ -4,6 +4,7 @@ import com.java.smart_garage.contracts.repoContracts.PersonalInfoRepository;
 import com.java.smart_garage.contracts.serviceContracts.PersonalInfoService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.exceptions.IncorrectPhoneException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.models.Credential;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.PHONE_CODE;
 
 @Service
 public class PersonalInfoServiceImpl implements PersonalInfoService {
@@ -52,17 +55,18 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     public void create(PersonalInfo personalInfo, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(credentialUser.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create new personal information.");
-        }
 
         try {
-            repository.getByFirstName(personalInfo.getFirstName());
+            repository.getByEmail(personalInfo.getEmail());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
-            throw new DuplicateEntityException("Personal Information", "name", personalInfo.getFirstName());
+            throw new DuplicateEntityException("Personal Information", "name", personalInfo.getEmail());
+        }
+
+        if(!truePhoneNumber(credentialUser.getPersonalInfo().getPhoneNumber())){
+            throw new IncorrectPhoneException(credentialUser.getPersonalInfo().getPhoneNumber());
         }
 
         repository.create(personalInfo);
@@ -95,6 +99,17 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
             throw new EntityNotFoundException("Personal Information", "id", id);
         }
         repository.delete(id);
+    }
+
+    public boolean truePhoneNumber(String number) {
+        boolean flag = false;
+
+        String phoneNumber = number.substring(0, 2);
+
+        if (phoneNumber.equals(PHONE_CODE)){
+            flag = true;
+        }
+        return flag;
     }
 }
 

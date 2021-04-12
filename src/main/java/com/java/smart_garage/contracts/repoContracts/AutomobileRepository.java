@@ -20,4 +20,6 @@ public interface AutomobileRepository {
     Automobile update(Automobile automobile);
 
     void delete(int id);
+
+    List<Automobile> getByOwner(String firstName);
 }

@@ -13,11 +13,11 @@ public interface UserRepository {
 
     User getById(int id);
 
-    List<User> getByFirstName(String firstName);
-
-    List<User> getByLastName(String lastName);
-
-    User getByEmail(String email);
+//    List<User> getByFirstName(String firstName);
+//
+//    List<User> getByLastName(String lastName);
+//
+//    User getByEmail(String email);
 
     User create(User user);
 
@@ -28,12 +28,13 @@ public interface UserRepository {
 
     void delete(int id);
 
-    List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-                                          Optional<String> lastName,
-                                          Optional<String> email,
-                                          Optional<String> phoneNumber,
-                                          Optional<String> model,
-                                          Optional<Date> dateFrom,
-                                          Optional<Date> dateTo);
-
+//    List<CustomerViewDto> filterCustomers(Optional<String> firstName,
+//                                          Optional<String> lastName,
+//                                          Optional<String> email,
+//                                          Optional<String> phoneNumber,
+//                                          Optional<String> model,
+//                                          Optional<Date> dateFrom,
+//                                          Optional<Date> dateTo);
+//
+//
 }

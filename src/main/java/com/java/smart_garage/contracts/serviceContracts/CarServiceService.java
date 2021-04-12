@@ -19,7 +19,6 @@ public interface CarServiceService {  // Too complex name
 
     List<CarService> getAllCarServicesByCar(int id);
 
-    //List<WorkServiceView> filterByDateAndCarId(Optional<Date> startingDate, Optional<Date> endingDate, int id, Optional<String> currency);
 
     double getCarServicesPrice(int id);
 

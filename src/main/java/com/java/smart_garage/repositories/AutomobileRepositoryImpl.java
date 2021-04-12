@@ -69,6 +69,19 @@ public class AutomobileRepositoryImpl implements AutomobileRepository {
             return result.get(0);
         }
     }
+    @Override
+    public List<Automobile> getByOwner(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Automobile> query = session.createQuery("from Automobile where user.personalInfo.email = :email",
+                    Automobile.class);
+            query.setParameter("email", email);
+            List<Automobile> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundException("Owner", "with", email);
+            }
+            return result;
+        }
+    }
 
     @Override
     public Automobile getByPlate(String name) {
@@ -112,6 +125,8 @@ public class AutomobileRepositoryImpl implements AutomobileRepository {
             session.getTransaction().commit();
         }
     }
+
+
 
 
 }

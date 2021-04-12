@@ -73,10 +73,6 @@ public class CarServiceServiceImpl implements CarServiceService {
     @Override
     public double getCarServicesPrice(int id) {return repository.getCarServicesPrice(id);}
 
-//    @Override
-//    public List<WorkServiceView> filterByDateAndCarId(Optional<Date> startingDate, Optional<Date> endingDate, int id, Optional<String> currency){
-//        return  repository.filterByDateAndCarId(startingDate,endingDate,id);
-//    }
 
     @Override
     public void create(CarService carService, User user) {

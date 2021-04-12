@@ -83,25 +83,25 @@ public class UserController {
         }
     }
 
-    @GetMapping("/filter/customers")
-    public List<CustomerViewDto> filterCustomers(@RequestHeader HttpHeaders headers,
-                                                 @RequestParam(required = false) Optional<String> firstName,
-                                                 @RequestParam(required = false) Optional<String> lastName,
-                                                 @RequestParam(required = false) Optional<String> email,
-                                                 @RequestParam(required = false) Optional<String> phoneNumber,
-                                                 @RequestParam(required = false) Optional<String> model,
-                                                 @RequestParam(required = false) Optional<Date> dateFrom,
-                                                 @RequestParam(required = false) Optional<Date> dateTo) {
-        try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
-            return service.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom,
-                    dateTo, credentialUser);
-        }
-        catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
+//    @GetMapping("/filter/customers")
+//    public List<CustomerViewDto> filterCustomers(@RequestHeader HttpHeaders headers,
+//                                                 @RequestParam(required = false) Optional<String> firstName,
+//                                                 @RequestParam(required = false) Optional<String> lastName,
+//                                                 @RequestParam(required = false) Optional<String> email,
+//                                                 @RequestParam(required = false) Optional<String> phoneNumber,
+//                                                 @RequestParam(required = false) Optional<String> model,
+//                                                 @RequestParam(required = false) Optional<Date> dateFrom,
+//                                                 @RequestParam(required = false) Optional<Date> dateTo) {
+//        try {
+//            Credential credential = authenticationHelper.tryGetUser(headers);
+//            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+//            return service.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom,
+//                    dateTo, credentialUser);
+//        }
+//        catch (EntityNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+//        }
+//    }
 
 
 }

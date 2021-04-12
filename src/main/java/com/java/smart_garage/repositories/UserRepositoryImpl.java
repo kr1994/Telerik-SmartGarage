@@ -20,12 +20,11 @@ import java.util.stream.Collectors;
 public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
-    private final ModelConversionHelper modelConversionHelper;
+
 
     @Autowired
-    public UserRepositoryImpl(SessionFactory sessionFactory, ModelConversionHelper modelConversionHelper) {
+    public UserRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.modelConversionHelper = modelConversionHelper;
     }
 
 
@@ -49,38 +48,38 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    @Override
-    public List<User> getByFirstName(String firstName) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-                            "where u.personalInfo.firstName = :firstName order by u.id",
-                    User.class);
-            query.setParameter("firstName", firstName);
-            return query.list();
-        }
-    }
-
-    @Override
-    public List<User> getByLastName(String lastName) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-                            "where u.personalInfo.lastName = :lastName order by u.id",
-                    User.class);
-            query.setParameter("lastName", lastName);
-            return query.list();
-        }
-    }
-
-    @Override
-    public User getByEmail(String email) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-                            "where u.personalInfo.email = :email order by u.id",
-                    User.class);
-            query.setParameter("email", email);
-            return query.list().get(0);
-        }
-    }
+//    @Override
+//    public List<User> getByFirstName(String firstName) {
+//        try (Session session = sessionFactory.openSession()) {
+//            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+//                            "where u.personalInfo.firstName = :firstName order by u.id",
+//                    User.class);
+//            query.setParameter("firstName", firstName);
+//            return query.list();
+//        }
+//    }
+//
+//    @Override
+//    public List<User> getByLastName(String lastName) {
+//        try (Session session = sessionFactory.openSession()) {
+//            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+//                            "where u.personalInfo.lastName = :lastName order by u.id",
+//                    User.class);
+//            query.setParameter("lastName", lastName);
+//            return query.list();
+//        }
+//    }
+//
+//    @Override
+//    public User getByEmail(String email) {
+//        try (Session session = sessionFactory.openSession()) {
+//            Query<User> query = session.createQuery("from User u join PersonalInfo p " +
+//                            "where u.personalInfo.email = :email order by u.id",
+//                    User.class);
+//            query.setParameter("email", email);
+//            return query.list().get(0);
+//        }
+//    }
 
     @Override
     public User create(User user) {
@@ -134,146 +133,146 @@ public class UserRepositoryImpl implements UserRepository {
         session.update(user);
     }
 
-    @Override
-    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-                                              Optional<String> lastName,
-                                              Optional<String> email,
-                                              Optional<String> phoneNumber,
-                                              Optional<String> model,
-                                              Optional<Date> dateFrom,
-                                              Optional<Date> dateTo) {
-
-        try (Session session = sessionFactory.openSession()) {
-/*
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
-            List<Predicate> predicates = List.copyOf(getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo));
-            Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
-            predicates.add(predicate);
-            return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
-                    predicates.get(3), predicates.get(4), predicates.get(5), predicates.get(6))).getResultList();
-
-            //return session.createQuery(query.where(predicate)).getResultList();
-
-            //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
-         */
-            List<PersonalInfo> result = new ArrayList<PersonalInfo>();
-            List<CustomerViewDto> resultDto = new ArrayList<CustomerViewDto>();
-            Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
-            PersonalInfoRepository pir = new PersonalInfoRepositoryImpl(sessionFactory);
-            List<PersonalInfo> allPersonalInformation = pir.getAllPersonalInformations();
-            Set<Date> visits = new HashSet<>();
-            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
-                Set<PersonalInfo> namesSet = new HashSet<PersonalInfo>();
-                for (PersonalInfo pi: allPersonalInformation) {
-
-                    if (firstName.isPresent()) {
-                        if (pi.getFirstName().equals(firstName.get())) {
-                            namesSet.add(pi);
-                        }
-                    }
-
-                    if (lastName.isPresent()) {
-                        if (pi.getLastName().equals(lastName.get())) {
-                            namesSet.add(pi);
-                        }
-                    }
-
-                    if (email.isPresent()) {
-                        if (pi.getEmail().equals(email.get())) {
-                            namesSet.add(pi);
-                        }
-                    }
-
-                    if (phoneNumber.isPresent()) {
-                        if (pi.getPhoneNumber().equals(phoneNumber.get())) {
-                            namesSet.add(pi);
-                        }
-                    }
-                }
-
-                resultSet.addAll(namesSet);
-
-            }
-
-            if (model.isPresent()) {
-                ModelRepository mr = new ModelRepositoryImpl(sessionFactory);
-                AutomobileRepository ar = new AutomobileRepositoryImpl(sessionFactory);
-                Model modelObject = mr.getByName(model.get());
-
-                List<Automobile> automobiles = ar.getAllCars().stream()
-                                               .filter(a -> a.getModel().getModelName().equals(modelObject.getModelName()))
-                                               .collect(Collectors.toList());
-
-                Set<User> owners = new HashSet<User>();
-                for (Automobile a: automobiles) {
-                    owners.add(a.getOwner());
-                }
-
-                Set<PersonalInfo> modelsSet = new HashSet<PersonalInfo>();
-                for (User u: owners) {
-                    if (!u.isEmployee()) {
-                        modelsSet.add(u.getPersonalInfo());
-                    }
-                }
-
-                resultSet.addAll(modelsSet);
-
-            }
-
-            if (dateFrom.isPresent() && dateTo.isPresent()) {
-                InvoiceRepository ir = new InvoiceRepositoryImpl(sessionFactory);
-                List<Invoice> invoices = ir.getAllInvoices().stream()
-                                         .filter(i -> i.getDate().before(dateTo.get()) && i.getDate().after(dateFrom.get()))
-                                         .collect(Collectors.toList());
-
-
-                for (Invoice invoice : invoices) {
-                    visits.add(invoice.getDate());
-                }
-                CarServiceRepository csr = new CarServiceRepositoryImpl(sessionFactory);
-                List<CarService> allCarServices = csr.getAllCarServices();
-                Set<CarService> carServices = new HashSet<>();
-
-                for (Invoice i: invoices) {
-                    for (CarService cs: allCarServices) {
-                        if (cs.getInvoice().getInvoiceId() == i.getInvoiceId()) {
-                            carServices.add(cs);
-                        }
-                    }
-                }
-
-                Set<Automobile> cars = new HashSet<>();
-                for (CarService cs: carServices) {
-                    cars.add(cs.getCar());
-                }
-
-                Set<User> owners = new HashSet<User>();
-                for (Automobile a: cars) {
-                    owners.add(a.getOwner());
-                }
-
-                Set<PersonalInfo> datesSet = new HashSet<PersonalInfo>();
-                for (User u: owners) {
-                    if (!u.isEmployee()) {
-                        datesSet.add(u.getPersonalInfo());
-                    }
-                }
-                resultSet.addAll(datesSet);
-            }
-            result.addAll(resultSet);
-
-            for (PersonalInfo pi: resultSet) {
-                CustomerViewDto cvd = new CustomerViewDto();
-                modelConversionHelper.personalInfoToCustomerViewDtoObject(pi,
-                        model.orElse(""), new ArrayList<>(visits));
-                resultDto.add(cvd);
-            }
-
-            return resultDto;
-        }
-
-    }
+//    @Override
+//    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
+//                                              Optional<String> lastName,
+//                                              Optional<String> email,
+//                                              Optional<String> phoneNumber,
+//                                              Optional<String> model,
+//                                              Optional<Date> dateFrom,
+//                                              Optional<Date> dateTo) {
+//
+//        try (Session session = sessionFactory.openSession()) {
+///*
+//            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+//            CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
+//            List<Predicate> predicates = List.copyOf(getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo));
+//            Predicate predicate = getPredicate(criteriaBuilder, query, firstName, lastName, email, phoneNumber);
+//            predicates.add(predicate);
+//            return session.createQuery(query.where(predicates.get(0), predicates.get(1), predicates.get(2),
+//                    predicates.get(3), predicates.get(4), predicates.get(5), predicates.get(6))).getResultList();
+//
+//            //return session.createQuery(query.where(predicate)).getResultList();
+//
+//            //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
+//         */
+//            List<PersonalInfo> result = new ArrayList<PersonalInfo>();
+//            List<CustomerViewDto> resultDto = new ArrayList<CustomerViewDto>();
+//            Set<PersonalInfo> resultSet = new HashSet<PersonalInfo>();
+//            PersonalInfoRepository pir = new PersonalInfoRepositoryImpl(sessionFactory);
+//            List<PersonalInfo> allPersonalInformation = pir.getAllPersonalInformations();
+//            Set<Date> visits = new HashSet<>();
+//            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
+//                Set<PersonalInfo> namesSet = new HashSet<PersonalInfo>();
+//                for (PersonalInfo pi: allPersonalInformation) {
+//
+//                    if (firstName.isPresent()) {
+//                        if (pi.getFirstName().equals(firstName.get())) {
+//                            namesSet.add(pi);
+//                        }
+//                    }
+//
+//                    if (lastName.isPresent()) {
+//                        if (pi.getLastName().equals(lastName.get())) {
+//                            namesSet.add(pi);
+//                        }
+//                    }
+//
+//                    if (email.isPresent()) {
+//                        if (pi.getEmail().equals(email.get())) {
+//                            namesSet.add(pi);
+//                        }
+//                    }
+//
+//                    if (phoneNumber.isPresent()) {
+//                        if (pi.getPhoneNumber().equals(phoneNumber.get())) {
+//                            namesSet.add(pi);
+//                        }
+//                    }
+//                }
+//
+//                resultSet.addAll(namesSet);
+//
+//            }
+//
+//            if (model.isPresent()) {
+//                ModelRepository mr = new ModelRepositoryImpl(sessionFactory);
+//                AutomobileRepository ar = new AutomobileRepositoryImpl(sessionFactory);
+//                Model modelObject = mr.getByName(model.get());
+//
+//                List<Automobile> automobiles = ar.getAllCars().stream()
+//                                               .filter(a -> a.getModel().getModelName().equals(modelObject.getModelName()))
+//                                               .collect(Collectors.toList());
+//
+//                Set<User> owners = new HashSet<User>();
+//                for (Automobile a: automobiles) {
+//                    owners.add(a.getOwner());
+//                }
+//
+//                Set<PersonalInfo> modelsSet = new HashSet<PersonalInfo>();
+//                for (User u: owners) {
+//                    if (!u.isEmployee()) {
+//                        modelsSet.add(u.getPersonalInfo());
+//                    }
+//                }
+//
+//                resultSet.addAll(modelsSet);
+//
+//            }
+//
+//            if (dateFrom.isPresent() && dateTo.isPresent()) {
+//                InvoiceRepository ir = new InvoiceRepositoryImpl(sessionFactory);
+//                List<Invoice> invoices = ir.getAllInvoices().stream()
+//                                         .filter(i -> i.getDate().before(dateTo.get()) && i.getDate().after(dateFrom.get()))
+//                                         .collect(Collectors.toList());
+//
+//
+//                for (Invoice invoice : invoices) {
+//                    visits.add(invoice.getDate());
+//                }
+//                CarServiceRepository csr = new CarServiceRepositoryImpl(sessionFactory);
+//                List<CarService> allCarServices = csr.getAllCarServices();
+//                Set<CarService> carServices = new HashSet<>();
+//
+//                for (Invoice i: invoices) {
+//                    for (CarService cs: allCarServices) {
+//                        if (cs.getInvoice().getInvoiceId() == i.getInvoiceId()) {
+//                            carServices.add(cs);
+//                        }
+//                    }
+//                }
+//
+//                Set<Automobile> cars = new HashSet<>();
+//                for (CarService cs: carServices) {
+//                    cars.add(cs.getCar());
+//                }
+//
+//                Set<User> owners = new HashSet<User>();
+//                for (Automobile a: cars) {
+//                    owners.add(a.getOwner());
+//                }
+//
+//                Set<PersonalInfo> datesSet = new HashSet<PersonalInfo>();
+//                for (User u: owners) {
+//                    if (!u.isEmployee()) {
+//                        datesSet.add(u.getPersonalInfo());
+//                    }
+//                }
+//                resultSet.addAll(datesSet);
+//            }
+//            result.addAll(resultSet);
+//
+//            for (PersonalInfo pi: resultSet) {
+//                CustomerViewDto cvd = new CustomerViewDto();
+//                modelConversionHelper.personalInfoToCustomerViewDtoObject(pi,
+//                        model.orElse(""), new ArrayList<>(visits));
+//                resultDto.add(cvd);
+//            }
+//
+//            return resultDto;
+//        }
+//
+//    }
 
 
         /*

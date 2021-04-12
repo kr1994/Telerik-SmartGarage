@@ -109,24 +109,6 @@ public class CarServiceController {
         }
     }
 
-//    @GetMapping("/car/filter/{id}")
-//    public List<CarServiceViewDto> filterBy(@RequestParam Optional<Date> startingDate,
-//                                     @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
-//                                     @PathVariable int id){
-//        try{
-//            List<Automobile> cars = automobileService.getAllCarsByOwner(id);
-//
-//            List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
-//
-//            for (Automobile car : cars) {
-//                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.(startingDate,endingDate,car.getId(),currency)));
-//            }
-//            return carServiceViewDto;
-//        }
-//        catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        }
-//    }
 
     @PostMapping
     public CarService create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CarServiceDto carServiceDto) {
