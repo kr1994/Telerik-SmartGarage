@@ -294,8 +294,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-
-        /*
+    /*
     private List<Predicate> getFilterModelAndDateResults(CriteriaBuilder cb,
                                                          Optional<String> model,
                                                          Optional<Date> dateFrom,
@@ -376,38 +375,6 @@ public class UserRepositoryImpl implements UserRepository {
 
         return criteriaBuilder.and(list.toArray(Predicate[]::new));
     }
-
-
-    private Predicate getCarPredicate(CriteriaBuilder criteriaBuilder,
-                                      CriteriaQuery<PersonalInfo> query,
-                                      AutomobileRepository automobileRepository,
-                                      Optional<String> modelAutomobile,
-                                      List<Optional<Date>> visits) {
-
-        try (Session session = sessionFactory.openSession()) {
-
-
-
-
-            if (visits.get(0).isPresent()) {
-                Date dateFrom = visits.get(0).get();
-                Date dateTo = visits.get(1).get();
-                Query<PersonalInfo> queryForVisits = session.createQuery("from Automobile a join CarService cs " +
-                        "join Invoice i join User u join PersonalInfo p where i.date >= :dateFrom and " +
-                        " i.date <= :dateTo and u.userType != :employee", PersonalInfo.class);
-
-                queryForVisits.setParameter("dateFrom", dateFrom);
-                queryForVisits.setParameter("dateTo", dateTo);
-                queryForVisits.setParameter("employee", "Employee");
-            }
-
-        }
-        Root<PersonalInfo> root = query.from(PersonalInfo.class);
-        List<Predicate> list = new ArrayList<>();
-
-        return criteriaBuilder.and(list.toArray(Predicate[]::new));
-    }
-
-
     */
+
 }
