@@ -35,6 +35,7 @@ public class CarServiceServiceImpl implements CarServiceService {
         return repository.getAllCarServices();
     }
 
+    @Override
     public List<WorkServiceView> getAllCarServicesByView(Optional<Date> startingDate, Optional<Date> endingDate,int id,Optional<String> currency){
         String value = "BGN";
         List<WorkServiceView> workServiceView= new ArrayList<>();

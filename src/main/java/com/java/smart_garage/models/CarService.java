@@ -19,13 +19,13 @@ public class CarService {
     @JoinColumn(name = "service_id")
     private WorkService service;
 
-    public CarService() {
-    }
 
     @OneToOne
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
+    public CarService() {
+    }
 
     public CarService(int carServicesId, Automobile automobile, WorkService service, Invoice invoice) {
         this.carServicesId = carServicesId;

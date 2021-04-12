@@ -1,10 +1,8 @@
 package com.java.smart_garage.repositories;
 
-import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.*;
-import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.sql.Date;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
