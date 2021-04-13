@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.util.*;
 import java.sql.Date;
 import java.util.stream.Collectors;
@@ -141,7 +142,146 @@ public class UserRepositoryImpl implements UserRepository {
                                                  Optional<Date> dateTo) {
 
         try (Session session = sessionFactory.openSession()) {
-/*
+
+            List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
+            int countParameters = 0;
+            String queryStr = "from CarService cs ";
+
+            if (firstName.isPresent()) {
+                queryStr += "where automobile.user.personalInfo.firstName = :firstName ";
+                countParameters++;
+            }
+
+            if (lastName.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += "and automobile.user.personalInfo.lastName = :lastName ";
+                } else {
+                    queryStr += "where automobile.user.personalInfo.lastName = :lastName ";
+                }
+                countParameters++;
+            }
+
+            if (email.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += "and automobile.user.personalInfo.email = :email ";
+                } else {
+                    queryStr += "where automobile.user.personalInfo.email = :email ";
+                }
+                countParameters++;
+            }
+
+            if (phoneNumber.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += "and automobile.user.personalInfo.phoneNumber = :phoneNumber ";
+                } else {
+                    queryStr += "where automobile.user.personalInfo.phoneNumber = :phoneNumber ";
+                }
+                countParameters++;
+            }
+
+            if (model.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += "and automobile.model.modelName = :model";
+                } else {
+                    queryStr += "where automobile.model.modelName = :model";
+                }
+                countParameters++;
+            }
+
+            if (dateFrom.isPresent() && dateTo.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += "and invoice.date >= :dateStart and invoice.date <= :dateEnd";
+                } else {
+                    queryStr += "where invoice.date >= :dateStart and invoice.date <= :dateEnd";
+                }
+                countParameters++;
+            }
+
+            Query<CarService> queryForVisits;
+
+            if (countParameters > 0) {
+                queryStr += " and automobile.user.userType.type = :customer";
+                queryForVisits = session.createQuery(queryStr, CarService.class);
+
+                if (firstName.isPresent()) {
+                    queryForVisits.setParameter("firstName", firstName.get());
+                }
+
+                if (lastName.isPresent()) {
+                    queryForVisits.setParameter("lastName", lastName.get());
+                }
+
+                if (email.isPresent()) {
+                    queryForVisits.setParameter("email", email.get());
+                }
+
+                if (phoneNumber.isPresent()) {
+                    queryForVisits.setParameter("phoneNumber", phoneNumber.get());
+                }
+
+                if (model.isPresent()) {
+                    queryForVisits.setParameter("model", model.get());
+                }
+
+                if (dateFrom.isPresent() && dateTo.isPresent()) {
+                    Date dateStart = dateFrom.get();
+                    Date dateEnd = dateTo.get();
+                    queryForVisits.setParameter("dateStart", dateStart);
+                    queryForVisits.setParameter("dateEnd", dateEnd);
+                }
+
+                queryForVisits.setParameter("customer", "Customer");
+
+            } else {
+                queryStr += "where automobile.user.userType.type = :customer";
+                queryForVisits = session.createQuery(queryStr, CarService.class);
+                queryForVisits.setParameter("customer", "Customer");
+            }
+
+
+            for (CarService cs : queryForVisits.getResultList()) {
+                CustomerViewDto cvd = new CustomerViewDto();
+                List<Date> currentVisits = new ArrayList<Date>();
+                cvd.setFirstName(cs.getCar().getOwner().getPersonalInfo().getFirstName());
+                cvd.setLastName(cs.getCar().getOwner().getPersonalInfo().getLastName());
+                cvd.setEmail(cs.getCar().getOwner().getPersonalInfo().getEmail());
+                cvd.setPhoneNumber(cs.getCar().getOwner().getPersonalInfo().getPhoneNumber());
+                cvd.setUserType(cs.getCar().getOwner().getUserType());
+                cvd.setCarModel(cs.getCar().getModel().getModelName());
+                currentVisits.add(cs.getInvoice().getDate());
+                cvd.setVisitsInRange(currentVisits);
+                result.add(cvd);
+            }
+
+            List<Integer> indexesForDeletion = new ArrayList<Integer>();
+            int resultTempSize = result.size();
+            if (resultTempSize > 1) {
+                for (int i=0; i<resultTempSize-2; i++) {
+                    CustomerViewDto cvd = result.get(i);
+                    List<Date> currentVisits = cvd.getVisitsInRange();
+                    for (int j = 1; j < resultTempSize-1; j++) {
+                        CustomerViewDto cvdNext = result.get(j);
+                        if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the object contain duplicated emails -> in that case they are equal
+                            indexesForDeletion.add(j);
+                            Date currentDate = cvd.getVisitsInRange().get(0);
+                            Date moveDate = cvdNext.getVisitsInRange().get(0);
+                            currentVisits.add(currentDate);
+                            currentVisits.add(moveDate);
+                        }
+                    }
+                    result.get(i).setVisitsInRange(currentVisits);  //move date to previous object
+                }
+            }
+
+            for (int k = 0; k < indexesForDeletion.size(); k++) {
+                result.remove(indexesForDeletion.get(k)); //remove duplicated views
+            }
+
+            return result;
+        }
+    }
+
+    /*
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<PersonalInfo> query = criteriaBuilder.createQuery(PersonalInfo.class);
             List<Predicate> predicates = List.copyOf(getFilterModelAndDateResults(criteriaBuilder, model, dateFrom, dateTo));
@@ -153,146 +293,7 @@ public class UserRepositoryImpl implements UserRepository {
             //return session.createQuery(query.where(predicate)).getResultList();
 
             //return getPersonalInfoList(firstName, lastName, email, phoneNumber, session);
-         */
-
-            List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
-            if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
-                String queryStr = "from User u where ";
-
-                if (firstName.isPresent()) {
-                    queryStr += " personalInfo.firstName = :firstName";
-                }
-
-                if (lastName.isPresent()) {
-                    queryStr += " personalInfo.lastName = :lastName";
-                }
-
-                if (email.isPresent()) {
-                    queryStr += " personalInfo.email = :email";
-                }
-
-                if (phoneNumber.isPresent()) {
-                    queryStr += " personalInfo.phoneNumber = :phoneNumber";
-                }
-
-                if (firstName.isPresent() || lastName.isPresent() || email.isPresent() || phoneNumber.isPresent()) {
-                    queryStr += " and userType.type = :customer";
-                }
-
-                Query<User> queryForPi = session.createQuery(queryStr, User.class);
-
-                if (firstName.isPresent()) {
-                    queryForPi.setParameter("firstName", firstName.get());
-                }
-
-                if (lastName.isPresent()) {
-                    queryForPi.setParameter("lastName", lastName.get());
-                }
-
-                if (email.isPresent()) {
-                    queryForPi.setParameter("email", email.get());
-                }
-
-                if (phoneNumber.isPresent()) {
-                    queryForPi.setParameter("phoneNumber", phoneNumber.get());
-                }
-
-                queryForPi.setParameter("customer", "Customer");
-
-                if (!queryForPi.getResultList().isEmpty()) {
-                    for (User u : queryForPi.getResultList()) {
-                        CustomerViewDto cvd = new CustomerViewDto();
-                        cvd.setFirstName(u.getPersonalInfo().getFirstName());
-                        cvd.setLastName(u.getPersonalInfo().getLastName());
-                        cvd.setEmail(u.getPersonalInfo().getEmail());
-                        cvd.setPhoneNumber(u.getPersonalInfo().getPhoneNumber());
-                        cvd.setUserType(u.getUserType());
-                        result.add(cvd);
-                    }
-                }
-            }
-            Query<Automobile> queryForModel;
-
-            if (model.isPresent()) {
-                queryForModel = session.createQuery("select a from Automobile a " +
-                        "where a.model.modelName = :model and a.user.userType.type = :customer", Automobile.class);
-
-                queryForModel.setParameter("model", model.get());
-                queryForModel.setParameter("customer", "Customer");
-
-                for (Automobile a: queryForModel.getResultList()) {
-                    if (!result.isEmpty()) {
-                        for (CustomerViewDto cvd: result) {
-                            if (cvd.getEmail().equals(a.getOwner().getPersonalInfo().getEmail())) {
-                                cvd.setCarModel(model.get());
-                            } else {
-                                result.remove(cvd);
-                            }
-                        }
-                    } else {
-                        CustomerViewDto cvd = new CustomerViewDto();
-                        cvd.setFirstName(a.getOwner().getPersonalInfo().getFirstName());
-                        cvd.setLastName(a.getOwner().getPersonalInfo().getLastName());
-                        cvd.setEmail(a.getOwner().getPersonalInfo().getEmail());
-                        cvd.setPhoneNumber(a.getOwner().getPersonalInfo().getPhoneNumber());
-                        cvd.setUserType(a.getOwner().getUserType());
-                        cvd.setCarModel(model.get());
-                        result.add(cvd);
-                    }
-
-                }
-            }
-
-            if (dateFrom.isPresent() && dateTo.isPresent()) {
-                Date dateStart = dateFrom.get();
-                Date dateEnd = dateTo.get();
-                List<Date> visits = new ArrayList<Date>();
-                Query<User> queryForVisitors = session.createQuery("select u from User u join Automobile a " +
-                        "join CarService cs where cs.invoice.date >= :dateStart and cs.invoice.date <= :dateEnd " +
-                        "and cs.automobile.user.userType.type = :customer", User.class);
-
-                queryForVisitors.setParameter("dateStart", dateStart);
-                queryForVisitors.setParameter("dateEnd", dateEnd);
-                queryForVisitors.setParameter("customer", "Customer");
-
-                List<CarService> carServices = new ArrayList<CarService>();
-
-                Query<CarService> queryForVisits = session.createQuery("from CarService cs " +
-                         "where invoice.date >= :dateStart and invoice.date <= :dateEnd and " +
-                         "automobile.user.userType.type = :customer ", CarService.class);
-
-                queryForVisits.setParameter("dateStart", dateStart);
-                queryForVisits.setParameter("dateEnd", dateEnd);
-                queryForVisits.setParameter("customer", "Customer");
-
-                carServices.addAll(queryForVisits.getResultList());
-
-                for (CarService cs: queryForVisits.getResultList()) {
-                    if (!result.isEmpty()) {
-                        for (CustomerViewDto cvd: result) {
-                            if (cvd.getEmail().equals(cs.getCar().getOwner().getPersonalInfo().getEmail())) {
-                                cvd.setVisitsInRange(List.of(cs.getInvoice().getDate()));
-                            } else {
-                                result.remove(cvd);
-                            }
-                        }
-                    } else {
-                        CustomerViewDto cvd = new CustomerViewDto();
-                        cvd.setFirstName(cs.getCar().getOwner().getPersonalInfo().getFirstName());
-                        cvd.setLastName(cs.getCar().getOwner().getPersonalInfo().getLastName());
-                        cvd.setEmail(cs.getCar().getOwner().getPersonalInfo().getEmail());
-                        cvd.setPhoneNumber(cs.getCar().getOwner().getPersonalInfo().getPhoneNumber());
-                        cvd.setUserType(cs.getCar().getOwner().getUserType());
-                        cvd.setCarModel(cs.getCar().getModel().getModelName());
-                        cvd.setVisitsInRange(List.of(cs.getInvoice().getDate()));
-                        result.add(cvd);
-                    }
-
-                }
-            }
-            return result;
-        }
-    }
+    */
 
     /*
     private List<Predicate> getFilterModelAndDateResults(CriteriaBuilder cb,
