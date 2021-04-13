@@ -255,29 +255,44 @@ public class UserRepositoryImpl implements UserRepository {
 
             List<Integer> indexesForDeletion = new ArrayList<Integer>();
             int resultTempSize = result.size();
+            List<Date> currentVisits = new ArrayList<Date>();
+            List<CustomerViewDto> newResult = new ArrayList<CustomerViewDto>();
+            int duplicateCounter = 0;
             if (resultTempSize > 1) {
-                for (int i=0; i<resultTempSize-2; i++) {
+                for (int i = 0; i < resultTempSize - 1; i++) {
                     CustomerViewDto cvd = result.get(i);
-                    List<Date> currentVisits = cvd.getVisitsInRange();
-                    for (int j = 1; j < resultTempSize-1; j++) {
-                        CustomerViewDto cvdNext = result.get(j);
-                        if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the object contain duplicated emails -> in that case they are equal
-                            indexesForDeletion.add(j);
-                            Date currentDate = cvd.getVisitsInRange().get(0);
-                            Date moveDate = cvdNext.getVisitsInRange().get(0);
-                            currentVisits.add(currentDate);
-                            currentVisits.add(moveDate);
-                        }
+                    CustomerViewDto cvdNext = result.get(i + 1);
+                    if (duplicateCounter == 0) {
+                        currentVisits = cvd.getVisitsInRange();
+                    }
+                    if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the object contain duplicated emails -> in that case they are equal
+                        duplicateCounter++;
+                        indexesForDeletion.add(i + 1);
+                        Date moveDate = cvdNext.getVisitsInRange().get(0);
+                        currentVisits.add(moveDate);
+                    } else {
+                        duplicateCounter = 0;
                     }
                     result.get(i).setVisitsInRange(currentVisits);  //move date to previous object
                 }
             }
 
-            for (int k = 0; k < indexesForDeletion.size(); k++) {
-                result.remove(indexesForDeletion.get(k)); //remove duplicated views
-            }
+//            for (int k = 0; k < indexesForDeletion.size(); k++) {
+//                result.remove((int)indexesForDeletion.get(k)); //remove duplicated views
+//            }
 
-            return result;
+
+            for (int k = 0, l = 0; k < result.size(); k++) {
+                if (k == indexesForDeletion.get(l)) {
+                    l++;
+                    if (l == indexesForDeletion.size()) {
+                        l = 0;
+                    }
+                } else {
+                    newResult.add(result.get(k));
+                }
+            }
+            return newResult;
         }
     }
 
