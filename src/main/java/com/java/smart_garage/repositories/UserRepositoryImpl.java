@@ -292,4 +292,29 @@ public class UserRepositoryImpl implements UserRepository {
             return result;
         }
     }
+
+    public List<CustomerViewDto> sortCustomersByName(boolean ascending) {
+
+        List<CustomerViewDto> result = filterCustomers(Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        if (ascending) {
+            Collections.sort(result, new Comparator<CustomerViewDto>() {
+                @Override
+                public int compare(CustomerViewDto o1, CustomerViewDto o2) {
+                    return o1.getFirstName().compareTo(o2.getFirstName());
+                }
+            });
+        } else {
+            Collections.sort(result, new Comparator<CustomerViewDto>() {
+                @Override
+                public int compare(CustomerViewDto o1, CustomerViewDto o2) {
+                    return o2.getFirstName().compareTo(o1.getFirstName());
+                }
+            });
+        }
+
+        return result;
+    }
+
 }

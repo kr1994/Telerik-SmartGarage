@@ -36,5 +36,6 @@ public interface UserRepository {
                                           Optional<Date> dateFrom,
                                           Optional<Date> dateTo);
 
+    List<CustomerViewDto> sortCustomersByName(boolean ascending);
 
 }

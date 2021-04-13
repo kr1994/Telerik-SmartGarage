@@ -102,6 +102,13 @@ public class UserServiceImpl implements UserService {
         return repository.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom, dateTo);
     }
 
+    public List<CustomerViewDto> sortCustomersByName(boolean ascending, User userCredential) {
+        if (!(userCredential.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can filter customers.");
+        }
+        return repository.sortCustomersByName(ascending);
+    }
+
 }
 
 

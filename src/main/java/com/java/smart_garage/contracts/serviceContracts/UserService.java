@@ -30,4 +30,6 @@ public interface UserService {
                                           Optional<Date> dateTo,
                                           User userCredential);
 
+    List<CustomerViewDto> sortCustomersByName(boolean ascending, User userCredential);
+
 }

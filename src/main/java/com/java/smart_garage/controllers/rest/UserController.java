@@ -103,6 +103,19 @@ public class UserController {
         }
     }
 
+    @GetMapping("/sort/customers/name")
+    public List<CustomerViewDto> sortCustomersByName(@RequestHeader HttpHeaders headers,
+                                                     @RequestParam(required = true) boolean ascending) {
+        try {
+            Credential credential = authenticationHelper.tryGetUser(headers);
+            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            return service.sortCustomersByName(ascending, credentialUser);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
 
 }
 
