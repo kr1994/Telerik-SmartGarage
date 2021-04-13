@@ -61,12 +61,6 @@ public class ColourServiceImpl implements ColourService {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a colour.");
         }
-        Colour colour = new Colour();
-        try {
-            colour = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Colour", "id", id);
-        }
         repository.delete(id);
     }
 }
