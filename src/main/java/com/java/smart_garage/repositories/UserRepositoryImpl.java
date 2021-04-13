@@ -143,7 +143,9 @@ public class UserRepositoryImpl implements UserRepository {
 
         try (Session session = sessionFactory.openSession()) {
 
+            List<CustomerViewDto> resultQuery = new ArrayList<CustomerViewDto>();
             List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
+
             int countParameters = 0;
             String queryStr = "from CarService cs ";
 
@@ -239,7 +241,7 @@ public class UserRepositoryImpl implements UserRepository {
             }
 
 
-            for (CarService cs : queryForVisits.getResultList()) {
+            for (CarService cs : queryForVisits.getResultList()) {  // map CarService object to return view
                 CustomerViewDto cvd = new CustomerViewDto();
                 List<Date> currentVisits = new ArrayList<Date>();
                 cvd.setFirstName(cs.getCar().getOwner().getPersonalInfo().getFirstName());
@@ -250,18 +252,18 @@ public class UserRepositoryImpl implements UserRepository {
                 cvd.setCarModel(cs.getCar().getModel().getModelName());
                 currentVisits.add(cs.getInvoice().getDate());
                 cvd.setVisitsInRange(currentVisits);
-                result.add(cvd);
+                resultQuery.add(cvd);
             }
 
             List<Integer> indexesForDeletion = new ArrayList<Integer>();
-            int resultTempSize = result.size();
+            int resultTempSize = resultQuery.size();
             List<Date> currentVisits = new ArrayList<Date>();
-            List<CustomerViewDto> newResult = new ArrayList<CustomerViewDto>();
+
             int duplicateCounter = 0;
             if (resultTempSize > 1) {
-                for (int i = 0; i < resultTempSize - 1; i++) {
-                    CustomerViewDto cvd = result.get(i);
-                    CustomerViewDto cvdNext = result.get(i + 1);
+                for (int i = 0; i < resultTempSize - 1; i++) {            // extract duplicating dates to a single object
+                    CustomerViewDto cvd = resultQuery.get(i);
+                    CustomerViewDto cvdNext = resultQuery.get(i + 1);
                     if (duplicateCounter == 0) {
                         currentVisits = cvd.getVisitsInRange();
                     }
@@ -273,26 +275,21 @@ public class UserRepositoryImpl implements UserRepository {
                     } else {
                         duplicateCounter = 0;
                     }
-                    result.get(i).setVisitsInRange(currentVisits);  //move date to previous object
+                    resultQuery.get(i).setVisitsInRange(currentVisits);  //move date to previous object
                 }
             }
 
-//            for (int k = 0; k < indexesForDeletion.size(); k++) {
-//                result.remove((int)indexesForDeletion.get(k)); //remove duplicated views
-//            }
-
-
-            for (int k = 0, l = 0; k < result.size(); k++) {
+            for (int k = 0, l = 0; k < resultQuery.size(); k++) {   //delete duplicated parts
                 if (k == indexesForDeletion.get(l)) {
                     l++;
                     if (l == indexesForDeletion.size()) {
                         l = 0;
                     }
                 } else {
-                    newResult.add(result.get(k));
+                    result.add(resultQuery.get(k));
                 }
             }
-            return newResult;
+            return result;
         }
     }
 }
