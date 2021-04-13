@@ -293,6 +293,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
     public List<CustomerViewDto> sortCustomersByName(boolean ascending) {
 
         List<CustomerViewDto> result = filterCustomers(Optional.empty(), Optional.empty(), Optional.empty(),
@@ -314,6 +315,58 @@ public class UserRepositoryImpl implements UserRepository {
             });
         }
 
+        return result;
+    }
+
+    @Override
+    public List<CustomerViewDto> sortCustomersByVisits(boolean ascending) {
+
+        List<CustomerViewDto> result = filterCustomers(Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+
+        if (ascending) {
+            Collections.sort(result, new Comparator<CustomerViewDto>() {
+                @Override
+                public int compare(CustomerViewDto o1, CustomerViewDto o2) {
+                    List<Date> datesO1 = o1.getVisitsInRange();
+                    List<Date> datesO2 = o1.getVisitsInRange();
+                    Date latest1 = o1.getVisitsInRange().get(0);
+                    for (Date d: datesO1) {
+                        if(d.compareTo(latest1) > 0) {
+                            latest1 = d;
+                        }
+                    }
+                    Date latest2 = o2.getVisitsInRange().get(0);
+                    for (Date d: datesO2) {
+                        if(d.compareTo(latest2) > 0) {
+                            latest2 = d;
+                        }
+                    }
+                    return latest1.compareTo(latest2);
+                }
+            });
+        } else {
+            Collections.sort(result, new Comparator<CustomerViewDto>() {
+                @Override
+                public int compare(CustomerViewDto o1, CustomerViewDto o2) {
+                    List<Date> datesO1 = o1.getVisitsInRange();
+                    List<Date> datesO2 = o1.getVisitsInRange();
+                    Date earliest1 = o1.getVisitsInRange().get(0);
+                    for (Date d: datesO1) {
+                        if(d.compareTo(earliest1) < 0) {
+                            earliest1 = d;
+                        }
+                    }
+                    Date earliest2 = o2.getVisitsInRange().get(0);
+                    for (Date d: datesO2) {
+                        if(d.compareTo(earliest2) < 0) {
+                            earliest2 = d;
+                        }
+                    }
+                    return earliest2.compareTo(earliest1);
+                }
+            });
+        }
         return result;
     }
 

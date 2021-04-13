@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService {
         repository.delete(id);
     }
 
+    @Override
     public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
                                                  Optional<String> lastName,
                                                  Optional<String> email,
@@ -102,11 +103,20 @@ public class UserServiceImpl implements UserService {
         return repository.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom, dateTo);
     }
 
+    @Override
     public List<CustomerViewDto> sortCustomersByName(boolean ascending, User userCredential) {
         if (!(userCredential.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can filter customers.");
+            throw new UnauthorizedOperationException("Only employee can sort customers.");
         }
         return repository.sortCustomersByName(ascending);
+    }
+
+    @Override
+    public List<CustomerViewDto> sortCustomersByVisits(boolean ascending, User userCredential) {
+        if (!(userCredential.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can sort customers.");
+        }
+        return repository.sortCustomersByVisits(ascending);
     }
 
 }

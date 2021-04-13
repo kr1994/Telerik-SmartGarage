@@ -32,4 +32,6 @@ public interface UserService {
 
     List<CustomerViewDto> sortCustomersByName(boolean ascending, User userCredential);
 
+    List<CustomerViewDto> sortCustomersByVisits(boolean ascending, User userCredential);
+
 }

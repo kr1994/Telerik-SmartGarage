@@ -38,4 +38,6 @@ public interface UserRepository {
 
     List<CustomerViewDto> sortCustomersByName(boolean ascending);
 
+    public List<CustomerViewDto> sortCustomersByVisits(boolean ascending);
+
 }
