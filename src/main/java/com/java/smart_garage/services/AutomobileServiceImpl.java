@@ -44,6 +44,25 @@ public class AutomobileServiceImpl implements AutomobileService {
 
     @Override
     public void create(Automobile automobile, User user) {
+        validation(automobile, user);
+        repository.create(automobile);
+    }
+
+    public void update(Automobile automobile, User user) {
+        validation(automobile, user);
+        repository.update(automobile);
+    }
+
+    @Override
+    public void delete(int id, User user) {
+        if (!(user.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can delete a car.");
+        }
+        repository.delete(id);
+    }
+
+
+    private void validation(Automobile automobile, User user) {
         boolean duplicateExistsIdentification = true;
         boolean duplicateExistsIPlate = true;
 
@@ -63,6 +82,12 @@ public class AutomobileServiceImpl implements AutomobileService {
         }
 
 
+        if (duplicateExistsIdentification) {
+            throw new DuplicateEntityException("Car", "identification number", automobile.getIdentifications());
+        }
+        if (duplicateExistsIPlate) {
+            throw new DuplicateEntityException("Car", "plate", automobile.getRegistrationPlate());
+        }
         if (!plateValidationService.trueCityIndexPlate(automobile.getRegistrationPlate())) {
             throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
         }
@@ -72,39 +97,6 @@ public class AutomobileServiceImpl implements AutomobileService {
         if (!plateValidationService.check(automobile.getRegistrationPlate())) {
             throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
         }
-
-        if (duplicateExistsIdentification) {
-            throw new DuplicateEntityException("Car", "identification number", automobile.getIdentifications());
-        }
-        if (duplicateExistsIPlate) {
-            throw new DuplicateEntityException("Car", "plate", automobile.getRegistrationPlate());
-        }
-
-
-        repository.create(automobile);
     }
-
-    public void update(Automobile automobile, User user) {
-        if (!user.isEmployee()) {
-            throw new UnauthorizedOperationException("Only employee can update shipment.");
-        }
-
-        repository.update(automobile);
-    }
-
-    @Override
-    public void delete(int id, User user) {
-        if (!(user.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can delete a car.");
-        }
-        Automobile automobile = new Automobile();
-        try {
-            automobile = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Car", "id", id);
-        }
-        repository.delete(id);
-    }
-
 
 }

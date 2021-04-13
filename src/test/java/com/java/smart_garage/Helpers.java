@@ -97,14 +97,20 @@ public class Helpers {
         mockUser.setUserId(1);
         mockUser.setCredential(createMockCredential());
         mockUser.setPersonalInfo(createMockPersonalInfo());
-        mockUser.setUserType(createMockUserType());
+        mockUser.setUserType(createMockUserTypeEmployee());
         return mockUser;
     }
 
-    public static UserType createMockUserType(){
+    public static UserType createMockUserTypeEmployee(){
         UserType mockUserType = new UserType();
         mockUserType.setTypeId(1);
         mockUserType.setType("Employee");
+        return mockUserType;
+    }
+    public static UserType createMockUserTypeCustomer(){
+        UserType mockUserType = new UserType();
+        mockUserType.setTypeId(1);
+        mockUserType.setType("Customer");
         return mockUserType;
     }
 
@@ -114,5 +120,11 @@ public class Helpers {
         mockWorkService.setWorkServiceName("Mock Service");
         mockWorkService.setWorkServicePrice(150);
         return mockWorkService;
+    }
+
+    public static City createMockCity(){
+        City mockCity = new City();
+        mockCity.setCityIndex("CA");
+        return mockCity;
     }
 }

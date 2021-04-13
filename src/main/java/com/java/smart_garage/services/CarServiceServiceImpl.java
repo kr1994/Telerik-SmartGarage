@@ -3,6 +3,7 @@ package com.java.smart_garage.services;
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
+import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -18,15 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.BASE_CURRENCY;
+
 @Service
 public class CarServiceServiceImpl implements CarServiceService {
 
     private final CarServiceRepository repository;
+    private final CurrencyMultiplierService multiplierService;
     private final ModelConversionHelper conversionHelper;
 
     @Autowired
-    public CarServiceServiceImpl(CarServiceRepository repository, ModelConversionHelper conversionHelper) {
+    public CarServiceServiceImpl(CarServiceRepository repository, CurrencyMultiplierService multiplierService, ModelConversionHelper conversionHelper) {
         this.repository = repository;
+        this.multiplierService = multiplierService;
         this.conversionHelper = conversionHelper;
     }
 
@@ -37,13 +42,11 @@ public class CarServiceServiceImpl implements CarServiceService {
 
     @Override
     public List<WorkServiceView> getAllCarServicesByView(Optional<Date> startingDate, Optional<Date> endingDate,int id,Optional<String> currency){
-        String value = "BGN";
         List<WorkServiceView> workServiceView= new ArrayList<>();
         if(currency.isEmpty()){
             List<CarService> carServices = repository.filterByDateAndCarId(startingDate,endingDate,id);
             try {
-                double multiplier = conversionHelper.getCurrency(value);
-                workServiceView = listWorkServices(carServices,multiplier);
+                workServiceView = listWorkServices(carServices, BASE_CURRENCY);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -52,7 +55,7 @@ public class CarServiceServiceImpl implements CarServiceService {
 
             List<CarService> carServices = repository.filterByDateAndCarId(startingDate,endingDate,id);
             try {
-                double multiplier = conversionHelper.getCurrency(valueToChange);
+                double multiplier = multiplierService.getCurrency(valueToChange);
                 workServiceView = listWorkServices(carServices, multiplier);
             } catch (Exception e) {
                 e.printStackTrace();
