@@ -47,7 +47,7 @@ public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService 
         }
         String someString = content.substring(81, content.toString().length() - 2);
 
-        Map<String, Double> myMap = new HashMap<String, Double>();
+        Map<String, Double> myMap = new HashMap<>();
         String[] pairs = someString.split(",");
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");

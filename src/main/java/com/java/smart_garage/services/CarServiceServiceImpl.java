@@ -75,7 +75,14 @@ public class CarServiceServiceImpl implements CarServiceService {
     public List<CarService> getAllCarServicesByCar(int id) {return repository.getAllCarServicesByCar(id);}
 
     @Override
-    public double getCarServicesPrice(int id) {return repository.getCarServicesPrice(id);}
+    public double getCarServicesPrice(int id) {
+        double price = 0;
+        List<CarService> carServices = repository.getCarServicesPrice(id);
+        for (CarService carService : carServices) {
+            price = price + carService.getService().getWorkServicePrice();
+        }
+        return price;
+    }
 
 
     @Override
@@ -102,12 +109,6 @@ public class CarServiceServiceImpl implements CarServiceService {
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a car.");
-        }
-        CarService carService = new CarService();
-        try {
-            carService = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Car", "id", id);
         }
         repository.delete(id);
     }

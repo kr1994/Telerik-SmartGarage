@@ -50,16 +50,11 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
         }
     }
     @Override
-    public double getCarServicesPrice(int id) {
+    public List<CarService> getCarServicesPrice(int id) {
         try (Session session = sessionFactory.openSession()) {
-            double price = 0;
             Query<CarService> query = session.createQuery("from CarService cs where cs.automobile.id  = :id order by carServicesId", CarService.class);
             query.setParameter("id", id);
-            List<CarService> carServices = query.list();
-            for (CarService carService : carServices) {
-                price = price + carService.getService().getWorkServicePrice();
-            }
-            return price;
+            return query.list();
         }
     }
 

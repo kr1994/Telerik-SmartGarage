@@ -188,7 +188,7 @@ public class ModelConversionHelper {
         carServiceViewDto.setCarOwnerEmail(automobile.getOwner().getPersonalInfo().getEmail());
         carServiceViewDto.setWorkServices(workServiceViews);
         if(!workServiceViews.isEmpty()) {
-            carServiceViewDto.setTotalPrice(Math.round(carServiceRepository.getCarServicesPrice(automobile.getId()) * workServiceViews.get(0).getMultiplier()));
+            carServiceViewDto.setTotalPrice(Math.round(carServiceToDouble(automobile.getId()) * workServiceViews.get(0).getMultiplier()));
         }
         else {
             carServiceViewDto.setTotalPrice(0);
@@ -332,4 +332,12 @@ public class ModelConversionHelper {
         invoice.setDate(invoiceDto.getDate());
     }
 
+    private double carServiceToDouble(int id){
+        double price = 0;
+        List<CarService> carServices = carServiceRepository.getCarServicesPrice(id);
+        for (CarService carService : carServices) {
+            price = price + carService.getService().getWorkServicePrice();
+        }
+        return price;
+    }
 }
