@@ -129,7 +129,6 @@ public class ManufacturerServiceTest {
         var mockManufacturer = createMockManufacturer();
         var mockUser = createMockUser();
 
-
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.delete(mockManufacturer.getManufacturerId(),mockUser));
     }

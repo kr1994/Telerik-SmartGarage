@@ -36,6 +36,7 @@ public class AutomobileServiceTest {
         // Assert
         Mockito.verify(mockRepository, Mockito.timeout(1)).getAllCars();
     }
+
     @Test
     public void getAllCarsByOwner_Should_ReturnOwnerCars(){
         List<Automobile> result = service.getAllCarsByOwner(1);
