@@ -3,8 +3,6 @@ package com.java.smart_garage.repositories;
 import com.java.smart_garage.contracts.repoContracts.CurrencyRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Currency;
-import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
