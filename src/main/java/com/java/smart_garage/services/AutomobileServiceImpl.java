@@ -91,10 +91,10 @@ public class AutomobileServiceImpl implements AutomobileService {
         if (!plateValidationService.trueCityIndexPlate(automobile.getRegistrationPlate())) {
             throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
         }
-        if (!plateValidationService.trueNumberPlate(automobile.getRegistrationPlate()))
+        else if (!plateValidationService.trueNumberPlate(automobile.getRegistrationPlate()))
             throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
 
-        if (!plateValidationService.check(automobile.getRegistrationPlate())) {
+        else if (!plateValidationService.check(automobile.getRegistrationPlate())) {
             throw new IncorrectPlateRegistrationException(automobile.getRegistrationPlate());
         }
     }

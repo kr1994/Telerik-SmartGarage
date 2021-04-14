@@ -1,12 +1,15 @@
 package com.java.smart_garage.serviceTest;
 
 import com.java.smart_garage.contracts.repoContracts.AutomobileRepository;
+import com.java.smart_garage.contracts.repoContracts.CityRepository;
+import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.services.AutomobileServiceImpl;
+import com.java.smart_garage.services.PlateValidationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,12 +27,17 @@ public class AutomobileServiceTest {
 
     @Mock
     AutomobileRepository mockRepository;
+    @Mock
+    CityRepository mockCityRepository;
+    @Mock
+    PlateValidationService plateValidationService;
 
     @InjectMocks
     AutomobileServiceImpl service;
 
+
     @Test
-    public void getAllCars_Should_ReturnCars(){
+    public void getAllCars_Should_ReturnCars() {
         List<Automobile> result = service.getAllCars();
         result.add(createMockAutomobile());
 
@@ -38,7 +46,7 @@ public class AutomobileServiceTest {
     }
 
     @Test
-    public void getAllCarsByOwner_Should_ReturnOwnerCars(){
+    public void getAllCarsByOwner_Should_ReturnOwnerCars() {
         List<Automobile> result = service.getAllCarsByOwner(1);
         result.add(createMockAutomobile());
 
@@ -47,7 +55,7 @@ public class AutomobileServiceTest {
     }
 
     @Test
-    public void getCarById_Should_ReturnCar(){
+    public void getCarById_Should_ReturnCar() {
         // Arrange
         Mockito.when(mockRepository.getById(1)).
                 thenReturn(createMockAutomobile());
@@ -79,7 +87,7 @@ public class AutomobileServiceTest {
                 .thenReturn(mockCar);
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockCar,mockUser));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockCar, mockUser));
     }
 
     @Test
@@ -92,8 +100,9 @@ public class AutomobileServiceTest {
                 .thenReturn(mockCar);
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockCar,mockUser));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockCar, mockUser));
     }
+
     @Test
     public void create_Should_Throw_When_UserIsCustomer() {
         // Arrange
@@ -102,7 +111,7 @@ public class AutomobileServiceTest {
         mockUser.setUserType(createMockUserTypeCustomer());
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.create(mockCar,mockUser));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.create(mockCar, mockUser));
     }
 
     @Test
@@ -115,11 +124,92 @@ public class AutomobileServiceTest {
         Mockito.when(mockRepository.getByIdentifications(mockCar.getIdentifications()))
                 .thenThrow(new EntityNotFoundException("Car", "identification", mockCar.getIdentifications()));
 
-       Mockito.when(mockRepository.getByPlate(mockCar.getRegistrationPlate()))
+        Mockito.when(mockRepository.getByPlate(mockCar.getRegistrationPlate()))
                 .thenThrow(new EntityNotFoundException("Car", "plate", mockCar.getRegistrationPlate()));
 
+        Mockito.when(plateValidationService.trueCityIndexPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(false);
+
+
         // Act, Assert
-        Assertions.assertThrows(IncorrectPlateRegistrationException.class, () -> service.create(mockCar,mockUser));
+        Assertions.assertThrows(IncorrectPlateRegistrationException.class, () -> service.create(mockCar, mockUser));
+    }
+    @Test
+    public void create_Should_Throw_When_PlateNumberIndexIsIncorrect() {
+        // Arrange
+        var mockCar = createMockAutomobile();
+        var mockUser = createMockUser();
+        mockCar.setRegistrationPlate("aa1234HM");
+
+        Mockito.when(mockRepository.getByIdentifications(mockCar.getIdentifications()))
+                .thenThrow(new EntityNotFoundException("Car", "identification", mockCar.getIdentifications()));
+
+        Mockito.when(mockRepository.getByPlate(mockCar.getRegistrationPlate()))
+                .thenThrow(new EntityNotFoundException("Car", "plate", mockCar.getRegistrationPlate()));
+
+        Mockito.when(plateValidationService.trueCityIndexPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(true);
+
+        Mockito.when(plateValidationService.trueNumberPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(false);
+
+
+        // Act, Assert
+        Assertions.assertThrows(IncorrectPlateRegistrationException.class, () -> service.create(mockCar, mockUser));
+    }
+
+    @Test
+    public void create_Should_Throw_When_PlateLastIndexIsIncorrect() {
+        // Arrange
+        var mockCar = createMockAutomobile();
+        var mockUser = createMockUser();
+        mockCar.setRegistrationPlate("aa1234HM");
+
+        Mockito.when(mockRepository.getByIdentifications(mockCar.getIdentifications()))
+                .thenThrow(new EntityNotFoundException("Car", "identification", mockCar.getIdentifications()));
+
+        Mockito.when(mockRepository.getByPlate(mockCar.getRegistrationPlate()))
+                .thenThrow(new EntityNotFoundException("Car", "plate", mockCar.getRegistrationPlate()));
+
+        Mockito.when(plateValidationService.trueCityIndexPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(true);
+
+        Mockito.when(plateValidationService.trueNumberPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(true);
+
+        Mockito.when(plateValidationService.check(mockCar.getRegistrationPlate()))
+                .thenReturn(false);
+
+
+        // Act, Assert
+        Assertions.assertThrows(IncorrectPlateRegistrationException.class, () -> service.create(mockCar, mockUser));
+    }
+
+    @Test
+    public void create_Should_Pass_When_CorrectData_Is_Passed() {
+        // Arrange
+        var mockCar = createMockAutomobile();
+        var mockUser = createMockUser();
+        mockCar.setRegistrationPlate("aa1234HM");
+
+        Mockito.when(mockRepository.getByIdentifications(mockCar.getIdentifications()))
+                .thenThrow(new EntityNotFoundException("Car", "identification", mockCar.getIdentifications()));
+
+        Mockito.when(mockRepository.getByPlate(mockCar.getRegistrationPlate()))
+                .thenThrow(new EntityNotFoundException("Car", "plate", mockCar.getRegistrationPlate()));
+
+        Mockito.when(plateValidationService.trueCityIndexPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(true);
+
+        Mockito.when(plateValidationService.trueNumberPlate(mockCar.getRegistrationPlate()))
+                .thenReturn(true);
+
+        Mockito.when(plateValidationService.check(mockCar.getRegistrationPlate()))
+                .thenReturn(true);
+
+
+        // Act, Assert
+        Assertions.assertDoesNotThrow(() -> service.create(mockCar, mockUser));
     }
 
     @Test
@@ -132,7 +222,7 @@ public class AutomobileServiceTest {
                 .thenReturn(mockCar);
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.update(mockCar,mockUser));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.update(mockCar, mockUser));
     }
 
     @Test
@@ -145,8 +235,9 @@ public class AutomobileServiceTest {
                 .thenReturn(mockCar);
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.update(mockCar,mockUser));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.update(mockCar, mockUser));
     }
+
     @Test
     public void update_Should_Throw_When_UserIsCustomer() {
         // Arrange
@@ -155,7 +246,7 @@ public class AutomobileServiceTest {
         mockUser.setUserType(createMockUserTypeCustomer());
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockCar,mockUser));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockCar, mockUser));
     }
 
     @Test
@@ -166,7 +257,7 @@ public class AutomobileServiceTest {
         mockUser.setUserType(createMockUserTypeCustomer());
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.delete(mockCar.getId(),mockUser));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.delete(mockCar.getId(), mockUser));
     }
 
     @Test
@@ -177,7 +268,7 @@ public class AutomobileServiceTest {
 
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.delete(mockCar.getId(),mockUser));
+        Assertions.assertDoesNotThrow(() -> service.delete(mockCar.getId(), mockUser));
     }
 
 }
