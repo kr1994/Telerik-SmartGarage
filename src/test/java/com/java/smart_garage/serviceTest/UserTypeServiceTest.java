@@ -60,7 +60,6 @@ public class UserTypeServiceTest {
 
         // Assert
         Assertions.assertEquals("Customer", result.getType());
-
     }
 
     @Test

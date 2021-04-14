@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
         repository.create(user);
     }
 
-    //In progress
     @Override
     public void update(User user) {
         boolean duplicateExists = true;
