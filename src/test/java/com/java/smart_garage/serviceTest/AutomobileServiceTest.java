@@ -27,8 +27,7 @@ public class AutomobileServiceTest {
 
     @Mock
     AutomobileRepository mockRepository;
-    @Mock
-    CityRepository mockCityRepository;
+
     @Mock
     PlateValidationService plateValidationService;
 

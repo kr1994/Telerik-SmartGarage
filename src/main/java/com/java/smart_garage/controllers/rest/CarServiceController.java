@@ -51,13 +51,7 @@ public class CarServiceController {
                                                   @RequestParam Optional<Date> endingDate,@RequestParam Optional<String> currency){
         List<Automobile> cars = automobileService.getAllCars();
 
-        List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
-
-        for (Automobile car : cars) {
-            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
-        }
-
-        return carServiceViewDto;
+        return getCarServiceViewDto(startingDate, endingDate, currency, cars);
     }
 
     @GetMapping("/{id}")
@@ -76,16 +70,21 @@ public class CarServiceController {
         try {
             List<Automobile> cars = automobileService.getAllCarsByOwner(id);
 
-            List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
-
-            for (Automobile car : cars) {
-                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
-            }
-            return carServiceViewDto;
+            return getCarServiceViewDto(startingDate, endingDate, currency, cars);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    private List<CarServiceViewDto> getCarServiceViewDto(@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency, List<Automobile> cars) {
+        List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
+
+        for (Automobile car : cars) {
+            if(!service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency).isEmpty())
+            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
+        }
+        return carServiceViewDto;
     }
 
     @GetMapping("/car/{id}")

@@ -2,6 +2,8 @@ package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.CurrencyRepository;
 import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
+import com.java.smart_garage.exceptions.NoConnectionWithTheUrlException;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,18 @@ public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService 
     }
 
     @Override
-    public double getCurrency(String value) throws Exception {
+    public double getCurrency(String value) {
         repository.getCurrencyByName(value);
-        Map<String, Double> myMap = currencyValues();
+        Map<String, Double> currencyValues = new HashMap<>();
+        try{
+        currencyValues = currencyValues();
+        }catch (Exception e){
+            throw new NoConnectionWithTheUrlException("http://data.fixer.io/api/latest?access_key=86c41c08bbf223a557ca111f81ec673e");
+        }
         double currency = 0;
-        for (String s : myMap.keySet()) {
+        for (String s : currencyValues.keySet()) {
             if(value.equals(s)){
-                currency = myMap.get(s);
+                currency = currencyValues.get(s);
             }
         }return currency;
     }
@@ -45,16 +52,16 @@ public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService 
         while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
-        String someString = content.substring(81, content.toString().length() - 2);
+        String rates = content.substring(81, content.toString().length() - 2);
 
-        Map<String, Double> myMap = new HashMap<>();
-        String[] pairs = someString.split(",");
+        Map<String, Double> currencyRates = new HashMap<>();
+        String[] pairs = rates.split(",");
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
-            myMap.put(keyValue[0].substring(1, 4), Double.valueOf(keyValue[1]));
+            currencyRates.put(keyValue[0].substring(1, 4), Double.valueOf(keyValue[1]));
         }
         in.close();
-        return myMap;
+        return currencyRates;
     }
 
 
