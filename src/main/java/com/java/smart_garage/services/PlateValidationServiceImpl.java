@@ -22,10 +22,9 @@ public class PlateValidationServiceImpl implements PlateValidationService {
     public boolean trueCityIndexPlate(String plate) {
         boolean flag = false;
         String cityIndex = plate;
-        if(plate.length()==7){
+        if (plate.length() == 7) {
             cityIndex = plate.substring(0, 1);
-        }
-        else {
+        } else {
             cityIndex = plate.substring(0, 2);
         }
 
@@ -45,10 +44,9 @@ public class PlateValidationServiceImpl implements PlateValidationService {
     public boolean trueNumberPlate(String plate) {
         boolean flag = true;
         String cityIndex = plate;
-        if(plate.length()==7){
+        if (plate.length() == 7) {
             cityIndex = plate.substring(1, 5);
-        }
-        else {
+        } else {
             cityIndex = plate.substring(2, 6);
         }
         try {
@@ -63,10 +61,9 @@ public class PlateValidationServiceImpl implements PlateValidationService {
     public boolean check(String plate) {
 
         String cityIndex = plate;
-        if(plate.length()==7){
+        if (plate.length() == 7) {
             cityIndex = plate.substring(5);
-        }
-        else {
+        } else {
             cityIndex = plate.substring(6);
         }
 
