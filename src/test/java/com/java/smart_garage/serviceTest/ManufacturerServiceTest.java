@@ -93,8 +93,6 @@ public class ManufacturerServiceTest {
         var mockManufacturer = createMockManufacturer();
         var mockUser = createMockUser();
 
-        //Mockito.when(mockRepository.getById(mockManufacturer.getManufacturerId()))
-        //        .thenReturn(mockManufacturer);
 
         // Act, Assert
         Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockManufacturer, mockUser));
