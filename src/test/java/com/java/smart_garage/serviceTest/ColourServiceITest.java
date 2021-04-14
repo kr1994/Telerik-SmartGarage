@@ -88,7 +88,7 @@ public class ColourServiceITest {
     }
 
     @Test
-    public void create_Should_Pass_When_CreatCarService() {
+    public void create_Should_Pass_When_CreatColour() {
         // Arrange
         var mockColour = createMockColour();
         var mockUser = createMockUser();

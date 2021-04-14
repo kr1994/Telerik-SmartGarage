@@ -70,13 +70,13 @@ public class CredentialServiceImpl implements CredentialService {
 
         boolean duplicateExistsUsername = true;
 
-        if (!(credential.isUser(credential.getUsername()) || employeeUser.isEmployee())) {
+        if ((!credential.isUser(credential.getUsername()) || !employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can modify credential");
         }
         try {
             Credential existingCredential = repository.getByUsername(credential.getUsername());
             if (existingCredential.getCredentialId() != credential.getCredentialId()) {
-                duplicateExistsUsername = true;
+                duplicateExistsUsername = false;
             }
         } catch (EntityNotFoundException e) {
             duplicateExistsUsername = false;
@@ -95,12 +95,7 @@ public class CredentialServiceImpl implements CredentialService {
         if (!userCredential.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can delete credentials.");
         }
-        Credential deletedCredential = new Credential();
-        try {
-            deletedCredential = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Credential", "id", id);
-        }
+
         repository.delete(id);
     }
 }
