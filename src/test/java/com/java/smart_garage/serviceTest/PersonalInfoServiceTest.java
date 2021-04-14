@@ -3,6 +3,7 @@ package com.java.smart_garage.serviceTest;
 import com.java.smart_garage.contracts.repoContracts.PersonalInfoRepository;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.exceptions.IncorrectPhoneException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.services.PersonalInfoServiceImpl;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static com.java.smart_garage.Helpers.*;
+import static com.java.smart_garage.Helpers.createMockUser;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonalInfoServiceTest {
@@ -24,6 +26,8 @@ public class PersonalInfoServiceTest {
     @Mock
     PersonalInfoRepository mockPersonalInfoRepository;
 
+    @Mock
+    PersonalInfoServiceImpl mockService;
 
     @InjectMocks
     PersonalInfoServiceImpl service;
@@ -103,7 +107,7 @@ public class PersonalInfoServiceTest {
     }
 
     @Test
-    public void getByEmail_Should_Return_Correct_PersonalInfo() {
+    public void getByEmail_Should_Return_Correct_PersonalInformation() {
         // Arrange
         Mockito.when(mockPersonalInfoRepository.getByEmail("MockEmail@gmail.com")).
                 thenReturn(createMockPersonalInfo());
@@ -126,16 +130,28 @@ public class PersonalInfoServiceTest {
         Assertions.assertThrows(EntityNotFoundException.class, () -> service.getByEmail("Test5@abv.bg"));
     }
 
-
-
     @Test
-    public void create_Should_Throw_When_ColourExists() {
+    public void create_Should_Throw_When_Personal_Information_Exists() {
         // Arrange
         var mockPersonalInfo = createMockPersonalInfo();
         var mockUser = createMockUser();
 
         // Act, Assert
         Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockPersonalInfo, mockUser));
+    }
+
+    @Test
+    public void create_Should_Throw_IncorrectPhoneException_When_Phone_Number_Is_With_Wrong_Pattern() {
+        // Arrange
+        var mockPersonalInfo = createMockPersonalInfo();
+        var mockUser = createMockUser();
+        mockUser.getPersonalInfo().setPhoneNumber("333");
+
+        Mockito.when(mockPersonalInfoRepository.getByEmail(mockPersonalInfo.getEmail()))
+                .thenThrow(new EntityNotFoundException("PersonalInfo", "name", mockPersonalInfo.getEmail()));
+
+        // Act, Assert
+        Assertions.assertThrows(IncorrectPhoneException.class, () -> service.create(mockPersonalInfo, mockUser));
     }
 
     @Test
@@ -150,7 +166,7 @@ public class PersonalInfoServiceTest {
     }
 
     @Test
-    public void create_Should_Pass_When_Put_Correct_Info() {
+    public void create_Should_Pass_When_Put_Correct_Personal_Information() {
         // Arrange
         var mockPersonalInfo = createMockPersonalInfo();
         var mockUser = createMockUser();
@@ -161,6 +177,41 @@ public class PersonalInfoServiceTest {
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.create(mockPersonalInfo, mockUser));
     }
+
+    @Test
+    public void update_Should_Pass_When_Put_Correct_Personal_Information() {
+        // Arrange
+        var mockPersonalInfo = createMockPersonalInfo();
+        var mockUser = createMockUser();
+
+        // Act, Assert
+        Assertions.assertDoesNotThrow(() -> service.update(mockPersonalInfo, mockUser));
+    }
+
+    @Test
+    public void update_Should_Throw_When_Put_Not_Existing_Id() {
+        // Arrange
+        var mockPersonalInfo = createMockPersonalInfo();
+        var mockUser = createMockUser();
+
+        Mockito.when(mockPersonalInfoRepository.getById(mockPersonalInfo.getPersonalId()))
+                .thenThrow(new EntityNotFoundException("PersonalInfo", "id", mockPersonalInfo.getPersonalId()));
+
+        // Act, Assert
+        Assertions.assertThrows(EntityNotFoundException.class, () -> service.update(mockPersonalInfo, mockUser));
+    }
+
+    @Test
+    public void update_Should_Throw_When_UserIsCustomer() {
+        // Arrange
+        var mockPersonalInfo = createMockPersonalInfo();
+        var mockUser = createMockUser();
+        mockUser.setUserType(createMockUserTypeCustomer());
+
+        // Act, Assert
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockPersonalInfo, mockUser));
+    }
+
     @Test
     public void delete_Should_Throw_When_UserIsCustomer() {
         // Arrange
@@ -179,9 +230,20 @@ public class PersonalInfoServiceTest {
 
         var mockUser = createMockUser();
 
-
         // Act, Assert
         Assertions.assertDoesNotThrow(() -> service.delete(mockPersonalInfo.getPersonalId(),mockUser));
+    }
+
+    @Test
+    public void truePhoneNumber_Should_Return_True_With_Correct_Number_Pattern() {
+        var phoneNumber = "0887213799";
+        Assertions.assertTrue(() -> service.truePhoneNumber(phoneNumber));
+    }
+
+    @Test
+    public void truePhoneNumber_Should_Return_False_With_Wrong_Number_Pattern() {
+        var phoneNumber = "1887213799";
+        Assertions.assertFalse(() -> service.truePhoneNumber(phoneNumber));
     }
 }
 
