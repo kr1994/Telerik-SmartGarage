@@ -17,6 +17,10 @@ import java.util.Map;
 @Service
 public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService {
 
+    public static final int START_OF_CURRENCY_LIST = 81;
+    public static final int END_OF_CURRENCY_LIST = 2;
+    public static final int BEGIN_INDEX = 1;
+    public static final int END_INDEX = 4;
     private final CurrencyRepository repository;
 
     @Autowired
@@ -52,13 +56,15 @@ public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService 
         while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
-        String rates = content.substring(81, content.toString().length() - 2);
+        String rates = content.substring(START_OF_CURRENCY_LIST, content.toString().length() - END_OF_CURRENCY_LIST);
 
         Map<String, Double> currencyRates = new HashMap<>();
+
+
         String[] pairs = rates.split(",");
         for (String pair : pairs) {
             String[] keyValue = pair.split(":");
-            currencyRates.put(keyValue[0].substring(1, 4), Double.valueOf(keyValue[1]));
+            currencyRates.put(keyValue[0].substring(BEGIN_INDEX, END_INDEX), Double.valueOf(keyValue[1]));
         }
         in.close();
         return currencyRates;

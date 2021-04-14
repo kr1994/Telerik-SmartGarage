@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class PlateValidationServiceImpl implements PlateValidationService {
 
+    public static final int PLATE_WITH_SINGLE_CHARACTER_INDEX = 7;
     private final CityRepository cityRepository;
 
     @Autowired
@@ -22,7 +23,7 @@ public class PlateValidationServiceImpl implements PlateValidationService {
     public boolean trueCityIndexPlate(String plate) {
         boolean flag = false;
         String cityIndex = plate;
-        if(plate.length()==7){
+        if(plate.length()==PLATE_WITH_SINGLE_CHARACTER_INDEX){
             cityIndex = plate.substring(0, 1);
         }
         else {
@@ -30,6 +31,7 @@ public class PlateValidationServiceImpl implements PlateValidationService {
         }
 
         List<City> cityList = cityRepository.getAllCityIndex();
+
 
         for (City city : cityList) {
             if (cityIndex.equals(city.getCityIndex())) {
@@ -45,7 +47,7 @@ public class PlateValidationServiceImpl implements PlateValidationService {
     public boolean trueNumberPlate(String plate) {
         boolean flag = true;
         String cityIndex = plate;
-        if(plate.length()==7){
+        if(plate.length()==PLATE_WITH_SINGLE_CHARACTER_INDEX){
             cityIndex = plate.substring(1, 5);
         }
         else {
@@ -63,7 +65,7 @@ public class PlateValidationServiceImpl implements PlateValidationService {
     public boolean check(String plate) {
 
         String cityIndex = plate;
-        if(plate.length()==7){
+        if(plate.length()==PLATE_WITH_SINGLE_CHARACTER_INDEX){
             cityIndex = plate.substring(5);
         }
         else {
@@ -74,6 +76,9 @@ public class PlateValidationServiceImpl implements PlateValidationService {
         for (int i = 0; i < len; i++) {
 
             if ((!Character.isLetter(cityIndex.charAt(i)))) {
+                return false;
+            }
+            if(cityIndex.length()>2){
                 return false;
             }
         }
