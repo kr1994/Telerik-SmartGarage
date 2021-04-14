@@ -46,7 +46,7 @@ public class PersonalInfoRepositoryImpl implements PersonalInfoRepository {
     }
 
     @Override
-    public PersonalInfo getByFirstName(String firstName) {
+    public List<PersonalInfo> getByFirstName(String firstName) {
         try (Session session = sessionFactory.openSession()){
             Query<PersonalInfo> query = session.createQuery("from PersonalInfo where firstName like concat('%', :name, '%')",
                     PersonalInfo.class);
@@ -56,12 +56,12 @@ public class PersonalInfoRepositoryImpl implements PersonalInfoRepository {
             if (result.size() == 0) {
                 throw new EntityNotFoundException("Personal Information", "name", firstName);
             }
-            return result.get(0);
+            return result;
         }
     }
 
     @Override
-    public PersonalInfo getByLastName(String lastName) {
+    public List<PersonalInfo> getByLastName(String lastName) {
         try (Session session = sessionFactory.openSession()){
             Query<PersonalInfo> query = session.createQuery("from PersonalInfo where lastName like concat('%', :name, '%')",
                     PersonalInfo.class);
@@ -71,7 +71,7 @@ public class PersonalInfoRepositoryImpl implements PersonalInfoRepository {
             if (result.size() == 0) {
                 throw new EntityNotFoundException("Personal Information", "name", lastName);
             }
-            return result.get(0);
+            return result;
         }
     }
 

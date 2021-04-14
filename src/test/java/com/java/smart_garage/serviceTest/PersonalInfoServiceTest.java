@@ -59,14 +59,14 @@ public class PersonalInfoServiceTest {
     public void getByFirstName_Should_Return_Correct_PersonalInfo() {
         // Arrange
         Mockito.when(mockPersonalInfoRepository.getByFirstName("Mock1")).
-                thenReturn(createMockPersonalInfo());
+                thenReturn(List.of(createMockPersonalInfo()));
 
         //Act
-        PersonalInfo result = service.getByFirstName("Mock1");
+        List<PersonalInfo> result = service.getByFirstName("Mock1");
 
         // Assert
-        Assertions.assertEquals(1, result.getPersonalId());
-        Assertions.assertEquals("Mock1", result.getFirstName());
+        Assertions.assertEquals(1, result.get(0).getPersonalId());
+        Assertions.assertEquals("Mock1", result.get(0).getFirstName());
 
     }
 
@@ -83,14 +83,14 @@ public class PersonalInfoServiceTest {
     public void getByLastName_Should_Return_Correct_PersonalInfo() {
         // Arrange
         Mockito.when(mockPersonalInfoRepository.getByLastName("Mock2")).
-                thenReturn(createMockPersonalInfo());
+                thenReturn(List.of(createMockPersonalInfo()));
 
         //Act
-        PersonalInfo result = service.getByLastName("Mock2");
+        List<PersonalInfo> result = service.getByLastName("Mock2");
 
         // Assert
-        Assertions.assertEquals(1, result.getPersonalId());
-        Assertions.assertEquals("Mock2", result.getLastName());
+        Assertions.assertEquals(1, result.get(0).getPersonalId());
+        Assertions.assertEquals("Mock2", result.get(0).getLastName());
     }
 
     @Test

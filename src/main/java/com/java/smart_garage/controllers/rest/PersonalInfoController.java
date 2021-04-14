@@ -50,7 +50,7 @@ public class PersonalInfoController {
     }
 
     @GetMapping("/first_name")
-    public PersonalInfo getByFirstName(@RequestParam String firstName) {
+    public List<PersonalInfo> getByFirstName(@RequestParam String firstName) {
         try {
             return service.getByFirstName(firstName);
         } catch (EntityNotFoundException e) {
@@ -59,7 +59,7 @@ public class PersonalInfoController {
     }
 
     @GetMapping("/last_name")
-    public PersonalInfo getByLastName(@RequestParam String lastName) {
+    public List<PersonalInfo> getByLastName(@RequestParam String lastName) {
         try {
             return service.getByLastName(lastName);
         } catch (EntityNotFoundException e) {

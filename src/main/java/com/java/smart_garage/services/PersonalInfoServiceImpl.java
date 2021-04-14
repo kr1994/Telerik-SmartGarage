@@ -36,12 +36,12 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     }
 
     @Override
-    public PersonalInfo getByFirstName(String firstName){
+    public List<PersonalInfo> getByFirstName(String firstName){
         return repository.getByFirstName(firstName);
     }
 
     @Override
-    public PersonalInfo getByLastName(String lastName){
+    public List<PersonalInfo> getByLastName(String lastName){
         return repository.getByLastName(lastName);
     }
 

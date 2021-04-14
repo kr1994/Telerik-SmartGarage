@@ -11,9 +11,9 @@ public interface PersonalInfoService {
 
     PersonalInfo getById(int id);
 
-    PersonalInfo getByFirstName(String firstName);
+    List<PersonalInfo> getByFirstName(String firstName);
 
-    PersonalInfo getByLastName(String lastName);
+    List<PersonalInfo> getByLastName(String lastName);
 
     PersonalInfo getByEmail(String email);
 

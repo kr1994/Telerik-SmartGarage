@@ -10,9 +10,9 @@ public interface PersonalInfoRepository {
 
     PersonalInfo getById(int id);
 
-    PersonalInfo getByFirstName(String firstName);
+    List<PersonalInfo> getByFirstName(String firstName);
 
-    PersonalInfo getByLastName(String firstName);
+    List<PersonalInfo> getByLastName(String firstName);
 
     PersonalInfo getByEmail(String email);
 
