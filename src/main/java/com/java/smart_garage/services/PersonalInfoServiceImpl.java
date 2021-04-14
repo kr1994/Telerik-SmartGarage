@@ -7,7 +7,6 @@ import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPhoneException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.PersonalInfo;
-import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,9 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     public void create(PersonalInfo personalInfo, User credentialUser) {
         boolean duplicateExists = true;
 
-
+        if (!(credentialUser.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can create the personal information!");
+        }
         try {
             repository.getByEmail(personalInfo.getEmail());
         } catch (EntityNotFoundException e) {
@@ -112,6 +113,3 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         return flag;
     }
 }
-
-
-
