@@ -64,12 +64,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a fuel.");
         }
-        Invoice invoice = new Invoice();
-        try {
-            invoice = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Invoice", "id", id);
-        }
         repository.delete(id);
     }
 
