@@ -1,6 +1,7 @@
 package com.java.smart_garage.serviceTest;
 
 import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
+import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -26,10 +27,12 @@ public class CarServiceServiceTest {
     @Mock
     CarServiceRepository mockRepository;
 
+    @Mock
+    CurrencyMultiplierService multiplierService;
 
     @InjectMocks
     CarServiceServiceImpl service;
-    CurrencyMultiplierServiceImpl multiplierService;
+
 
     @Test
     public void getAllCarServices_Should_AllCarServices() {
@@ -162,9 +165,8 @@ public class CarServiceServiceTest {
         // Arrange
         var mockCarService = createMockCarService();
         Optional<String> currency = Optional.of("BGN");
-        Mockito.doThrow(new NullPointerException()).when(multiplierService.getCurrency("BGN"));
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.getAllCarServicesByView(Optional.empty(), Optional.empty(),mockCarService.getCarServicesId(),Optional.of("BGN")));
+        Assertions.assertDoesNotThrow(() -> service.getAllCarServicesByView(Optional.empty(), Optional.empty(),mockCarService.getCarServicesId(),currency));
     }
 
 }
