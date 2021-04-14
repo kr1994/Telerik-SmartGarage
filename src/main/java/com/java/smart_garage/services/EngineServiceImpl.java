@@ -61,12 +61,6 @@ public class EngineServiceImpl implements EngineService {
         if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete an engine.");
         }
-        Engine engine = new Engine();
-        try {
-            engine = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Engine", "id", id);
-        }
         repository.delete(id);
     }
 
