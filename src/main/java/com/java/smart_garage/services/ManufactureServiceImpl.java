@@ -61,7 +61,6 @@ public class ManufactureServiceImpl implements ManufactureService {
         if (!(employeeUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a manufacturer.");
         }
-
         repository.delete(id);
     }
 

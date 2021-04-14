@@ -18,9 +18,6 @@ public class WorkService {
     @Column(name = "service_price")
     private double workServicePrice;
 
-    //@Column(name = "service_price")
-    //private Date dateFinished;
-
     public WorkService() {
     }
 
@@ -29,7 +26,6 @@ public class WorkService {
         this.workServiceName = workServiceName;
         this.workServicePrice = workServicePrice;
     }
-
 
     public void setWorkServiceId(int workServiceId) {
         this.workServiceId = workServiceId;

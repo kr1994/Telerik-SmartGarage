@@ -93,12 +93,6 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete personal information.");
         }
-        PersonalInfo personalInfo = new PersonalInfo();
-        try {
-            personalInfo = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Personal Information", "id", id);
-        }
         repository.delete(id);
     }
 

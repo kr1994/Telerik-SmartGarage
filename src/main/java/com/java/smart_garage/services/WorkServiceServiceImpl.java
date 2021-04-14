@@ -28,8 +28,6 @@ public class WorkServiceServiceImpl implements WorkServiceService {
         return repository.getAllWorkServices();
     }
 
-
-
     @Override
     public WorkService getById(int id){
         return repository.getById(id);
@@ -79,12 +77,6 @@ public class WorkServiceServiceImpl implements WorkServiceService {
     public void delete(int id, User credentialUser) {
         if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete work service.");
-        }
-        WorkService workService = new WorkService();
-        try {
-            workService = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Work Service", "id", id);
         }
         repository.delete(id);
     }

@@ -62,12 +62,6 @@ public class FuelServiceImpl implements FuelService {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete fuel.");
         }
-        Fuel fuel = new Fuel();
-        try {
-            fuel = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Fuel", "id", id);
-        }
         repository.delete(id);
     }
 }

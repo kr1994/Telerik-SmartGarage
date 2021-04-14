@@ -62,12 +62,6 @@ public class UserTypeServiceImpl implements UserTypeService {
         if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a type.");
         }
-        UserType type = new UserType();
-        try {
-            type = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Type", "id", id);
-        }
         repository.delete(id);
     }
 }

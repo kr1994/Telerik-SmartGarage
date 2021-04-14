@@ -78,12 +78,6 @@ public class UserServiceImpl implements UserService {
         if (!(userCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete user.");
         }
-        User user = new User();
-        try {
-            user = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("User", "id", id);
-        }
         repository.delete(id);
     }
 

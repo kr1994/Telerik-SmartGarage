@@ -91,11 +91,9 @@ public class CredentialServiceImpl implements CredentialService {
 
     @Override
     public void delete(int id, User userCredential) {
-
         if (!userCredential.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can delete credentials.");
         }
-
         repository.delete(id);
     }
 }

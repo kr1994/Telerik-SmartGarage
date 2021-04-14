@@ -58,18 +58,10 @@ public class ModelServiceImpl implements ModelService {
         repository.create(model);
     }
 
-
     @Override
     public void delete(int id, User credentialUser) {
-
         if (!credentialUser.isEmployee()) {
             throw new UnauthorizedOperationException("Only employee can delete model.");
-        }
-        Model model = new Model();
-        try {
-            model = repository.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Model", "id", id);
         }
         repository.delete(id);
     }
