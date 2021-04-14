@@ -29,15 +29,16 @@ public class ManufacturerServiceTest {
     ManufactureServiceImpl service;
 
     @Test
-    public void getAllManufacturers_Should_ReturnManufacturers(){
+    public void getAllManufacturers_Should_ReturnManufacturers() {
         List<Manufacturer> result = service.getAllManufacturers();
         result.add(createMockManufacturer());
 
         // Assert
         Mockito.verify(mockRepository, Mockito.timeout(1)).getAllManufacturers();
     }
+
     @Test
-    public void getManufacturerByName_Should_ReturnManufacturerWithThatName(){
+    public void getManufacturerByName_Should_ReturnManufacturerWithThatName() {
         List<Manufacturer> result = new ArrayList<Manufacturer>();
         result.add(service.getByName("BMW"));
         //result.add(createMockManufacturer());
@@ -47,7 +48,7 @@ public class ManufacturerServiceTest {
     }
 
     @Test
-    public void getManufacturerById_Should_ReturnManufacturer(){
+    public void getManufacturerById_Should_ReturnManufacturer() {
         // Arrange
         Mockito.when(mockRepository.getById(1)).
                 thenReturn(createMockManufacturer());
@@ -61,7 +62,6 @@ public class ManufacturerServiceTest {
     }
 
 
-
     @Test
     public void create_Should_Throw_When_ManufacturerWithSameNameExists() {
         // Arrange
@@ -70,7 +70,7 @@ public class ManufacturerServiceTest {
 
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockManufacturer,mockUser));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockManufacturer, mockUser));
     }
 
     @Test
@@ -80,11 +80,11 @@ public class ManufacturerServiceTest {
         var mockUser = createMockUser();
 
         Mockito.when(mockRepository.getByName(mockManufacturer.getManufacturerName())).
-                thenThrow(new EntityNotFoundException("Manfuctuer","name",mockManufacturer.getManufacturerName()));
+                thenThrow(new EntityNotFoundException("Manufacturer", "name", mockManufacturer.getManufacturerName()));
 
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.create(mockManufacturer,mockUser));
+        Assertions.assertDoesNotThrow(() -> service.create(mockManufacturer, mockUser));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class ManufacturerServiceTest {
         //        .thenReturn(mockManufacturer);
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockManufacturer,mockUser));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockManufacturer, mockUser));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class ManufacturerServiceTest {
         mockUser.setUserType(createMockUserTypeCustomer());
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.create(mockManufacturer,mockUser));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.create(mockManufacturer, mockUser));
     }
 
 
@@ -120,7 +120,7 @@ public class ManufacturerServiceTest {
         mockUser.setUserType(createMockUserTypeCustomer());
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.delete(mockManufacturer.getManufacturerId(),mockUser));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.delete(mockManufacturer.getManufacturerId(), mockUser));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ManufacturerServiceTest {
         var mockUser = createMockUser();
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.delete(mockManufacturer.getManufacturerId(),mockUser));
+        Assertions.assertDoesNotThrow(() -> service.delete(mockManufacturer.getManufacturerId(), mockUser));
     }
 
 }
