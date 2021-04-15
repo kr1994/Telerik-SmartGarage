@@ -1,0 +1,39 @@
+.container {
+    overflow: hidden;
+}
+
+.filterDiv {
+    /*float: left;*/
+    /*background-color: #2196F3;*/
+    /*color: #000000;*/
+    /*width: 100px;*/
+    /*line-height: 100px;*/
+    /*text-align: center;*/
+    /*margin: 2px;*/
+    display: none; /* Hidden by default */
+}
+
+/* The "show" class is added to the filtered elements */
+.show {
+    display: block;
+}
+
+/* Style the buttons */
+.btn {
+    border: white;
+    outline: none;
+    padding: 12px 16px;
+    background-color: #000000;
+    cursor: pointer;
+}
+
+/* Add a light grey background on mouse-over */
+.btn:hover {
+    background-color: #4b4b4b;
+}
+
+/* Add a dark background to the active button */
+.btn.active {
+    background-color: #666;
+    color: #ffffff;
+}
