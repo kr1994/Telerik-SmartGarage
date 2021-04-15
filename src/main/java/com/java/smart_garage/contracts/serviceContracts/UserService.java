@@ -35,4 +35,6 @@ public interface UserService {
     List<CustomerViewDto> sortCustomersByVisits(boolean ascending, User userCredential);
 
     int getUserCount();
+
+    User getByUserName(String userName);
 }

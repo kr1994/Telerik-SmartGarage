@@ -40,4 +40,5 @@ public interface UserRepository {
 
     public List<CustomerViewDto> sortCustomersByVisits(boolean ascending);
 
+    User getByUserName(String userName);
 }

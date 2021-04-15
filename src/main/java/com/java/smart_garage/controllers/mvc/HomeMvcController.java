@@ -1,4 +1,4 @@
-package com.java.smart_garage.controllers.MVC;
+package com.java.smart_garage.controllers.mvc;
 
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
@@ -43,7 +43,7 @@ public class HomeMvcController {
     }
 
     @GetMapping
-    public String showHomePage(@ModelAttribute("currentUser") Credential currentUser,
+    public String showHomePage(@ModelAttribute("currentUser") User currentUser,
                                Model model, HttpSession session) {
 
         try {

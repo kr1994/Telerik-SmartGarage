@@ -22,7 +22,7 @@
 
     <script type="application/ld+json">{
         "@type": "Organization",
-        "name": "DeliverIt",
+        "name": "SmartGarage",
         "url": "index.html",
         "logo": "images/default-logo.png"
     }</script>
@@ -36,8 +36,8 @@
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
-            <img src="../static/images/default-logo.png" th:src="@{/images/default-logo.png}"
-                 class="u-logo-image u-logo-image-1" alt="DeliverIT">
+            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png" th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
+                 class="u-logo-image u-logo-image-1" alt="SmartGarage">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
             <div class="menu-collapse"
@@ -65,37 +65,22 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0 || !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/parcels}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/warehouses}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
-                    </li>
-                    <li th:unless="${currentUser.getId() == 0 || !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/shipments}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
-                    </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/register}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                     </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/login}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/profile}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/logout}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
@@ -110,26 +95,16 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/parcels}"
-                                                                                                                                                         style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                            </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
-                                                      th:href="@{/warehouses}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
-                            </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/shipments}"
-                                                                                                                                                         style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
-                            </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
                                                                                           style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                             </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
                                                                                           style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
                                                                                               style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
                                                                                               style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>
                         </ul>
@@ -144,11 +119,10 @@
     <div class="u-clearfix u-sheet u-sheet-1">
         <h1 class="u-align-left u-custom-font u-font-roboto-condensed u-text u-text-body-alt-color u-text-1"
             data-animation-name="flipIn" data-animation-duration="1000" data-animation-delay="0"
-            data-animation-direction="X">DeliverIT<br>
+            data-animation-direction="X">Smart Garage<br>
         </h1>
         <p class="u-align-left u-text u-text-white u-text-2" data-animation-name="zoomIn" data-animation-duration="1000"
-           data-animation-delay="0" data-animation-direction="">Your perfect solution for receiving what you want, from
-            all around the world!</p>
+           data-animation-delay="0" data-animation-direction="">We repairing your Car Dreams!</p>
     </div>
 </section>
 <section class="u-clearfix u-section-2" id="sec-444f">
@@ -166,7 +140,7 @@
                  data-animation-direction="X">
                 <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-1">
                     <h2 class="u-align-center u-text u-text-white u-text-3" data-animation-name="counter"
-                        data-animation-event="scroll" data-animation-duration="3000" th:text="${customersCount}">
+                        data-animation-event="scroll" data-animation-duration="3000" th:text="${userCount}">
                         Customers count</h2>
                     <p class="u-text u-text-white u-text-4">Clients</p>
                 </div>
@@ -176,9 +150,9 @@
                  data-animation-direction="X">
                 <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-2">
                     <h2 class="u-align-center u-text u-text-white u-text-5" data-animation-name="counter"
-                        data-animation-event="scroll" data-animation-duration="3000" th:text="${warehousesCount}">
-                        Warehouses count</h2>
-                    <p class="u-text u-text-white u-text-6">Warehouses</p>
+                        data-animation-event="scroll" data-animation-duration="3000" th:text="${carCount}">
+                        Car count</h2>
+                    <p class="u-text u-text-white u-text-6">Cars</p>
                 </div>
             </div>
         </div>
@@ -193,11 +167,11 @@
         <h1 class="u-text u-title u-text-1" data-animation-name="slideIn" data-animation-duration="1000"
             data-animation-delay="0" data-animation-direction="Down">Services</h1>
         <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="slideIn"
-           data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">We have warehouses
-            all around the world, making sure you receive your purchases as closely to you and timely as possible!</p>
-        <a href="#" th:href="@{warehouses}" data-page-id="8736403" class="u-btn u-button-style u-palette-2-base u-btn-1"
+           data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">We have services
+            that will make your car feel like new!</p>
+        <a href="#" th:href="@{services}" data-page-id="8736403" class="u-btn u-button-style u-palette-2-base u-btn-1"
            data-animation-name="slideIn" data-animation-duration="1000" data-animation-delay="0"
-           data-animation-direction="Down">See our warehouses</a>
+           data-animation-direction="Down">See our services</a>
     </div>
 </section>
 <style class="u-overlap-style">.u-overlap:not(.u-sticky-scroll) .u-header {
@@ -206,8 +180,6 @@
 
 <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-322e">
     <div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Sample text. Click to select the text box. Click again or
-            double click to start editing the text.</p>
     </div>
 </footer>
 </body>

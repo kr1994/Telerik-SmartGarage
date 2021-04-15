@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
+
     @Autowired
     public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
@@ -33,6 +34,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(int id) {
         return repository.getById(id);
+    }
+
+    @Override
+    public User getByUserName(String userName) {
+        return repository.getByUserName(userName);
     }
 
     @Override

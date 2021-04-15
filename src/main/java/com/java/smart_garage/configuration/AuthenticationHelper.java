@@ -46,7 +46,7 @@ public class AuthenticationHelper {
         }
     }
 
-    public Credential tryGetUser(HttpSession session) {
+    public User tryGetUser(HttpSession session) {
         String currentUserUsername = (String) session.getAttribute("currentUserUsername");
 
         if (currentUserUsername == null) {
@@ -54,23 +54,23 @@ public class AuthenticationHelper {
         }
 
         try {
-            return credentialService.getByUsername(currentUserUsername);
+            return userService.getByUserName(currentUserUsername);
         } catch (EntityNotFoundException e) {
             throw new UnauthorizedOperationException("No logged in user.");
         }
     }
 
-    public Credential verifyAuthorization(HttpSession session, String role) {
+    public User verifyAuthorization(HttpSession session, String role) {
 
-        Credential credential = tryGetUser(session);
-        User user = convertCredentialToUser(credential);
+
+        User user = tryGetUser(session);
         String userRoles = user.getUserType().getType();
 
         if (!userRoles.equalsIgnoreCase(role)) {
             throw new UnauthorizedOperationException("User does not have the required authorization.");
         }
 
-        return credential;
+        return user;
 
     }
 
