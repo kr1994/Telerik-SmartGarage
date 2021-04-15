@@ -111,6 +111,11 @@ public class UserServiceImpl implements UserService {
         return repository.sortCustomersByVisits(ascending);
     }
 
+    @Override
+    public int getUserCount() {
+        return repository.getAllUsers().size();
+    }
+
 }
 
 

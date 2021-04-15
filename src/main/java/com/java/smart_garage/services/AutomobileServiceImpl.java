@@ -61,6 +61,11 @@ public class AutomobileServiceImpl implements AutomobileService {
         repository.delete(id);
     }
 
+    @Override
+    public int getCarCount() {
+        return repository.getAllCars().size();
+    }
+
 
     private void validation(Automobile automobile, User user) {
         boolean duplicateExistsIdentification = true;
