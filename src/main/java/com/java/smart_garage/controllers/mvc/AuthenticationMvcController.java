@@ -51,9 +51,16 @@ public class AuthenticationMvcController {
         return "redirect:/";
     }
 
+    @GetMapping("/logout")
+    public String handleLogout(HttpSession session) {
+        session.removeAttribute("currentUserUsername");
+        return "redirect:/";
+    }
+
     @GetMapping("/register")
     public String showRegisterPage() {
         return "register";
     }
+
 
 }
