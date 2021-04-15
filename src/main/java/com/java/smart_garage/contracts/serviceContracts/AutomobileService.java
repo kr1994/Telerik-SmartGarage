@@ -17,4 +17,6 @@ public interface AutomobileService {
     void update(Automobile automobile, User user);
 
     void delete(int id, User user);
+
+    int getCarCount();
 }
