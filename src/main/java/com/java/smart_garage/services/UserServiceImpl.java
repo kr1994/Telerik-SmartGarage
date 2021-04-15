@@ -55,10 +55,8 @@ public class UserServiceImpl implements UserService {
         repository.create(user);
     }
 
-    //In progress
     @Override
     public void update(User user) {
-        boolean duplicateExists = true;
 
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can update user.");
@@ -67,7 +65,7 @@ public class UserServiceImpl implements UserService {
         try {
             repository.getById(user.getUserId());
         } catch (EntityNotFoundException e) {
-            duplicateExists = false;
+            throw new EntityNotFoundException("User", "id", user.getUserId());
         }
 
         repository.update(user, user.getCredential(), user.getPersonalInfo(), user.getUserType());

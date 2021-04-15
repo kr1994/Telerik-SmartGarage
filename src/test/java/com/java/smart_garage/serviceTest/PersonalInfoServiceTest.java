@@ -33,7 +33,7 @@ public class PersonalInfoServiceTest {
     PersonalInfoServiceImpl service;
 
     @Test
-    public void getAllColours_Should_AllColours() {
+    public void getAllPersonalInformations_Should_Return_PersonalInformation() {
         List<PersonalInfo> result = service.getAllPersonalInformations();
         result.add(createMockPersonalInfo());
 
@@ -224,7 +224,7 @@ public class PersonalInfoServiceTest {
     }
 
     @Test
-    public void delete_Should_Pass_When_CarService() {
+    public void delete_Should_Pass_When_PersonalInformation() {
         // Arrange
         var mockPersonalInfo = createMockPersonalInfo();
 

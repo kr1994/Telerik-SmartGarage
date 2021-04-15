@@ -25,13 +25,11 @@ public class PlateValidationServiceImpl implements PlateValidationService {
         String cityIndex = plate;
         if(plate.length()==PLATE_WITH_SINGLE_CHARACTER_INDEX){
             cityIndex = plate.substring(0, 1);
-        }
-        else {
+        } else {
             cityIndex = plate.substring(0, 2);
         }
 
         List<City> cityList = cityRepository.getAllCityIndex();
-
 
         for (City city : cityList) {
             if (cityIndex.equals(city.getCityIndex())) {
@@ -49,8 +47,7 @@ public class PlateValidationServiceImpl implements PlateValidationService {
         String cityIndex = plate;
         if(plate.length()==PLATE_WITH_SINGLE_CHARACTER_INDEX){
             cityIndex = plate.substring(1, 5);
-        }
-        else {
+        } else {
             cityIndex = plate.substring(2, 6);
         }
         try {
@@ -67,8 +64,7 @@ public class PlateValidationServiceImpl implements PlateValidationService {
         String cityIndex = plate;
         if(plate.length()==PLATE_WITH_SINGLE_CHARACTER_INDEX){
             cityIndex = plate.substring(5);
-        }
-        else {
+        } else {
             cityIndex = plate.substring(6);
         }
 
