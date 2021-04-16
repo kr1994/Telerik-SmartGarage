@@ -23,8 +23,8 @@
     <script type="application/ld+json">{
         "@context": "http://schema.org",
         "@type": "Organization",
-        "name": "DeliverIt",
-        "url": "index.html",
+        "name": "SmartGarage",
+        "url": "register.html",
         "logo": "images/default-logo.png"
     }</script>
     <meta property="og:title" content="register">
@@ -155,70 +155,45 @@
     <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-custom-font u-font-merriweather u-text u-text-body-alt-color u-text-1">Register</h2>
         <div class="u-form u-form-1">
-            <form action="#" th:action="@{/register}" th:object="${customerDto}" method="POST"
+            <form action="#" th:action="@{/register}" th:object="${registerDto}" method="POST"
                   class="u-block-b342-9 u-clearfix u-form-custom-backend u-form-spacing-11 u-form-vertical u-inner-form"
                   source="custom" redirect="true"><!-- hidden inputs for siteId and pageId -->
-                <p th:if="${#fields.hasErrors('all')}" th:errors="*{user.userName}"
+                <p th:if="${#fields.hasErrors('all')}" th:errors="*{firstName}"
                    class=" u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-2">Username error</p>
-                <p th:errors="*{user.password}"
+                <p th:errors="*{lastName}"
                    class=" u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-2">Password error</p>
-                <p th:errors="*{user.email}"
+                <p th:errors="*{email}"
                    class=" u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-2">Email error</p>
+                <p th:errors="*{phoneNumber}"
+                   class=" u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-2">Phonenumber error</p>
                 <div class="u-form-group u-form-name">
-                    <label for="name-c01d" class="u-form-control-hidden u-label">Username</label>
-                    <input type="text" placeholder="Enter username" th:field="*{user.userName}" id="name-c01d"
-                           name="userName"
+                    <label for="name-c01d" class="u-form-control-hidden u-label">First Name</label>
+                    <input type="text" placeholder="Enter First Name" th:field="*{firstName}" id="name-c01d"
+                           name="firstName"
                            class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-1"
                            required autofocus>
                 </div><!-- always visible -->
                 <div class="u-form-email u-form-group">
-                    <label for="email-c01d" class="u-form-control-hidden u-label">Password</label>
-                    <input type="password" placeholder="Enter password" th:field="*{user.password}" id="email-c01d"
-                           name="password"
+                    <label for="email-c01d" class="u-form-control-hidden u-label">Last Name</label>
+                    <input type="text" placeholder="Enter Last Name" th:field="*{lastName}" id="email-c01d"
+                           name="lastName"
                            class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-2"
                            required autofocus>
                 </div>
                 <div class="u-form-group u-form-group-3">
                     <label for="text-3c1a" class="u-form-control-hidden u-label">Email</label>
-                    <input type="email" placeholder="Enter email" th:field="*{user.email}" id="text-3c1a" name="email"
+                    <input type="email" placeholder="Enter email" th:field="*{email}" id="text-3c1a" name="email"
                            class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-3"
                            required autofocus>
                 </div>
                 <div class="u-form-group u-form-group-4">
-                    <label for="text-d95f" class="u-form-control-hidden u-label">FirstName</label>
-                    <input type="text" placeholder="Enter your first name" th:field="*{user.firstName}" id="text-d95f"
-                           name="text"
+                    <label for="text-d95f" class="u-form-control-hidden u-label">Phonenumber</label>
+                    <input type="text" placeholder="Enter your phone number" th:field="*{phoneNumber}" id="text-d95f"
+                           name="phoneNumber"
                            class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-4"
                            required autofocus>
                 </div>
-                <div class="u-form-group u-form-group-5">
-                    <label for="text-6d02" class="u-form-control-hidden u-label">LastName</label>
-                    <input type="text" placeholder="Enter your last name" th:field="*{user.lastName}" id="text-6d02"
-                           name="text-1"
-                           class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-5"
-                           required autofocus>
-                </div>
-                <div class="u-form-group u-form-message">
-                    <label for="message-c01d" class="u-form-control-hidden u-label">Address</label>
-                    <textarea placeholder="Enter your address" th:field="*{address.name}" rows="4" cols="50"
-                              id="message-c01d" name="message"
-                              class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-6"
-                              required autofocus></textarea>
-                </div>
-                <div class="u-form-group u-form-select u-form-group-7">
-                    <label for="select-b19d" class="u-form-control-hidden u-label">Select</label>
-                    <div class="u-form-select-wrapper">
-                        <select th:field="*{address.cityId}" id="select-b19d" name="select"
-                                class="u-border-4 u-border-white u-grey-90 u-input u-input-rectangle u-radius-10 u-text-body-alt-color u-input-7">
-                            <option th:each="city : ${cities}" th:value="${city.getId()}" th:text="${city.getName()}">
-                                City
-                            </option>
-                        </select>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" class="u-caret">
-                            <path fill="currentColor" d="M4 8L0 4h8z"></path>
-                        </svg>
-                    </div>
-                </div>
+
                 <div class="u-form-group u-form-submit">
                     <a href="#" class="u-btn u-btn-submit u-button-style u-palette-3-base u-btn-1">Register</a>
                     <input type="submit" value="submit" class="u-form-control-hidden">

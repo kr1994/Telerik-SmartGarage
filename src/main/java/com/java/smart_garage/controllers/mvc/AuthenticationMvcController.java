@@ -2,6 +2,7 @@ package com.java.smart_garage.controllers.mvc;
 
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.exceptions.AuthenticationHelperException;
+import com.java.smart_garage.models.dto.PersonalInfoDto;
 import com.java.smart_garage.models.dto.LoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,8 @@ public class AuthenticationMvcController {
     }
 
     @GetMapping("/register")
-    public String showRegisterPage() {
+    public String showRegisterPage(HttpSession session) {
+        session.setAttribute("registerDto", new PersonalInfoDto());
         return "register";
     }
 
