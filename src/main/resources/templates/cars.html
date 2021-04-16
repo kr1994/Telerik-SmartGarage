@@ -3,12 +3,12 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Customer Parcels">
+    <meta name="keywords" content="Customer Cars">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>Parcels</title>
     <link rel="stylesheet" href="../static/styles.css" th:href="@{/styles.css}" media="screen">
-    <link rel="stylesheet" href="../static/parcels.css" th:href="@{/parcels.css}" media="screen">
+    <link rel="stylesheet" href="../static/cars.css" th:href="@{/cars.css}" media="screen">
     <link rel="stylesheet" href="../static/filter-button.css" th:href="@{/filter-button.css}" media="screen">
     <script class="u-script" type="text/javascript" src="../static/js/jquery.js" th:src="@{/js/jquery.js}"
             defer=""></script>
@@ -23,11 +23,11 @@
     <script type="application/ld+json">{
         "@context": "http://schema.org",
         "@type": "Organization",
-        "name": "DeliverIt",
+        "name": "SmartGarage",
         "url": "index.html",
         "logo": "images/default-logo.png"
     }</script>
-    <meta property="og:title" content="parcels">
+    <meta property="og:title" content="cars">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#478ac9">
     <link rel="canonical" href="index.html">
@@ -37,12 +37,12 @@
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
-            <img src="../static/images/default-logo.png" th:src="@{/images/default-logo.png}"
-                 class="u-logo-image u-logo-image-1" alt="">
+            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png" th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
+                 class="u-logo-image u-logo-image-1" alt="SmartGarage">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
             <div class="menu-collapse"
-                 style="font-size: 1rem; letter-spacing: 0px; font-weight: 700; text-transform: uppercase;">
+                 style="font-size: 1rem; letter-spacing: 0; font-weight: 700; text-transform: uppercase;">
                 <a class="u-button-style u-custom-active-border-color u-custom-active-color u-custom-border u-custom-border-color u-custom-borders u-custom-color u-custom-hover-border-color u-custom-hover-color u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-active-color u-custom-text-color u-custom-text-hover-color u-custom-text-shadow u-custom-text-shadow-blur u-custom-text-shadow-color u-custom-text-shadow-transparency u-custom-text-shadow-x u-custom-text-shadow-y u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base"
                    href="#">
                     <svg>
@@ -66,39 +66,22 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}"
-                        class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/parcels}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/warehouses}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
-                    </li>
-                    <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}"
-                        class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/shipments}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
-                    </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/register}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                     </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/login}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/profile}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/logout}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
@@ -113,33 +96,17 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}"
-                                class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/parcels}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                             </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
-                                                      th:href="@{/warehouses}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}"
-                                class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/shipments}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
+                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                             </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
-                                    class="u-button-style u-nav-link" href="#" th:href="@{/register}"
-                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
-                            </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
-                                    class="u-button-style u-nav-link" href="#" th:href="@{/login}"
-                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
-                            </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
-                                    class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
-                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
-                            </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
-                                    class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
-                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
+                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -151,11 +118,11 @@
 </header>
 <section class="u-align-center u-clearfix u-palette-5-dark-3 u-section-1" id="carousel_180e">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h2 class="u-text u-text-1">Customers' Parcels</h2>
+        <h2 class="u-text u-text-1">Customers' Cars</h2>
         <div class="u-border-9 u-border-palette-1-base u-line u-line-horizontal u-line-1"></div>
-        <a href="#" th:href="@{/parcels/create}"
+        <a href="#" th:href="@{/cars/create}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">
-            CREATE NEW PARCEl</a>
+            CREATE NEW CAR</a>
         <br>
         <form action="#" class="u-border-5 u-border-grey-30 u-input-round u-radius-10 u-search u-search-left u-white u-search-1">
             <button disabled class="u-search-button" type="submit">
@@ -169,17 +136,19 @@
         <br>
         <div id="myBtnContainer">
             <button class="btn active" onclick="selectFilter('all')">Show all</button>
-            <button class="btn" onclick="selectFilter('Clothes and Accessories')">Clothes and Accessories</button>
-            <button class="btn" onclick="selectFilter('Foods')">Foods</button>
-            <button class="btn" onclick="selectFilter('Technology')">Technology</button>
+
         </div>
         <div id="myDiv" class="u-accordion u-faq u-spacing-10 u-accordion-1">
-            <div class="u-accordion-item" th:each="parcel : ${parcels}"
-                 th:class="'filterDiv ' + ${parcel.category.name}">
+           <div class="u-accordion-item" th:each="user : ${users}">
+               <span class="u-accordion-link-text"
+                     th:text="'User: ' + ${user.credential.username}">Username</span>
+            <div class="u-accordion-item" th:each="car : ${cars}"
+                 th:if="${car.owner.credential.username} == ${user.credential.username}"
+                 th:class="'filterDiv ' + ${car.getOwner().credential.username}">
                 <a class="u-accordion-link u-active-palette-1-base u-button-style u-hover-palette-1-base u-palette-5-dark-2 u-text-active-white u-text-grey-10 u-text-hover-grey-10 u-accordion-link-1"
                    id="link-accordion-ae6a" aria-controls="accordion-ae6a" aria-selected="false">
                     <span class="u-accordion-link-text"
-                          th:text="'Parcel ID: ' + ${parcel.id}">Parcel ID</span><span
+                          th:text="'Car: ' + ${car.getRegistrationPlate()}">Car ID</span><span
                         class="u-accordion-link-icon u-icon u-icon-circle u-text-palette-1-base u-icon-1"><svg
                         class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 16 16" style=""><use
                         xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-bf29"></use></svg><svg
@@ -190,24 +159,16 @@
                      id="accordion-ae6a" aria-labelledby="link-accordion-ae6a">
                     <div class="u-container-layout u-container-layout-1">
                         <div class="fr-view u-clearfix u-rich-text u-text">
-                            <p th:text="'User email: ' + ${parcel.user.user.email}">User email</p>
-                            <p th:text="'Warehouse address: ' + ${parcel.warehouse.address.name}">Warehouse address</p>
-                            <p th:text="'Weight: ' + ${parcel.weight}">Weight</p>
-                            <p th:text="'Category: ' + ${parcel.category.name}">Category</p>
-                            <p th:text="'Shipment ID: ' + ${parcel.shipment.shipmentId}">Shipment ID</p>
-                            <a href="#" th:href="@{/shipments/{id}(id=${parcel.shipment.getShipmentId()})}"
-                               data-page-id="8736403"
-                               class="u-btn u-button-style u-palette-2-base u-btn-1">
-                                Check parcel's shipment
-                            </a>
-                            <a href="#" th:href="@{/parcels/{id}/update(id=${parcel.getId()})}"
-                               data-page-id="8736403"
-                               class="u-btn u-button-style u-palette-2-base u-button-style u-palette-2-base"
-                            >Update parcel</a>
+                            <p th:text="'User email: ' + ${car.owner.personalInfo.email}">User email</p>
+                            <p th:text="'Model: ' + ${car.model.modelName}">Model</p>
+                            <p th:text="'Manufacturer: ' + ${car.model.manufacturer.manufacturerName}">Manufacturer</p>
+                            <p th:text="'Colour: ' + ${car.colour.colour}">Colour</p>
+                            <p th:text="'Registration plate: ' + ${car.registrationPlate}">Registration plate</p>
                         </div>
                     </div>
                 </div>
             </div>
+           </div>
         </div>
     </div>
 </section>

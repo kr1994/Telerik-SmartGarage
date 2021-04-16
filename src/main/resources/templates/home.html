@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html style="font-size: 16px;">
+<html lang="en" style="font-size: 16px;" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <meta name="keywords" content="DeliverIT">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>home</title>
-    <link rel="stylesheet" href="../static/styles.css" media="screen">
-    <link rel="stylesheet" href="../static/home.css" media="screen">
-    <script class="u-script" type="text/javascript" src="../static/js/jquery.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="../static/js/scripts.js" defer=""></script>
+    <title>Home</title>
+    <link rel="stylesheet" href="../static/styles.css" th:href="@{/styles.css}" media="screen">
+    <link rel="stylesheet" href="../static/home.css" th:href="@{/home.css}" media="screen">
+    <script class="u-script" type="text/javascript" src="../static/js/jquery.js" th:src="@{/js/jquery.js}"
+            defer=""></script>
+    <script class="u-script" type="text/javascript" src="../static/js/scripts.js" th:src="@{/js/scripts.js}"
+            defer=""></script>
     <meta name="generator" content="Nicepage 3.9.0, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
@@ -19,9 +21,8 @@
 
 
     <script type="application/ld+json">{
-        "@context": "http://schema.org",
         "@type": "Organization",
-        "name": "DeliverIt",
+        "name": "SmartGarage",
         "url": "index.html",
         "logo": "images/default-logo.png"
     }</script>
@@ -31,12 +32,12 @@
     <link rel="canonical" href="index.html">
     <meta property="og:url" content="index.html">
 </head>
-<body class="u-body u-overlap u-overlap-contrast">
+<body data-home-page="index.html" data-home-page-title="index" class="u-body u-overlap u-overlap-contrast">
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
-            <img src="../static/images/default-logo.png" th:src="@{/images/default-logo.png}"
-                 class="u-logo-image u-logo-image-1" alt="">
+            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png" th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
+                 class="u-logo-image u-logo-image-1" alt="SmartGarage">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
             <div class="menu-collapse"
@@ -64,35 +65,25 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/parcels}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/warehouses}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/shipments}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
-                    </li>
-                    <li class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/register}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                     </li>
-                    <li class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/login}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                     </li>
-                    <li class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/profile}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/logout}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -104,24 +95,17 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/parcels}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                             </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
-                                                      th:href="@{/warehouses}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                             </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/shipments}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
+                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                             </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
-                            </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
-                            </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
+                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -135,11 +119,10 @@
     <div class="u-clearfix u-sheet u-sheet-1">
         <h1 class="u-align-left u-custom-font u-font-roboto-condensed u-text u-text-body-alt-color u-text-1"
             data-animation-name="flipIn" data-animation-duration="1000" data-animation-delay="0"
-            data-animation-direction="X">DeliverIT<br>
+            data-animation-direction="X">Smart Garage<br>
         </h1>
         <p class="u-align-left u-text u-text-white u-text-2" data-animation-name="zoomIn" data-animation-duration="1000"
-           data-animation-delay="0" data-animation-direction="">Your perfect solution for receiving what you want, from
-            all around the world!</p>
+           data-animation-delay="0" data-animation-direction="">We repairing your Car Dreams!</p>
     </div>
 </section>
 <section class="u-clearfix u-section-2" id="sec-444f">
@@ -157,8 +140,9 @@
                  data-animation-direction="X">
                 <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-1">
                     <h2 class="u-align-center u-text u-text-white u-text-3" data-animation-name="counter"
-                        data-animation-event="scroll" data-animation-duration="3000">700</h2>
-                    <p class="u-text u-text-white u-text-4">Cli​ents</p>
+                        data-animation-event="scroll" data-animation-duration="3000" th:text="${userCount}">
+                        Customers count</h2>
+                    <p class="u-text u-text-white u-text-4">Clients</p>
                 </div>
             </div>
             <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle u-list-item-2"
@@ -166,8 +150,9 @@
                  data-animation-direction="X">
                 <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-2">
                     <h2 class="u-align-center u-text u-text-white u-text-5" data-animation-name="counter"
-                        data-animation-event="scroll" data-animation-duration="3000">37</h2>
-                    <p class="u-text u-text-white u-text-6">Warehouses</p>
+                        data-animation-event="scroll" data-animation-duration="3000" th:text="${carCount}">
+                        Car count</h2>
+                    <p class="u-text u-text-white u-text-6">Cars</p>
                 </div>
             </div>
         </div>
@@ -182,11 +167,11 @@
         <h1 class="u-text u-title u-text-1" data-animation-name="slideIn" data-animation-duration="1000"
             data-animation-delay="0" data-animation-direction="Down">Services</h1>
         <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="slideIn"
-           data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">We have warehouses
-            all around the world, making sure you receive your purchases as closely to you and timely as possible!</p>
-        <a href="warehouses.html" data-page-id="8736403" class="u-btn u-button-style u-palette-2-base u-btn-1"
+           data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">We have services
+            that will make your car feel like new!</p>
+        <a href="#" th:href="@{services}" data-page-id="8736403" class="u-btn u-button-style u-palette-2-base u-btn-1"
            data-animation-name="slideIn" data-animation-duration="1000" data-animation-delay="0"
-           data-animation-direction="Down">See our warehouses</a>
+           data-animation-direction="Down">See our services</a>
     </div>
 </section>
 <style class="u-overlap-style">.u-overlap:not(.u-sticky-scroll) .u-header {
@@ -195,20 +180,7 @@
 
 <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-322e">
     <div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Sample text. Click to select the text box. Click again or
-            double click to start editing the text.</p>
     </div>
 </footer>
-<section class="u-backlink u-clearfix u-grey-80">
-    <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
-        <span>Website Templates</span>
-    </a>
-    <p class="u-text">
-        <span>created with</span>
-    </p>
-    <a class="u-link" href="https://nicepage.com/" target="_blank">
-        <span>Website Builder Software</span>
-    </a>.
-</section>
 </body>
 </html>

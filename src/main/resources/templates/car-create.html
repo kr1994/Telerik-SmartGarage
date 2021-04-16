@@ -8,7 +8,7 @@
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>Create parcel</title>
     <link rel="stylesheet" href="../static/styles.css" th:href="@{/styles.css}" media="screen">
-    <link rel="stylesheet" href="../static/shipment.css" th:href="@{/parcel-create.css}" media="screen">
+    <link rel="stylesheet" href="../static/shipment.css" th:href="@{/car-create.css}" media="screen">
     <script class="u-script" type="text/javascript" src="../static/js/jquery.js" th:src="@{/js/jquery.js}"
             defer=""></script>
     <script class="u-script" type="text/javascript" src="../static/js/scripts.js" th:src="@{/js/scripts.js}"
@@ -25,7 +25,7 @@
         "url": "index.html",
         "logo": "images/default-logo.png"
     }</script>
-    <meta property="og:title" content="parcel-create">
+    <meta property="og:title" content="car-create">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#478ac9">
     <link rel="canonical" href="index.html">
@@ -35,12 +35,12 @@
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
-            <img src="../static/images/default-logo.png" th:src="@{/images/default-logo.png}"
-                 class="u-logo-image u-logo-image-1" alt="">
+            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png" th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
+                 class="u-logo-image u-logo-image-1" alt="SmartGarage">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
             <div class="menu-collapse"
-                 style="font-size: 1rem; letter-spacing: 0px; font-weight: 700; text-transform: uppercase;">
+                 style="font-size: 1rem; letter-spacing: 0; font-weight: 700; text-transform: uppercase;">
                 <a class="u-button-style u-custom-active-border-color u-custom-active-color u-custom-border u-custom-border-color u-custom-borders u-custom-color u-custom-hover-border-color u-custom-hover-color u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-active-color u-custom-text-color u-custom-text-hover-color u-custom-text-shadow u-custom-text-shadow-blur u-custom-text-shadow-color u-custom-text-shadow-transparency u-custom-text-shadow-x u-custom-text-shadow-y u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base"
                    href="#">
                     <svg>
@@ -64,37 +64,22 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/parcels}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/warehouses}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
-                    </li>
-                    <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/shipments}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
-                    </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/register}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                     </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/login}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/profile}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/logout}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
@@ -109,27 +94,17 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/parcels}"
-                                                                                                                                                         style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                             </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
-                                                      th:href="@{/warehouses}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/shipments}"
-                                                                                                                                                         style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
+                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                             </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
-                                                                                          style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
-                            </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
-                                                                                          style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
-                            </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
-                            </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
+                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -146,13 +121,16 @@
                 <div class="u-layout-row">
                     <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1">
                         <div class="u-container-layout u-container-layout-1">
-                            <h1 class="u-text u-text-body-alt-color u-text-1">Create a parcel</h1>
+                            <h1 class="u-text u-text-body-alt-color u-text-1">Create a car</h1>
                             <p class="u-custom-font u-heading-font u-text u-text-body-alt-color u-text-2">Please input
-                                the following fields:<br>Customer: Select one of the options.
-                                <br>Warehouse: Select one of the options.
-                                <br>Weight: It should be positive.
-                                <br>Category: Select one of the options.
-                                <br>Shipment: Select one of the options.
+                                the following fields:
+                                <br>Customer: Select one of the options.
+                                <br>Model: Select one of the options.
+                                <br>Plate: Please input a correct form - "CO0000HM".
+                                <br>Identification: Please input a correct form of 13 characters.
+                                <br>Year: It should be positive and above 1950.
+                                <br>Colour: Select one of the options.
+                                <br>Engine: Select one of the options.
                             </p>
                         </div>
                     </div>
@@ -160,62 +138,83 @@
                         <div class="u-container-layout u-container-layout-2">
                             <div class="u-form u-form-1">
 
-                                <form th:fragment="parcel-form" action="#" th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${parcel}" method="POST"
+                                <form th:fragment="car-form" action="#" th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${car}" method="POST"
                                       class="u-clearfix u-form-custom-backend u-form-spacing-30 u-form-vertical u-inner-form"
                                       style="padding: 10px" source="custom" name="form" redirect="true">
-                                    <div class="u-form-group u-form-select u-form-group-3">
-                                        <label for="select-4599"
-                                               class="u-label u-text-body-alt-color u-label-3">Customer</label>
-                                        <div class="u-form-select-wrapper">
-                                            <select id="select-4599" th:field="*{userId}"
-                                                    class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="customer : ${customers}" th:value="${customer.getCustomerId()}"
-                                                        th:text="${customer.user.getEmail()}">Customer
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="u-form-group u-form-select u-form-group-3">
                                         <label for="select-4598"
-                                               class="u-label u-text-body-alt-color u-label-3">Warehouse address</label>
+                                               class="u-label u-text-body-alt-color u-label-3">Model</label>
                                         <div class="u-form-select-wrapper">
-                                            <select id="select-4598" th:field="*{warehouseId}"
+                                            <select id="select-4598" th:field="*{modelId}"
                                                     class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="warehouse : ${warehouses}" th:value="${warehouse.getId()}"
-                                                        th:text="${warehouse.address.getName()}">Warehouse
+                                                <option th:each="model : ${models}" th:value="${model.modelId}"
+                                                        th:text="${model.modelName + '-' + model.manufacturer.manufacturerName} "
+                                                >"${model.modelName}">Model
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="u-form-group u-form-name u-form-partition-factor-2 u-form-group-2">
                                         <label for="name-319a"
-                                               class="u-label u-text-body-alt-color u-label-2">Weight</label>
-                                        <input type="number" step="0.01" th:value="*{weight}" placeholder="Enter weight"
+                                               class="u-label u-text-body-alt-color u-label-2">Plate</label>
+                                        <input type="text" step="0.01" th:value="*{plate}" placeholder="Enter plate"
                                                id="name-319a"
-                                               th:field="*{weight}" class="u-input u-input-rectangle u-white"
+                                               th:field="*{plate}" class="u-input u-input-rectangle u-white"
                                                required="">
                                     </div>
-                                    <p th:errors="*{weight}">Weight error</p>
+                                    <p th:errors="*{plate}">Plate error</p>
+                                    <div class="u-form-group u-form-name u-form-partition-factor-2 u-form-group-2">
+                                        <label for="name-320a"
+                                               class="u-label u-text-body-alt-color u-label-2">Identification</label>
+                                        <input type="text" step="0.01" th:value="*{identification}" placeholder="Enter identification"
+                                               id="name-320a"
+                                               th:field="*{identification}" class="u-input u-input-rectangle u-white"
+                                               required="">
+                                    </div>
+                                    <p th:errors="*{identification}">Identification error</p>
+                                    <div class="u-form-group u-form-name u-form-partition-factor-2 u-form-group-2">
+                                        <label for="name-321a"
+                                               class="u-label u-text-body-alt-color u-label-2">Year</label>
+                                        <input type="number" step="0.01" th:value="*{year}" placeholder="Enter year"
+                                               id="name-321a"
+                                               th:field="*{year}" class="u-input u-input-rectangle u-white"
+                                               required="">
+                                    </div>
                                     <div class="u-form-group u-form-select u-form-group-3">
-                                        <label for="select-4597"
-                                               class="u-label u-text-body-alt-color u-label-3">Category</label>
+                                        <label for="select-3598"
+                                               class="u-label u-text-body-alt-color u-label-3">Colours</label>
                                         <div class="u-form-select-wrapper">
-                                            <select id="select-4597" th:field="*{categoryId}"
+                                            <select id="select-3598" th:field="*{colourId}"
                                                     class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="category : ${categories}" th:value="${category.getCategoryId()}"
-                                                        th:text="${category.getName()}">Category
+                                                <option th:each="colour : ${colours}" th:value="${colour.colourId}"
+                                                        th:text="${colour.colour}">Colour
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="u-form-group u-form-select u-form-group-3">
-                                        <label for="select-4596"
-                                               class="u-label u-text-body-alt-color u-label-3">Shipment</label>
+                                        <label for="select-3599"
+                                               class="u-label u-text-body-alt-color u-label-3">Engine</label>
                                         <div class="u-form-select-wrapper">
-                                            <select id="select-4596" th:field="*{shipmentId}"
+                                            <select id="select-3599" th:field="*{engineId}"
                                                     class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="shipment : ${shipments}" th:value="${shipment.getShipmentId()}"
-                                                        th:text="${shipment.getShipmentId()}">Shipment
+                                                <option th:each="engine : ${engines}" th:value="${engine.engineId}"
+                                                        th:text="${'id' + '-' +
+                                                        engine.engineId +'/ HorsePowers' + '-' +
+                                                        engine.hpw+  '/ Fuel-' + engine.fuel.fuelName +  '/ Cubic Capacity' +'-' + engine.cubicCapacity}" >" - ${engine.cubicCapacity} -${engine.fuel.fuelName} ">Engine
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="u-form-group u-form-select u-form-group-3">
+                                        <label for="select-4599"
+                                               class="u-label u-text-body-alt-color u-label-3">Customer</label>
+                                        <div class="u-form-select-wrapper">
+                                            <select id="select-4599" th:field="*{ownerId}"
+                                                    class="u-input u-input-rectangle u-white" required="required">
+                                                <option th:each="customer : ${users}" th:value="${customer.getUserId()}"
+                                                        th:text="${customer.personalInfo.email}">Customer
                                                 </option>
                                             </select>
                                         </div>

@@ -60,7 +60,7 @@ public class AutomobileDto {
         this.engineId = engineId;
     }
 
-    public void setOwnerId(int customerId) {
+    public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
 
