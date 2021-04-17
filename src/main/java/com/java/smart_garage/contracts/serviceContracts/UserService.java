@@ -15,9 +15,11 @@ public interface UserService {
 
     User getById(int id);
 
-    void create(User user);
+    User getByUserName(String userName);
 
-    void update(User user);
+    void create(User user, User userCredential);
+
+    void update(User user, User userCredential);
 
     void delete(int id, User user);
 
@@ -35,6 +37,4 @@ public interface UserService {
     List<CustomerViewDto> sortCustomersByVisits(boolean ascending, User userCredential);
 
     int getUserCount();
-
-    User getByUserName(String userName);
 }

@@ -1,5 +1,6 @@
 package com.java.smart_garage.controllers.rest;
 
+import com.java.smart_garage.contracts.serviceContracts.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,40 +15,16 @@ import java.util.Random;
 @RequestMapping("/smartgarage/sendemail")
 public class EmailController {
 
+    private MailService mailService;
+
     @Autowired
     private JavaMailSender mailSender;
 
     @PostMapping
     public String sendEmail() {
-        sendMail();
+        //mailService.sendMailForCredentials();
         return "Email sent successfully";
     }
 
-    private void sendMail() {
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("karailiev1994@gmail.com");
-        message.setTo("plamenchipev16@gmail.com");
-        message.setSubject("New Registered User Credentials");
-
-        // User -> Customer -> personal info {first name, last name, email, phoneNumber}
-        // Api -> mail -> username, password {}
-
-
-        // Link -> Forgotten password -> User writes mail -> Send new password
-        message.setText("Username: ....\n" +
-                        "Password: " + generateNewPassword());
-
-        mailSender.send(message);
-    }
-
-
-    public String generateNewPassword() {
-        byte[] array = new byte[8]; // length is bounded by 8
-        new Random().nextBytes(array);
-        String generatedString = new String(array, Charset.forName("UTF-8"));
-
-        return generatedString;
-    }
 
 }

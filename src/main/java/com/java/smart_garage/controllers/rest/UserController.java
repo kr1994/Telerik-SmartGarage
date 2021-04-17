@@ -54,7 +54,8 @@ public class UserController {
     public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
         try {
             User user = modelConversionHelper.userFromDto(userDto);
-            service.create(user);
+            User credentialUser = authenticationHelper.tryGetUser(headers);
+            service.create(user, credentialUser);
             return user;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -65,7 +66,8 @@ public class UserController {
     public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
         try {
             User user = modelConversionHelper.userFromDto(userDto);
-            service.update(user);
+            User credentialUser = authenticationHelper.tryGetUser(headers);
+            service.update(user, credentialUser);
             return user;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -75,8 +77,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            User credentialUser = authenticationHelper.tryGetUser(headers);
             service.delete(id, credentialUser);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -93,8 +94,7 @@ public class UserController {
                                                  @RequestParam(required = false) Optional<Date> dateFrom,
                                                  @RequestParam(required = false) Optional<Date> dateTo) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            User credentialUser = authenticationHelper.tryGetUser(headers);
             return service.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom,
                     dateTo, credentialUser);
         }
@@ -107,8 +107,7 @@ public class UserController {
     public List<CustomerViewDto> sortCustomersByName(@RequestHeader HttpHeaders headers,
                                                      @RequestParam(required = true) boolean ascending) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            User credentialUser = authenticationHelper.tryGetUser(headers);
             return service.sortCustomersByName(ascending, credentialUser);
         }
         catch (EntityNotFoundException e) {
@@ -120,8 +119,7 @@ public class UserController {
     public List<CustomerViewDto> sortCustomersByVisits(@RequestHeader HttpHeaders headers,
                                                        @RequestParam(required = true) boolean ascending) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User credentialUser = authenticationHelper.convertCredentialToUser(credential);
+            User credentialUser = authenticationHelper.tryGetUser(headers);
             return service.sortCustomersByVisits(ascending, credentialUser);
         }
         catch (EntityNotFoundException e) {

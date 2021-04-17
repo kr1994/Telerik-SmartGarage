@@ -1,10 +1,13 @@
 package com.java.smart_garage.configuration;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 public class Md5Hashing {
+
     public static String md5(String input) {
 
         String md5 = null;
@@ -27,5 +30,13 @@ public class Md5Hashing {
             e.printStackTrace();
         }
         return md5;
+    }
+
+    public static String generateNewPassword() {
+        byte[] array = new byte[8]; // length is bounded by 8
+        new Random().nextBytes(array);
+        String generatedString = new String(array, Charset.forName("UTF-8"));
+
+        return generatedString;
     }
 }

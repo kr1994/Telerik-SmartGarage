@@ -1,29 +1,41 @@
 package com.java.smart_garage.services;
 
+import com.java.smart_garage.configuration.Md5Hashing;
+import com.java.smart_garage.contracts.repoContracts.CredentialRepository;
 import com.java.smart_garage.contracts.repoContracts.UserRepository;
+import com.java.smart_garage.contracts.serviceContracts.MailService;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.Charset;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final CredentialRepository credentialRepository;
+    private final MailService mailService;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository,
+                           CredentialRepository credentialRepository,
+                           MailService mailService) {
         this.repository = repository;
+        this.credentialRepository = credentialRepository;
+        this.mailService = mailService;
     }
 
     @Override
@@ -42,10 +54,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user) {
+    public void create(User user, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(user.isEmployee())) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can create new user.");
         }
 
@@ -62,9 +74,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user, User credentialUser) {
 
-        if (!(user.isEmployee())) {
+        if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can update user.");
         }
 
@@ -121,6 +133,19 @@ public class UserServiceImpl implements UserService {
     public int getUserCount() {
         return repository.getAllUsers().size();
     }
+
+    public void resetPassword(String email) {
+        User user = Optional.ofNullable(repository.getByEmail(email)).orElseThrow(
+                () -> new EntityNotFoundException("User", "email"));
+
+        Credential credential = credentialRepository.getById(user.getCredential().getCredentialId());
+        String newPassword = Md5Hashing.generateNewPassword();
+        credential.setPassword(Md5Hashing.md5(newPassword));
+        credentialRepository.update(credential);
+        mailService.sendMailForNewPassword(email, newPassword);
+
+    }
+
 
 }
 
