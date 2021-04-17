@@ -60,9 +60,8 @@ public class CredentialController {
     @PostMapping
     public Credential create(@RequestHeader HttpHeaders headers, @Valid @RequestBody CredentialDto credentialDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.tryGetUser(headers);
             Credential newCredential = modelConversionHelper.credentialFromDto(credentialDto);
-            User user = authenticationHelper.convertCredentialToUser(credential);
             service.create(newCredential, user);
             return newCredential;
         } catch (DuplicateEntityException e) {
@@ -73,9 +72,8 @@ public class CredentialController {
     @PutMapping("/{id}")
     public Credential update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CredentialDto credentialDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
+            User user = authenticationHelper.tryGetUser(headers);
             Credential updatedCredential = modelConversionHelper.credentialFromDto(credentialDto);
-            User user = authenticationHelper.convertCredentialToUser(credential);
             service.update(updatedCredential, user);
             return updatedCredential;
         } catch (EntityNotFoundException e) {
@@ -86,8 +84,7 @@ public class CredentialController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

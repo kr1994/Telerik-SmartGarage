@@ -77,8 +77,7 @@ public class InvoiceController {
     @PostMapping
     public Invoice create(@RequestHeader HttpHeaders headers, @Valid @RequestBody InvoiceDto invoiceDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Invoice invoice = modelConversionHelper.invoiceFromDto(invoiceDto);
             service.create(invoice, user);
             return invoice;

@@ -54,8 +54,7 @@ public class FuelController {
     @PostMapping
     public Fuel create(@RequestHeader HttpHeaders headers, @Valid @RequestBody FuelDto fuelDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Fuel fuel = modelConversionHelper.fuelFromDto(fuelDto);
             service.create(fuel, user);
             return fuel;
@@ -67,8 +66,7 @@ public class FuelController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

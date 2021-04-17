@@ -61,8 +61,7 @@ public class WorkServiceController {
     @PostMapping
     public WorkService create(@RequestHeader HttpHeaders headers, @Valid @RequestBody WorkServiceDto workServiceDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             WorkService workService = modelConversionHelper.workServiceFromDto(workServiceDto);
             service.create(workService, user);
             return workService;
@@ -74,8 +73,7 @@ public class WorkServiceController {
     @PutMapping("/{id}")
     public WorkService update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody WorkServiceDto workServiceDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             WorkService workService = modelConversionHelper.workServiceFromDto(workServiceDto);  //Should be found by id
             service.update(workService, user);
             return workService;
@@ -87,8 +85,7 @@ public class WorkServiceController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

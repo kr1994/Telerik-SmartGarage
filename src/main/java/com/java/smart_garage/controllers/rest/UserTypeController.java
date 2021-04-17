@@ -44,8 +44,7 @@ public class UserTypeController {
     @PostMapping
     public UserType create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserTypeDto userTypeDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             UserType userType = modelConversionHelper.userTypeFromDto(userTypeDto);
             service.create(userType, user);
             return userType;
@@ -56,8 +55,7 @@ public class UserTypeController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

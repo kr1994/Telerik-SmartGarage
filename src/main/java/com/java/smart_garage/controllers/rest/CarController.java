@@ -56,8 +56,7 @@ public class CarController {
     @PostMapping
     public Automobile create(@RequestHeader HttpHeaders headers, @Valid @RequestBody AutomobileDto automobileDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Automobile automobile = modelConversionHelper.carFromDto(automobileDto);
             service.create(automobile, user);
             return automobile;
@@ -70,8 +69,7 @@ public class CarController {
     @PutMapping("/{id}")
     public Automobile update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody AutomobileDto automobileDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Automobile automobile = modelConversionHelper.carFromDto(automobileDto, id);
             service.update(automobile, user);
             return automobile;
@@ -86,8 +84,7 @@ public class CarController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

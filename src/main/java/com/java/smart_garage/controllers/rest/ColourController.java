@@ -58,11 +58,11 @@ public class ColourController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
     @PostMapping
     public Colour create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ColourDto colourDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Colour colour = modelConversionHelper.colourFromDto(colourDto);
             service.create(colour, user);
             return colour;
@@ -73,8 +73,7 @@ public class ColourController {
     @DeleteMapping("/{id}")
     public void deleteColour(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

@@ -54,8 +54,7 @@ public class EngineController {
     @PostMapping
     public Engine create(@RequestHeader HttpHeaders headers, @Valid @RequestBody EngineDto engineDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Engine engine = modelConversionHelper.engineFromDto(engineDto);
             service.create(engine, user);
             return engine;
@@ -66,8 +65,7 @@ public class EngineController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

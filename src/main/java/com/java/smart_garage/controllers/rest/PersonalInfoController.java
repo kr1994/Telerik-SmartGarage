@@ -79,8 +79,7 @@ public class PersonalInfoController {
     @PostMapping
     public PersonalInfo create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PersonalInfoDto personalInfoDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             PersonalInfo personalInfo = modelConversionHelper.personalInfoFromDto(personalInfoDto);
             service.create(personalInfo, user);
             return personalInfo;
@@ -92,8 +91,7 @@ public class PersonalInfoController {
     @PutMapping("/{id}")
     public PersonalInfo update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PersonalInfoDto personalInfoDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             PersonalInfo personalInfo = modelConversionHelper.personalInfoFromDto(personalInfoDto);  //Should be found by id
             service.update(personalInfo, user);
             return personalInfo;
@@ -104,8 +102,7 @@ public class PersonalInfoController {
 
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

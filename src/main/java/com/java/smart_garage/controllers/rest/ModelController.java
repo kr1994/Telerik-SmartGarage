@@ -52,8 +52,7 @@ public class ModelController {
     @PostMapping
     public Model create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ModelDto modelDto) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             Model model = modelConversionHelper.modelFromDto(modelDto);
             service.create(model, user);
             return model;
@@ -64,8 +63,7 @@ public class ModelController {
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            Credential credential = authenticationHelper.tryGetUser(headers);
-            User user = authenticationHelper.convertCredentialToUser(credential);
+            User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

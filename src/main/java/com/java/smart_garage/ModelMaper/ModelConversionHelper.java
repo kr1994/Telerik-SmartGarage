@@ -147,12 +147,12 @@ public class ModelConversionHelper {
         return carService;
     }
 
-
     public CarService carServiceFromDto(CarServiceDto carServiceDto, int id) {
         CarService carService = carServiceRepository.getById(id);
         dtoToCarServiceObject(carServiceDto, carService);
         return carService;
     }
+
     public Model modelFromDto(ModelDto modelDto) {
         Model model = new Model();
         dtoToModelObject(modelDto, model);
@@ -164,7 +164,6 @@ public class ModelConversionHelper {
         dtoToModelObject(modelDto, model);
         return model;
     }
-
 
     public Automobile carFromDto(AutomobileDto automobileDto) {
         Automobile automobile = new Automobile();
@@ -197,7 +196,7 @@ public class ModelConversionHelper {
     }
 
 
-    public WorkServiceView  objectToViewWork(CarService workService, double nameCurrency){
+    public WorkServiceView objectToViewWork(CarService workService, double nameCurrency){
         WorkServiceView workServiceView = new WorkServiceView();
         double currency = workService.getService().getWorkServicePrice()*nameCurrency;
         workServiceView.setMultiplier(nameCurrency);
@@ -297,12 +296,12 @@ public class ModelConversionHelper {
         automobile.setOwner(user);
     }
 
-
     private void dtoToModelObject(ModelDto modelDto, Model model) {
         Manufacturer manufacturer = manufacturerRepository.getById(modelDto.getManufacturer());
         model.setModelName(modelDto.getModelName());
         model.setManufacturer(manufacturer);
     }
+
     private void dtoToCarServiceObject(CarServiceDto carServiceDto, CarService carService) {
         Automobile automobile = automobileRepository.getById(carServiceDto.getCarId());
         WorkService workService = workServiceRepository.getById(carServiceDto.getServiceId());
