@@ -1,6 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.CarService;
+import com.java.smart_garage.models.Invoice;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.viewDto.WorkServiceView;
 
@@ -25,6 +26,8 @@ public interface CarServiceService {  // Too complex name
     CarService getById(int id);
 
     void create(CarService carService, User user);
+
+    void create(CarService carService, Invoice invoice, User user);
 
     void delete(int id, User user);
 
