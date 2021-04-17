@@ -6,7 +6,7 @@
     <meta name="keywords" content="Customer Cars">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>Parcels</title>
+    <title>Cars</title>
     <link rel="stylesheet" href="../static/styles.css" th:href="@{/styles.css}" media="screen">
     <link rel="stylesheet" href="../static/cars.css" th:href="@{/cars.css}" media="screen">
     <link rel="stylesheet" href="../static/filter-button.css" th:href="@{/filter-button.css}" media="screen">
@@ -119,10 +119,12 @@
 <section class="u-align-center u-clearfix u-palette-5-dark-3 u-section-1" id="carousel_180e">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <h2 class="u-text u-text-1">Customers' Cars</h2>
+        <li th:if="${currentUser.getUserType().type.equals('Employee')}">
         <div class="u-border-9 u-border-palette-1-base u-line u-line-horizontal u-line-1"></div>
         <a href="#" th:href="@{/cars/create}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">
             CREATE NEW CAR</a>
+        </li>
         <br>
         <form action="#" class="u-border-5 u-border-grey-30 u-input-round u-radius-10 u-search u-search-left u-white u-search-1">
             <button disabled class="u-search-button" type="submit">
@@ -134,15 +136,12 @@
             <input id="myInput" th:id="myInput" class="u-search-input" type="search" name="search" value="" placeholder="Search">
         </form>
         <br>
-        <div id="myBtnContainer">
-            <button class="btn active" onclick="selectFilter('all')">Show all</button>
-
-        </div>
         <div id="myDiv" class="u-accordion u-faq u-spacing-10 u-accordion-1">
            <div class="u-accordion-item" th:each="user : ${users}">
                <span class="u-accordion-link-text"
                      th:text="'User: ' + ${user.credential.username}">Username</span>
             <div class="u-accordion-item" th:each="car : ${cars}"
+                 th:unless="${car.getId()==0}"
                  th:if="${car.owner.credential.username} == ${user.credential.username}"
                  th:class="'filterDiv ' + ${car.getOwner().credential.username}">
                 <a class="u-accordion-link u-active-palette-1-base u-button-style u-hover-palette-1-base u-palette-5-dark-2 u-text-active-white u-text-grey-10 u-text-hover-grey-10 u-accordion-link-1"

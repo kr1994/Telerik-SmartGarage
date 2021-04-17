@@ -51,7 +51,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getByFirstName(String firstName) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-                            "where u.personalInfo.firstName = :firstName order by u.id",
+                            "where u.personalInfo.firstName like :firstName order by u.id",
                     User.class);
             query.setParameter("firstName", firstName);
             return query.list();
@@ -62,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getByLastName(String lastName) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-                            "where u.personalInfo.lastName = :lastName order by u.id",
+                            "where u.personalInfo.lastName like :lastName order by u.id",
                     User.class);
             query.setParameter("lastName", lastName);
             return query.list();
@@ -73,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User getByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User u join PersonalInfo p " +
-                            "where u.personalInfo.email = :email order by u.id",
+                            "where u.personalInfo.email like :email order by u.id",
                     User.class);
             query.setParameter("email", email);
             return query.list().get(0);
@@ -373,10 +373,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getByUserName(String username) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where credential.username = :username",
+            Query<User> query = session.createQuery("from User where credential.username like :name",
                     User.class);
-            query.setParameter("username", username);
-            return query.list().get(0);
+            query.setParameter("name", username);
+            List<User> listUser = query.list();
+            if (listUser.size() == 0) {
+                throw new EntityNotFoundException("User", "user name", username);
+            }
+            return listUser.get(0);
         }
     }
 

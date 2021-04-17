@@ -4,6 +4,7 @@ import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.*;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
+import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.UserType;
@@ -52,20 +53,17 @@ public class CarMvcController {
 
     @GetMapping
     public String showAllCars(Model model, HttpSession session) {
-        User currentUser = new User();
-        UserType userType = new UserType();
-        userType.setType("Employee");
-        currentUser.setUserType(userType);
-//
-//        try {
-//            currentUser = authenticationHelper.tryGetUser(session);
-//        } catch (UnauthorizedOperationException e) {
-//            return "authentication-fail";
-//        }
-//
-//        if (!currentUser.isEmployee()) {
-//            return "authentication-fail";
-//        }
+        User currentUser;
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+        } catch (UnauthorizedOperationException e) {
+            return "authentication-fail";
+        }
+
+        if (!currentUser.isEmployee()) {
+            return showAllCars(currentUser.getUserId(), model,session);
+        }
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("cars", automobileService.getAllCars());
         model.addAttribute("currentUser", currentUser);
@@ -73,17 +71,14 @@ public class CarMvcController {
     }
     @GetMapping("/{id}")
     public String showAllCars(@PathVariable int id, Model model, HttpSession session) {
-        User currentUser = userService.getById(id);
-//
-//        try {
-//            currentUser = authenticationHelper.tryGetUser(session);
-//        } catch (UnauthorizedOperationException e) {
-//            return "authentication-fail";
-//        }
-//
-//        if (!currentUser.isEmployee()) {
-//            return "authentication-fail";
-//        }
+        User currentUser ;
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+        } catch (UnauthorizedOperationException e) {
+            return "authentication-fail";
+        }
+
         model.addAttribute("users", userService.getById(id));
         model.addAttribute("cars", automobileService.getAllCarsByOwner(id));
         model.addAttribute("currentUser", currentUser);
@@ -92,20 +87,17 @@ public class CarMvcController {
 
     @GetMapping("/create")
     public String showCarsCreate(Model model, HttpSession session) {
-        User currentUser = new User();
-        UserType userType = new UserType();
-        userType.setType("Employee");
-        currentUser.setUserType(userType);
-//
-//        try {
-//            currentUser = authenticationHelper.tryGetUser(session);
-//        } catch (UnauthorizedOperationException e) {
-//            return "authentication-fail";
-//        }
-//
-//        if (!currentUser.isEmployee()) {
-//            return "authentication-fail";
-//        }
+        User currentUser;
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+        } catch (UnauthorizedOperationException e) {
+            return "authentication-fail";
+        }
+
+        if (!currentUser.isEmployee()) {
+            return "authentication-fail";
+        }
         carPartsList(currentUser, model);
         return "car-create";
     }
@@ -115,11 +107,7 @@ public class CarMvcController {
         if (bindingResult.hasErrors()) {
             return "car-create";
         }
-        currentUser = new User();
-        UserType userType = new UserType();
-        userType.setType("Employee");
-        currentUser.setUserType(userType);
-        //currentUser = authenticationHelper.tryGetUser(session);
+        currentUser = authenticationHelper.tryGetUser(session);
         Automobile automobile = modelConversionHelper.carFromDto(automobileDto);
 
         try {
