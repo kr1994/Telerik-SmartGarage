@@ -16,7 +16,6 @@ public class CarServiceDto {
     private int serviceId;
 
     @NotNull
-    @Positive(message = "Invoice Id must be positive.")
     private InvoiceDto invoice;
 
     public CarServiceDto() {
@@ -26,7 +25,7 @@ public class CarServiceDto {
         this.carId = carId;
     }
 
-    public void setServiceId(int serviceId) {
+    public void setService(int serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -42,7 +41,7 @@ public class CarServiceDto {
         return serviceId;
     }
 
-    public InvoiceDto getInvoiceId() {
+    public InvoiceDto getInvoice() {
         return invoice;
     }
 }

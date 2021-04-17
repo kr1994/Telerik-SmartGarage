@@ -31,7 +31,7 @@ public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService 
     @Override
     public double getCurrency(String value) {
         repository.getCurrencyByName(value);
-        Map<String, Double> currencyValues = new HashMap<>();
+        Map<String, Double> currencyValues;
         try{
         currencyValues = currencyValues();
         }catch (Exception e){

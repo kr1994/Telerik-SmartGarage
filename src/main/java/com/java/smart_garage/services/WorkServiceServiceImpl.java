@@ -1,36 +1,55 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.WorkServiceRepository;
+import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
 import com.java.smart_garage.contracts.serviceContracts.WorkServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.WorkService;
-import com.java.smart_garage.models.Credential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkServiceServiceImpl implements WorkServiceService {
 
     private final WorkServiceRepository repository;
+    private final CurrencyMultiplierService multiplierService;
 
     @Autowired
-    public WorkServiceServiceImpl(WorkServiceRepository repository) {
+    public WorkServiceServiceImpl(WorkServiceRepository repository, CurrencyMultiplierService multiplierService) {
         this.repository = repository;
+        this.multiplierService = multiplierService;
     }
 
     @Override
-    public List<WorkService> getAllWorkServices(){
-        return repository.getAllWorkServices();
+    public List<WorkService> getAllWorkServices(Optional<String> currency){
+        List<WorkService> services = repository.getAllWorkServices();
+
+        if(currency.isEmpty()){
+            return repository.getAllWorkServices();
+        }
+
+        for (WorkService service : services) {
+            service.setWorkServicePrice(Math.round(service.getWorkServicePrice()*multiplierService.getCurrency(currency.toString().substring(9,12))));
+        }
+        return services;
     }
 
     @Override
-    public WorkService getById(int id){
-        return repository.getById(id);
+    public WorkService getById(Optional<String> currency,int id){
+        WorkService workService = repository.getById(id);
+        if(currency.isEmpty()){
+            return workService;
+        }
+
+            workService.setWorkServicePrice(Math.round(workService.getWorkServicePrice()*multiplierService.getCurrency(currency.toString().substring(9,12))));
+
+        return workService;
     }
 
     @Override

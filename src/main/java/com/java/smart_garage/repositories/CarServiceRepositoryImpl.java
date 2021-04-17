@@ -4,8 +4,10 @@ import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.models.CarService;
+import com.java.smart_garage.models.Invoice;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -104,6 +106,22 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
         return carService;
     }
 
+    @Override
+    public CarService create(CarService carService, Invoice invoice) {
+        Transaction tx = null;
+
+        try (Session session = sessionFactory.openSession()) {
+            tx = session.beginTransaction();
+            session.save(invoice);
+            carService.setInvoice(invoice);
+            session.save(carService);
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+            tx.rollback();
+            throw new RuntimeException(e.toString());
+        }
+        return carService;
+    }
 
 
     @Override

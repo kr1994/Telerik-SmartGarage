@@ -1,6 +1,7 @@
 package com.java.smart_garage.contracts.repoContracts;
 
 import com.java.smart_garage.models.CarService;
+import com.java.smart_garage.models.Invoice;
 
 
 import java.sql.Date;
@@ -13,6 +14,8 @@ public interface CarServiceRepository {
     CarService getById(int id);
 
     CarService create(CarService carService);
+
+    CarService create(CarService carService, Invoice invoice);
 
     List<CarService> getAllCarServicesByCustomer(int id);
 

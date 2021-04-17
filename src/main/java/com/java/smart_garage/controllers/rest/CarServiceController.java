@@ -4,12 +4,10 @@ import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
 import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
+import com.java.smart_garage.contracts.serviceContracts.InvoiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Automobile;
-import com.java.smart_garage.models.CarService;
-import com.java.smart_garage.models.Credential;
-import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.CarServiceDto;
 import com.java.smart_garage.models.viewDto.CarServiceViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +30,20 @@ public class CarServiceController {
     private final AutomobileService automobileService;
     private final ModelConversionHelper modelConversionHelper;
     private final AuthenticationHelper authenticationHelper;
+    private final InvoiceService invoiceService;
 
 
 
     @Autowired
     public CarServiceController(CarServiceService service,
                                 AutomobileService automobileService, ModelConversionHelper modelConversionHelper,
-                                AuthenticationHelper authenticationHelper) {
+                                AuthenticationHelper authenticationHelper, InvoiceService invoiceService) {
         this.service = service;
         this.automobileService = automobileService;
         this.modelConversionHelper = modelConversionHelper;
         this.authenticationHelper = authenticationHelper;
 
+        this.invoiceService = invoiceService;
     }
 
     @GetMapping
@@ -114,7 +114,17 @@ public class CarServiceController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             CarService carService = modelConversionHelper.carServiceFromDto(carServiceDto);
-            service.create(carService, user);
+
+           try{
+               Invoice invoice = invoiceService.getByDate(carServiceDto.getInvoice().getDate());
+               carService.setInvoice(invoice);
+               service.create(carService, user);
+           }catch (IndexOutOfBoundsException e){
+               Invoice invoice = modelConversionHelper.invoiceFromDto(carServiceDto.getInvoice());
+          service.create(carService,invoice,user);
+
+           }
+
             return carService;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
