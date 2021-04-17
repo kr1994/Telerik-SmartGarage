@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static com.java.smart_garage.Helpers.*;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class WorkServiceServiceTest {
@@ -27,7 +28,7 @@ public class WorkServiceServiceTest {
 
     @Test
     public void getAllWorkServices_Should_Return_AllWorkServices() {
-        List<WorkService> result = service.getAllWorkServices();
+        List<WorkService> result = service.getAllWorkServices(Optional.empty());
         result.add(createMockWorkService());
 
         // Assert

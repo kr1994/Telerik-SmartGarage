@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("smartgarage/workservices")
@@ -36,14 +37,14 @@ public class WorkServiceController {
     }
 
     @GetMapping("/")
-    public List<WorkService> getAllWorkServices(){
-        return service.getAllWorkServices();
+    public List<WorkService> getAllWorkServices( @RequestParam Optional<String> currency){
+        return service.getAllWorkServices(currency);
     }
 
     @GetMapping("/{id}")
-    public WorkService getById(@PathVariable int id) {
+    public WorkService getById(@RequestParam Optional<String> currency,@PathVariable int id) {
         try {
-            return service.getById(id);
+            return service.getById(currency,id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

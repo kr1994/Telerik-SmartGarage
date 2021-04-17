@@ -2,14 +2,16 @@ package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.WorkService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface WorkServiceService {
 
-    List<WorkService> getAllWorkServices();
+    List<WorkService> getAllWorkServices(Optional<String> currency);
 
-    WorkService getById(int id);
+    WorkService getById(Optional<String> currency,int id);
 
     WorkService getByName(String name);
 
