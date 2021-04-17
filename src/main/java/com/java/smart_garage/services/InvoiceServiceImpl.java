@@ -12,6 +12,7 @@ import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,6 +33,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice getById(int id) {
         return repository.getById(id);
+    }
+
+    @Override
+    public Invoice getByDate(Date date) {
+        return repository.getByDate(date);
     }
 
     @Override

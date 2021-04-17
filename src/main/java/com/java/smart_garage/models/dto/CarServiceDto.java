@@ -1,5 +1,7 @@
 package com.java.smart_garage.models.dto;
 
+import com.java.smart_garage.models.Invoice;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -15,7 +17,7 @@ public class CarServiceDto {
 
     @NotNull
     @Positive(message = "Invoice Id must be positive.")
-    private int invoiceId;
+    private InvoiceDto invoice;
 
     public CarServiceDto() {
     }
@@ -28,8 +30,8 @@ public class CarServiceDto {
         this.serviceId = serviceId;
     }
 
-    public void setInvoiceId(int invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setInvoice(InvoiceDto invoice) {
+        this.invoice = invoice;
     }
 
     public int getCarId() {
@@ -40,7 +42,7 @@ public class CarServiceDto {
         return serviceId;
     }
 
-    public int getInvoiceId() {
-        return invoiceId;
+    public InvoiceDto getInvoiceId() {
+        return invoice;
     }
 }

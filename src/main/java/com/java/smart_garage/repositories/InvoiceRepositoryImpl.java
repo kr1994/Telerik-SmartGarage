@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -43,11 +44,18 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     @Override
     public List<Invoice> getInvoiceByCustomer(int customerId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Invoice> query = session.createQuery("from Invoice i where exists (from CarService cs where cs.car.customer.id = :id and cs.invoice = i )", Invoice.class);
+            Query<Invoice> query = session.createQuery("from Invoice i where exists (from CarService cs where cs.automobile.user.id = :id and cs.invoice = i )", Invoice.class);
             query.setParameter("id", customerId);
             return query.list();
         }
 
+    }
+    public Invoice getByDate(Date date) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Invoice> query = session.createQuery("from Invoice  where date = :date ", Invoice.class);
+            query.setParameter("date", date);
+            return query.list().get(0);
+        }
     }
 
     @Override

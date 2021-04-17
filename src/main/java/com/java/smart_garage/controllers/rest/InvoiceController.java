@@ -11,12 +11,14 @@ import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.dto.InvoiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -40,10 +42,21 @@ public class InvoiceController {
     public List<Invoice> getAllInvoice(){
         return service.getAllInvoices();
     }
+
     @GetMapping("/{id}")
     public Invoice getById(@PathVariable int id) {
         try {
             return service.getById(id);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/date")
+    public Invoice getById(@RequestParam Date date) {
+        try {
+            return service.getByDate(date);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

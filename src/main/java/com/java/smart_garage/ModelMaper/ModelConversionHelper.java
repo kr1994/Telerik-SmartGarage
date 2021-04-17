@@ -306,7 +306,7 @@ public class ModelConversionHelper {
     private void dtoToCarServiceObject(CarServiceDto carServiceDto, CarService carService) {
         Automobile automobile = automobileRepository.getById(carServiceDto.getCarId());
         WorkService workService = workServiceRepository.getById(carServiceDto.getServiceId());
-        Invoice invoice = invoiceRepository.getById(carServiceDto.getInvoiceId());
+        Invoice invoice = invoiceFromDto(carServiceDto.getInvoiceId());
         carService.setCar(automobile);
         carService.setService(workService);
         carService.setInvoice(invoice);
