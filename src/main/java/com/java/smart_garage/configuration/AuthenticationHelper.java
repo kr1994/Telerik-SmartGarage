@@ -32,7 +32,7 @@ public class AuthenticationHelper {
         this.userService = userService;
     }
 
-    public Credential tryGetUser(HttpHeaders headers) {
+    public User tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION_HEADER_NAME)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     "The request resource requires authorization.");
@@ -40,7 +40,7 @@ public class AuthenticationHelper {
 
         try {
             String username = headers.getFirst(AUTHORIZATION_HEADER_NAME);
-            return credentialService.getByUsername(username);
+            return userService.getByUserName(username);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username");
         }
