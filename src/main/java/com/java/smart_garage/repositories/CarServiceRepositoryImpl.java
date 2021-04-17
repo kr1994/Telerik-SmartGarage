@@ -110,7 +110,8 @@ public class CarServiceRepositoryImpl implements CarServiceRepository {
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Automobile.class, id));
+            Object delete = session.get(CarService.class, id);
+            session.delete(delete);
             session.getTransaction().commit();
         }
     }

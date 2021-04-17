@@ -2,6 +2,8 @@ package com.java.smart_garage.controllers.mvc;
 
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.exceptions.AuthenticationHelperException;
+import com.java.smart_garage.models.User;
+import com.java.smart_garage.models.UserType;
 import com.java.smart_garage.models.dto.PersonalInfoDto;
 import com.java.smart_garage.models.dto.LoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,14 @@ public class AuthenticationMvcController {
     @Autowired
     public AuthenticationMvcController(AuthenticationHelper authenticationHelper) {
         this.authenticationHelper = authenticationHelper;
+    }
+    @ModelAttribute
+    public void userToCheck(Model model) {
+        User currentUser = new User();
+        UserType userType = new UserType();
+        userType.setType("Anonymous");
+        currentUser.setUserType(userType);
+        model.addAttribute("currentUser", currentUser);
     }
 
     @GetMapping("/login")

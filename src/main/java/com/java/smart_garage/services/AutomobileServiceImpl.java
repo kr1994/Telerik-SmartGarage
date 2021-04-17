@@ -1,13 +1,16 @@
 package com.java.smart_garage.services;
 
 import com.java.smart_garage.contracts.repoContracts.AutomobileRepository;
+import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
+import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
 import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Automobile;
+import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +21,17 @@ import java.util.List;
 public class AutomobileServiceImpl implements AutomobileService {
     private final AutomobileRepository repository;
     private final PlateValidationService plateValidationService;
+    private final CarServiceService carServiceService;
+    private final CarServiceRepository carServiceRepository;
 
 
     @Autowired
-    public AutomobileServiceImpl(AutomobileRepository repository, PlateValidationService plateValidationService) {
+    public AutomobileServiceImpl(AutomobileRepository repository, PlateValidationService plateValidationService, CarServiceService carServiceService, CarServiceRepository carServiceRepository) {
         this.repository = repository;
 
         this.plateValidationService = plateValidationService;
+        this.carServiceService = carServiceService;
+        this.carServiceRepository = carServiceRepository;
     }
 
     @Override
@@ -57,6 +64,12 @@ public class AutomobileServiceImpl implements AutomobileService {
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can delete a car.");
+        }
+        List<CarService> carServiceServices = carServiceService.getAllCarServices();
+        for (CarService serviceService : carServiceServices) {
+            if(serviceService.getCar().getId() == id){
+                carServiceService.delete(serviceService.getCarServicesId(),user);
+            }
         }
         repository.delete(id);
     }

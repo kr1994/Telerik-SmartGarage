@@ -11,10 +11,7 @@ import com.java.smart_garage.models.dto.AutomobileDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -74,6 +71,25 @@ public class CarMvcController {
         model.addAttribute("currentUser", currentUser);
         return "cars";
     }
+    @GetMapping("/{id}")
+    public String showAllCars(@PathVariable int id, Model model, HttpSession session) {
+        User currentUser = userService.getById(id);
+//
+//        try {
+//            currentUser = authenticationHelper.tryGetUser(session);
+//        } catch (UnauthorizedOperationException e) {
+//            return "authentication-fail";
+//        }
+//
+//        if (!currentUser.isEmployee()) {
+//            return "authentication-fail";
+//        }
+        model.addAttribute("users", userService.getById(id));
+        model.addAttribute("cars", automobileService.getAllCarsByOwner(id));
+        model.addAttribute("currentUser", currentUser);
+        return "cars";
+    }
+
     @GetMapping("/create")
     public String showCarsCreate(Model model, HttpSession session) {
         User currentUser = new User();
