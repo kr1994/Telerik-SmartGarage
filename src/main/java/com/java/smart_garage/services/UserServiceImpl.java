@@ -8,6 +8,7 @@ import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.viewDto.CustomerViewDto;
@@ -98,14 +99,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-                                                 Optional<String> lastName,
-                                                 Optional<String> email,
-                                                 Optional<String> phoneNumber,
-                                                 Optional<String> model,
-                                                 Optional<Date> dateFrom,
-                                                 Optional<Date> dateTo,
-                                                 User userCredential) {
+    public List<CarService> filterCustomers(Optional<String> firstName,
+                                            Optional<String> lastName,
+                                            Optional<String> email,
+                                            Optional<String> phoneNumber,
+                                            Optional<String> model,
+                                            Optional<Date> dateFrom,
+                                            Optional<Date> dateTo,
+                                            User userCredential) {
 
         if (!(userCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can filter customers.");
@@ -114,19 +115,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<CustomerViewDto> sortCustomersByName(boolean ascending, User userCredential) {
+    public List<CustomerViewDto> sortCustomersByName(List<CustomerViewDto> input, boolean ascending, User userCredential) {
         if (!(userCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can sort customers.");
         }
-        return repository.sortCustomersByName(ascending);
+        return repository.sortCustomersByName(input, ascending);
     }
 
     @Override
-    public List<CustomerViewDto> sortCustomersByVisits(boolean ascending, User userCredential) {
+    public List<CustomerViewDto> sortCustomersByVisits(List<CustomerViewDto> input, boolean ascending, User userCredential) {
         if (!(userCredential.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee can sort customers.");
         }
-        return repository.sortCustomersByVisits(ascending);
+        return repository.sortCustomersByVisits(input, ascending);
     }
 
     @Override

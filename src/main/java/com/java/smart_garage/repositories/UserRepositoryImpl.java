@@ -81,6 +81,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User getByUserName(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where credential.username like :name",
+                    User.class);
+            query.setParameter("name", username);
+            List<User> listUser = query.list();
+            if (listUser.size() == 0) {
+                throw new EntityNotFoundException("User", "user name", username);
+            }
+            return listUser.get(0);
+        }
+    }
+
+    @Override
     public User create(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.save(user);
@@ -133,18 +147,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-                                                 Optional<String> lastName,
-                                                 Optional<String> email,
-                                                 Optional<String> phoneNumber,
-                                                 Optional<String> model,
-                                                 Optional<Date> dateFrom,
-                                                 Optional<Date> dateTo) {
+    public List<CarService> filterCustomers(Optional<String> firstName,
+                                            Optional<String> lastName,
+                                            Optional<String> email,
+                                            Optional<String> phoneNumber,
+                                            Optional<String> model,
+                                            Optional<Date> dateFrom,
+                                            Optional<Date> dateTo) {
 
         try (Session session = sessionFactory.openSession()) {
-
-            List<CustomerViewDto> resultQuery = new ArrayList<CustomerViewDto>();
-            List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
 
             int countParameters = 0;
             String queryStr = "from CarService cs ";
@@ -239,75 +250,22 @@ public class UserRepositoryImpl implements UserRepository {
                 queryForVisits = session.createQuery(queryStr, CarService.class);
                 queryForVisits.setParameter("customer", "Customer");
             }
-
-
-            for (CarService cs : queryForVisits.getResultList()) {  // map CarService object to return view
-                CustomerViewDto cvd = new CustomerViewDto();
-                List<Date> currentVisits = new ArrayList<Date>();
-                cvd.setFirstName(cs.getCar().getOwner().getPersonalInfo().getFirstName());
-                cvd.setLastName(cs.getCar().getOwner().getPersonalInfo().getLastName());
-                cvd.setEmail(cs.getCar().getOwner().getPersonalInfo().getEmail());
-                cvd.setPhoneNumber(cs.getCar().getOwner().getPersonalInfo().getPhoneNumber());
-                cvd.setUserType(cs.getCar().getOwner().getUserType());
-                cvd.setCarModel(cs.getCar().getModel().getModelName());
-                currentVisits.add(cs.getInvoice().getDate());
-                cvd.setVisitsInRange(currentVisits);
-                resultQuery.add(cvd);
-            }
-
-            List<Integer> indexesForDeletion = new ArrayList<Integer>();
-            int resultTempSize = resultQuery.size();
-            List<Date> currentVisits = new ArrayList<Date>();
-
-            int duplicateCounter = 0;
-            if (resultTempSize > 1) {
-                for (int i = 0; i < resultTempSize - 1; i++) {            // extract duplicating dates to a single object
-                    CustomerViewDto cvd = resultQuery.get(i);
-                    CustomerViewDto cvdNext = resultQuery.get(i + 1);
-                    if (duplicateCounter == 0) {
-                        currentVisits = cvd.getVisitsInRange();
-                    }
-                    if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the object contain duplicated emails -> in that case they are equal
-                        duplicateCounter++;
-                        indexesForDeletion.add(i + 1);
-                        Date moveDate = cvdNext.getVisitsInRange().get(0);
-                        currentVisits.add(moveDate);
-                    } else {
-                        duplicateCounter = 0;
-                    }
-                    resultQuery.get(i).setVisitsInRange(currentVisits);  //move date to previous object
-                }
-            }
-
-            for (int k = 0, l = 0; k < resultQuery.size(); k++) {   //delete duplicated parts
-                if (k == indexesForDeletion.get(l)) {
-                    l++;
-                    if (l == indexesForDeletion.size()) {
-                        l = 0;
-                    }
-                } else {
-                    result.add(resultQuery.get(k));
-                }
-            }
-            return result;
+            return queryForVisits.getResultList();
         }
     }
 
     @Override
-    public List<CustomerViewDto> sortCustomersByName(boolean ascending) {
-
-        List<CustomerViewDto> result = filterCustomers(Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    public List<CustomerViewDto> sortCustomersByName(List<CustomerViewDto> customers, boolean ascending) {
 
         if (ascending) {
-            Collections.sort(result, new Comparator<CustomerViewDto>() {
+            Collections.sort(customers, new Comparator<CustomerViewDto>() {
                 @Override
                 public int compare(CustomerViewDto o1, CustomerViewDto o2) {
                     return o1.getFirstName().compareTo(o2.getFirstName());
                 }
             });
         } else {
-            Collections.sort(result, new Comparator<CustomerViewDto>() {
+            Collections.sort(customers, new Comparator<CustomerViewDto>() {
                 @Override
                 public int compare(CustomerViewDto o1, CustomerViewDto o2) {
                     return o2.getFirstName().compareTo(o1.getFirstName());
@@ -315,17 +273,14 @@ public class UserRepositoryImpl implements UserRepository {
             });
         }
 
-        return result;
+        return customers;
     }
 
     @Override
-    public List<CustomerViewDto> sortCustomersByVisits(boolean ascending) {
-
-        List<CustomerViewDto> result = filterCustomers(Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    public List<CustomerViewDto> sortCustomersByVisits(List<CustomerViewDto> customers, boolean ascending) {
 
         if (ascending) {
-            Collections.sort(result, new Comparator<CustomerViewDto>() {
+            Collections.sort(customers, new Comparator<CustomerViewDto>() {
                 @Override
                 public int compare(CustomerViewDto o1, CustomerViewDto o2) {
                     List<Date> datesO1 = o1.getVisitsInRange();
@@ -346,7 +301,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             });
         } else {
-            Collections.sort(result, new Comparator<CustomerViewDto>() {
+            Collections.sort(customers, new Comparator<CustomerViewDto>() {
                 @Override
                 public int compare(CustomerViewDto o1, CustomerViewDto o2) {
                     List<Date> datesO1 = o1.getVisitsInRange();
@@ -367,21 +322,9 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             });
         }
-        return result;
+        return customers;
     }
 
-    @Override
-    public User getByUserName(String username) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where credential.username like :name",
-                    User.class);
-            query.setParameter("name", username);
-            List<User> listUser = query.list();
-            if (listUser.size() == 0) {
-                throw new EntityNotFoundException("User", "user name", username);
-            }
-            return listUser.get(0);
-        }
-    }
+
 
 }
