@@ -124,12 +124,27 @@ public class AuthenticationMvcController {
             dto.setFirstName("Employee" + Md5Hashing.generateNewPassword(4));
             dto.setLastName("Employer" + Md5Hashing.generateNewPassword(2));
             dto.setEmail("empemp" + Md5Hashing.generateNewPassword(3) + "@gmail.com");
-            dto.setPhoneNumber("08" + Md5Hashing.generateNewPhonenumber());
+            dto.setPhoneNumber("08" + Md5Hashing.generateNewPhoneNumber());
             User user = fillUser(dto, "Employee");
             userService.create(user, authenticationHelper.tryGetUser(session));
             emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
                                                 user.getCredential().getUsername(),
                                                 user.getCredential().getPassword());
+        } catch (AuthenticationHelperException e) {
+            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            return "register_employee";
+        }
+        return "redirect:/login";
+    }
+
+    @PostMapping("/reset_password")
+    public String resetPassword(PersonalInfoDto dto,
+                                BindingResult bindingResult,
+                                HttpSession session) {
+
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            userService.resetPassword(user.getPersonalInfo().getEmail());
         } catch (AuthenticationHelperException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
             return "register";
@@ -139,8 +154,7 @@ public class AuthenticationMvcController {
 
     private String extractUsernameFromEmail(String email) {
         int atIndex = email.indexOf("@");
-        String username = email.substring(0, atIndex);
-        username += Md5Hashing.generateNewPassword(3);
+        String username = email.substring(0, atIndex) + Md5Hashing.generateNewPassword(3);
         return username;
     }
 

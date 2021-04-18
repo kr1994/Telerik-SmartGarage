@@ -40,7 +40,7 @@ public class Md5Hashing {
         return generatedString;
     }
 
-    public static String generateNewPhonenumber() {
+    public static String generateNewPhoneNumber() {
         String result = "";
         for (int i = 0; i < 8; i++) {
             Random rand = new Random();

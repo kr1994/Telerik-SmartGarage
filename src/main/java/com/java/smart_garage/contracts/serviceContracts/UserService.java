@@ -38,4 +38,6 @@ public interface UserService {
     List<CustomerViewDto> sortCustomersByVisits(List<CustomerViewDto> customers, boolean ascending, User userCredential);
 
     int getUserCount();
+
+    void resetPassword(String email);
 }

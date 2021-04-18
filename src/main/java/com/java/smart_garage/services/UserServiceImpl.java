@@ -133,6 +133,7 @@ public class UserServiceImpl implements UserService {
         return repository.getAllUsers().size();
     }
 
+    @Override
     public void resetPassword(String email) {
         User user = Optional.ofNullable(repository.getByEmail(email)).orElseThrow(
                 () -> new EntityNotFoundException("User", "email"));
@@ -142,7 +143,6 @@ public class UserServiceImpl implements UserService {
         credential.setPassword(Md5Hashing.md5(newPassword));
         credentialRepository.update(credential);
         emailService.sendMailForNewPassword(email, newPassword);
-
     }
 
 
