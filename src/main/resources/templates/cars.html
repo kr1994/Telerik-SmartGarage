@@ -66,6 +66,11 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
+                    <li  class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/workServices.html}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
+                    </li>
                     <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/register}"
@@ -95,6 +100,9 @@
                         <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2">
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
+                            </li>
+                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/workServices}"
+                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
                             </li>
                             <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
                                                                                               style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>

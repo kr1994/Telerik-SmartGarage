@@ -2,6 +2,7 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.CurrencyRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.Colour;
 import com.java.smart_garage.models.Currency;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,13 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
     @Autowired
     public CurrencyRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public List<Currency> getAllCurrencies(){
+        try (Session session = sessionFactory.openSession()){
+            Query<Currency> query = session.createQuery("from Currency order by name", Currency.class);
+            return query.list();
+        }
     }
 
     @Override

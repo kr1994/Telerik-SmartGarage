@@ -3,6 +3,7 @@ package com.java.smart_garage.services;
 import com.java.smart_garage.contracts.repoContracts.CurrencyRepository;
 import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
 import com.java.smart_garage.exceptions.NoConnectionWithTheUrlException;
+import com.java.smart_garage.models.Currency;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,6 +28,10 @@ public class CurrencyMultiplierServiceImpl implements CurrencyMultiplierService 
     @Autowired
     public CurrencyMultiplierServiceImpl(CurrencyRepository repository) {
         this.repository = repository;
+    }
+
+    public List<Currency> getAllCurrency(){
+        return repository.getAllCurrencies();
     }
 
     @Override
