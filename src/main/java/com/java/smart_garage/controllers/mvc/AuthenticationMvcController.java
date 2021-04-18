@@ -88,22 +88,12 @@ public class AuthenticationMvcController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(PersonalInfoDto dto,
-                                 BindingResult bindingResult,
-                                 HttpSession session) {
+    public String handleRegisterCustomer(PersonalInfoDto dto,
+                                         BindingResult bindingResult,
+                                         HttpSession session) {
 
         try {
-            User user = new User();
-            PersonalInfo p = modelConversionHelper.personalInfoFromDto(dto);
-            user.setPersonalInfo(p);
-            Credential credential = new Credential();
-            credential.setUsername(dto.getFirstName() + "." + dto.getLastName());  //todo s mail
-            String password = Md5Hashing.generateNewPassword();
-            credential.setPassword(Md5Hashing.md5(password));
-            user.setCredential(credential);
-            UserType usertype = new UserType();
-            usertype.setType("Customer");
-            user.setUserType(usertype);
+            User user = fillUser(dto, "Customer");
             userService.create(user, authenticationHelper.tryGetUser(session));
         } catch (AuthenticationHelperException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
@@ -112,5 +102,53 @@ public class AuthenticationMvcController {
         return "redirect:/login";
     }
 
+    /*
+    @GetMapping("/register_employee")
+    public String createEmployee(HttpSession session) {
+        session.setAttribute("registerDto", new PersonalInfoDto());
+        return "register_employee";
+    }
+    */
+
+    @PostMapping("/register_employee")
+    public String handleRegisterEmployee(BindingResult bindingResult,
+                                         HttpSession session) {
+
+        try {
+            PersonalInfoDto dto = new PersonalInfoDto();
+            dto.setFirstName("Employee" + Md5Hashing.generateNewPassword(4));
+            dto.setLastName("Employer" + Md5Hashing.generateNewPassword(2));
+            dto.setEmail("empemp" + Md5Hashing.generateNewPassword(3) + "@gmail.com");
+            dto.setPhoneNumber("08" + Md5Hashing.generateNewPhonenumber());
+            User user = fillUser(dto, "Employee");
+            userService.create(user, authenticationHelper.tryGetUser(session));
+        } catch (AuthenticationHelperException e) {
+            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            return "register";
+        }
+        return "redirect:/login";
+    }
+
+    private String extractUsernameFromEmail(String email) {
+        int atIndex = email.indexOf("@");
+        String username = email.substring(0, atIndex);
+        username += Md5Hashing.generateNewPassword(3);
+        return username;
+    }
+
+    private User fillUser(PersonalInfoDto dto, String role) {
+        User user = new User();
+        PersonalInfo p = modelConversionHelper.personalInfoFromDto(dto);
+        user.setPersonalInfo(p);
+        Credential credential = new Credential();
+        credential.setUsername(extractUsernameFromEmail(user.getPersonalInfo().getEmail()));
+        String password = Md5Hashing.generateNewPassword(8);
+        credential.setPassword(Md5Hashing.md5(password));
+        user.setCredential(credential);
+        UserType usertype = new UserType();
+        usertype.setType(role);
+        user.setUserType(usertype);
+        return user;
+    }
 
 }
