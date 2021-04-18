@@ -32,11 +32,21 @@ public class Md5Hashing {
         return md5;
     }
 
-    public static String generateNewPassword() {
-        byte[] array = new byte[8]; // length is bounded by 8
+    public static String generateNewPassword(int length) {
+        byte[] array = new byte[length];
         new Random().nextBytes(array);
         String generatedString = new String(array, Charset.forName("UTF-8"));
 
         return generatedString;
+    }
+
+    public static String generateNewPhonenumber() {
+        String result = "";
+        for (int i = 0; i < 8; i++) {
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(10) - 1;
+            result += randomNumber + "";
+        }
+        return result;
     }
 }
