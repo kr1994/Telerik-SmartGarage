@@ -54,10 +54,12 @@ public class UserServiceTest {
     @Test
     public void create_Should_Throw_When_User_Exists() {
         // Arrange
+        var mockUserCustomer = createMockUser();
+        mockUserCustomer.setUserType(createMockUserTypeCustomer());
         var mockUserEmployee = createMockUser();
 
         // Act, Assert
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockUserEmployee));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockUserCustomer, mockUserEmployee));
     }
 
     @Test
@@ -65,42 +67,49 @@ public class UserServiceTest {
         // Arrange
         var mockUserCustomer = createMockUser();
         mockUserCustomer.setUserType(createMockUserTypeCustomer());
+        var mockUserEmployee = createMockUser();
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.create(mockUserCustomer));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.create(mockUserCustomer, mockUserEmployee));
     }
 
     @Test
     public void create_Should_Pass_When_Put_Correct_User() {
         // Arrange
+        var mockUserCustomer = createMockUser();
+        mockUserCustomer.setUserType(createMockUserTypeCustomer());
         var mockUserEmployee = createMockUser();
 
         Mockito.when(mockUserRepository.getById(mockUserEmployee.getUserId()))
                 .thenThrow(new EntityNotFoundException("User", "id", mockUserEmployee.getUserId()));
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.create(mockUserEmployee));
+        Assertions.assertDoesNotThrow(() -> service.create(mockUserCustomer, mockUserEmployee));
     }
 
     @Test
     public void update_Should_Pass_When_Put_Correct_User() {
         // Arrange
+        var mockUserCustomer = createMockUser();
+        mockUserCustomer.setUserType(createMockUserTypeCustomer());
         var mockUserEmployee = createMockUser();
 
         // Act, Assert
-        Assertions.assertDoesNotThrow(() -> service.update(mockUserEmployee));
+        Assertions.assertDoesNotThrow(() -> service.update(mockUserCustomer, mockUserEmployee));
     }
 
     @Test
     public void update_Should_Throw_When_Put_Not_Existing_Id() {
         // Arrange
+        var mockUserCustomer = createMockUser();
+        mockUserCustomer.setUserType(createMockUserTypeCustomer());
         var mockUserEmployee = createMockUser();
 
         Mockito.when(mockUserRepository.getById(mockUserEmployee.getUserId()))
                 .thenThrow(new EntityNotFoundException("User", "id", mockUserEmployee.getUserId()));
 
         // Act, Assert
-        Assertions.assertThrows(EntityNotFoundException.class, () -> service.update(mockUserEmployee));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> service.update(mockUserCustomer, mockUserEmployee));
     }
 
     @Test
@@ -108,9 +117,11 @@ public class UserServiceTest {
         // Arrange
         var mockUserCustomer = createMockUser();
         mockUserCustomer.setUserType(createMockUserTypeCustomer());
+        var mockUserAnotherCustomer = createMockUser();
+        mockUserCustomer.setUserType(createMockUserTypeCustomer());
 
         // Act, Assert
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockUserCustomer));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockUserCustomer, mockUserAnotherCustomer));
     }
 
     @Test
@@ -156,6 +167,7 @@ public class UserServiceTest {
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), mockUserCustomer));
     }
 
+/*
     @Test
     public void sortByName_Should_Pass_When_Put_Correct_Data() {
         // Arrange
@@ -193,7 +205,7 @@ public class UserServiceTest {
         // Act, Assert
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.sortCustomersByVisits(true, mockUserCustomer));
     }
-
+*/
 }
 
 
