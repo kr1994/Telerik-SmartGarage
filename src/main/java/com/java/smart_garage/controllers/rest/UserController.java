@@ -164,7 +164,7 @@ public class UserController {
                 if (duplicateCounter == 0) {
                     currentVisits = cvd.getVisitsInRange();
                 }
-                if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the object contain duplicated emails -> in that case they are equal
+                if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the list contain duplicated emails -> in that case they are equal
                     duplicateCounter++;
                     indexesForDeletion.add(i + 1);
                     Date moveDate = cvdNext.getVisitsInRange().get(0);
