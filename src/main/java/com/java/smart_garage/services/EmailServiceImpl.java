@@ -1,18 +1,13 @@
 package com.java.smart_garage.services;
 
-import com.java.smart_garage.configuration.Md5Hashing;
-import com.java.smart_garage.contracts.serviceContracts.MailService;
-import org.apache.tomcat.util.security.MD5Encoder;
+import com.java.smart_garage.contracts.serviceContracts.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.Charset;
-import java.util.Random;
-
 @Service
-public class MailServiceImpl implements MailService {
+public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private JavaMailSender mailSender;

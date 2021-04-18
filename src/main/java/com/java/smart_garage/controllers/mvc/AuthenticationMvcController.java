@@ -3,6 +3,7 @@ package com.java.smart_garage.controllers.mvc;
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.configuration.Md5Hashing;
+import com.java.smart_garage.contracts.serviceContracts.EmailService;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.AuthenticationHelperException;
 import com.java.smart_garage.models.Credential;
@@ -30,15 +31,16 @@ public class AuthenticationMvcController {
     private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
     private final ModelConversionHelper modelConversionHelper;
-
+    private final EmailService emailService;
 
     @Autowired
     public AuthenticationMvcController(AuthenticationHelper authenticationHelper,
                                        UserService userService,
-                                       ModelConversionHelper modelConversionHelper) {
+                                       ModelConversionHelper modelConversionHelper, EmailService emailService) {
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
         this.modelConversionHelper = modelConversionHelper;
+        this.emailService = emailService;
     }
 
     @ModelAttribute
@@ -95,6 +97,9 @@ public class AuthenticationMvcController {
         try {
             User user = fillUser(dto, "Customer");
             userService.create(user, authenticationHelper.tryGetUser(session));
+            emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
+                                                user.getCredential().getUsername(),
+                                                user.getCredential().getPassword());
         } catch (AuthenticationHelperException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
             return "register";
@@ -122,6 +127,9 @@ public class AuthenticationMvcController {
             dto.setPhoneNumber("08" + Md5Hashing.generateNewPhonenumber());
             User user = fillUser(dto, "Employee");
             userService.create(user, authenticationHelper.tryGetUser(session));
+            emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
+                                                user.getCredential().getUsername(),
+                                                user.getCredential().getPassword());
         } catch (AuthenticationHelperException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
             return "register";

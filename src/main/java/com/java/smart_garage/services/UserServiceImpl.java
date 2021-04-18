@@ -3,7 +3,7 @@ package com.java.smart_garage.services;
 import com.java.smart_garage.configuration.Md5Hashing;
 import com.java.smart_garage.contracts.repoContracts.CredentialRepository;
 import com.java.smart_garage.contracts.repoContracts.UserRepository;
-import com.java.smart_garage.contracts.serviceContracts.MailService;
+import com.java.smart_garage.contracts.serviceContracts.EmailService;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
@@ -15,11 +15,9 @@ import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.Charset;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 
 @Service
@@ -27,16 +25,16 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
     private final CredentialRepository credentialRepository;
-    private final MailService mailService;
+    private final EmailService emailService;
 
 
     @Autowired
     public UserServiceImpl(UserRepository repository,
                            CredentialRepository credentialRepository,
-                           MailService mailService) {
+                           EmailService emailService) {
         this.repository = repository;
         this.credentialRepository = credentialRepository;
-        this.mailService = mailService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -143,7 +141,7 @@ public class UserServiceImpl implements UserService {
         String newPassword = Md5Hashing.generateNewPassword(8);
         credential.setPassword(Md5Hashing.md5(newPassword));
         credentialRepository.update(credential);
-        mailService.sendMailForNewPassword(email, newPassword);
+        emailService.sendMailForNewPassword(email, newPassword);
 
     }
 
