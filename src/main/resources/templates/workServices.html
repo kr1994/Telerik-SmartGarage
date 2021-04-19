@@ -24,12 +24,58 @@
         "name": "SmartGarage",
         "url": "index.html",
         "logo": "images/default-logo.png"
+
+
+
     }</script>
     <meta property="og:title" content="services">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#478ac9">
     <link rel="canonical" href="index.html">
     <meta property="og:url" content="index.html">
+
+    <style>
+        .dropbtn {
+            background-color: #3498DB;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #2980B9;
+        }
+
+        .dropdown {
+            padding: 60px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {background-color: #ddd;}
+
+        .show {display: block;}
+    </style>
+
 </head>
 <body class="u-body u-overlap u-overlap-contrast">
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
@@ -157,13 +203,52 @@
            data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">Below you can see
             what services we provide.</p>
 
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Choose currency</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a th:href="@{/workServices?currency=USD}">USD</a>
+                <a th:href="@{/workServices?currency=BGN}">BGN</a>
+                <a th:href="@{/workServices}">EUR</a>
+                <a th:href="@{/workServices?currency=RON}">RON</a>
+                <a th:href="@{/workServices?currency=TRY}">TRY</a>
+                <a th:href="@{/workServices?currency=RUB}">RUB</a>
+            </div>
+        </div>
 
+        <script type="application/javascript">
+            /* When the user clicks on the button,
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropbtn')) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        </script>
+        <!--
         <a th:href="@{/workServices?currency=USD}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">USD</a>
         <a th:href="@{/workServices?currency=BGN}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-2">BGN</a>
-        <a th:href="@{/workServices}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">EUR</a>
+        <a th:href="@{/workServices}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">EUR</a>
+
+        <select class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1" th:field="*{currencies}">
+            <option th:each="c : ${currencies}" th:value="${c.getName()}" th:text="${c.getName()}"
+                    th:href="@{/workServices?currency=${c.getName()}}"></option>
+        </select>
+        -->
+
         <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
         <a th:href="@{/workServices/create}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">Create Work Service</a>
