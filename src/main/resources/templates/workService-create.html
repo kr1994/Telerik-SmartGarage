@@ -3,12 +3,12 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Create a warehouse">
+    <meta name="keywords" content="Create a work service">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>Create warehouse</title>
+    <title>Create a work service</title>
     <link rel="stylesheet" href="../static/styles.css" th:href="@{/styles.css}" media="screen">
-    <link rel="stylesheet" href="../static/warehouse-create.css" th:href="@{/warehouse-create.css}" media="screen">
+    <link rel="stylesheet" href="../static/workService-create.css" th:href="@{/workServices.css}" media="screen">
     <script class="u-script" type="text/javascript" src="../static/js/jquery.js" th:src="@{/js/jquery.js}"
             defer=""></script>
     <script class="u-script" type="text/javascript" src="../static/js/scripts.js" th:src="@{/js/scripts.js}"
@@ -25,7 +25,7 @@
         "url": "index.html",
         "logo": "images/default-logo.png"
     }</script>
-    <meta property="og:title" content="warehouse-create">
+    <meta property="og:title" content="workService-create">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#478ac9">
     <link rel="canonical" href="index.html">
@@ -35,12 +35,13 @@
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
-            <img src="../static/images/default-logo.png" th:src="@{/images/default-logo.png}"
-                 class="u-logo-image u-logo-image-1" alt="">
+            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png"
+                 th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
+                 class="u-logo-image u-logo-image-1" alt="SmartGarage">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
             <div class="menu-collapse"
-                 style="font-size: 1rem; letter-spacing: 0px; font-weight: 700; text-transform: uppercase;">
+                 style="font-size: 1rem; letter-spacing: 0; font-weight: 700; text-transform: uppercase;">
                 <a class="u-button-style u-custom-active-border-color u-custom-active-color u-custom-border u-custom-border-color u-custom-borders u-custom-color u-custom-hover-border-color u-custom-hover-color u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-active-color u-custom-text-color u-custom-text-hover-color u-custom-text-shadow u-custom-text-shadow-blur u-custom-text-shadow-color u-custom-text-shadow-transparency u-custom-text-shadow-x u-custom-text-shadow-y u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base"
                    href="#">
                     <svg>
@@ -64,37 +65,38 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a
-                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/parcels}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                    </li>
                     <li class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/warehouses}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
+                            href="#" th:href="@{/workServices}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                        class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/shipments}"
-                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
+                            href="#" th:href="@{/cars}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
                     </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned Cars</a>
+                    </li>
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/register}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                     </li>
-                    <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/login}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/profile}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                     </li>
-                    <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/logout}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
@@ -109,27 +111,33 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/parcels}"
-                                                                                                                                                         style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Parcels</a>
-                            </li>
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
-                                                      th:href="@{/warehouses}"
-                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Warehouses</a>
+                                                      th:href="@{/workServices}"
+                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/shipments}"
-                                                                                                                                                         style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Shipments</a>
+                            <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/cars}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
                             </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
-                                                                                          style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
+                            <li th:unless="${currentUser.getUserId() == 0}"  class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned Cars</a>
                             </li>
-                            <li th:if="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
-                                                                                          style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/register}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/login}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
+                            </li>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -146,46 +154,27 @@
                 <div class="u-layout-row">
                     <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1">
                         <div class="u-container-layout u-container-layout-1">
-                            <h1 class="u-text u-text-body-alt-color u-text-1">Create a warehouse </h1>
-                            <p class="u-custom-font u-heading-font u-text u-text-body-alt-color u-text-2">Address: Input
-                                an address (street) name<br>City: Choose one of the options
-                            </p>
+                            <h1 class="u-text u-text-body-alt-color u-text-1">Create a work service </h1>
                         </div>
                     </div>
                     <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
                         <div class="u-container-layout u-valign-middle u-container-layout-2">
                             <div class="u-form u-form-1">
-                                <form action="#" th:action="@{/warehouses/create}" th:object="${warehouseDto}" method="POST"
+                                <form action="#" th:action="@{/workServices/create}" th:object="${workservice}" method="POST"
                                       class="u-clearfix u-form-custom-backend u-form-spacing-30 u-form-vertical u-inner-form"
                                       style="padding: 10px" source="custom" name="form" redirect="true">
-                                    <p th:errors="*{address.name}">Username error</p>
+                                    <p th:errors="*{workServiceName}">Username error</p>
                                     <div class="u-form-email u-form-group u-form-group-1">
                                         <label for="email-319a"
-                                               class="u-label u-text-body-alt-color u-label-1">Address</label>
-                                        <input th:field="*{address.name}" type="text" placeholder="Enter address name here..." id="email-319a"
-                                               name="address" class="u-input u-input-rectangle u-white" required="">
+                                               class="u-label u-text-body-alt-color u-label-1">Work service name</label>
+                                        <input th:field="*{workServiceName}" type="text" placeholder="Enter work service name here..." id="email-319a"
+                                               name="workservice" class="u-input u-input-rectangle u-white" required="">
                                     </div>
                                     <div class="u-form-email u-form-group u-form-group-1">
-                                        <label for="email-319"
-                                               class="u-label u-text-body-alt-color u-label-1">Image URL</label>
-                                        <input type="text" placeholder="Enter image URL name here..." th:field="*{imageUrl}" id="email-319"
-                                               name="imageUrl" class="u-input u-input-rectangle u-white" required="">
-                                    </div>
-                                    <div class="u-form-group u-form-select u-form-group-2">
-                                        <label for="select-81af"
-                                               class="u-label u-text-body-alt-color u-label-2">City</label>
-                                        <div class="u-form-select-wrapper">
-                                            <select id="select-81af" name="select" th:field="*{address.cityId}"
-                                                    class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="city : ${cities}" th:value="${city.getId()}"
-                                                        th:text="${city.getName()}">City name
-                                                </option>
-                                            </select>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12"
-                                                 class="u-caret">
-                                                <path fill="currentColor" d="M4 8L0 4h8z"></path>
-                                            </svg>
-                                        </div>
+                                        <label for="email-319a"
+                                               class="u-label u-text-body-alt-color u-label-1">Work service price</label>
+                                        <input th:field="*{workServicePrice}" type="number" placeholder="Enter work service name here..." id="email-320a"
+                                               name="workservice" class="u-input u-input-rectangle u-white" required="">
                                     </div>
                                     <div class="u-align-left u-form-group u-form-submit u-form-group-3">
                                         <a href="#" class="u-btn u-btn-submit u-button-style u-white u-btn-1">Submit</a>
