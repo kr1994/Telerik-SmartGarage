@@ -3,6 +3,7 @@ package com.java.smart_garage.controllers.mvc;
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.configuration.Md5Hashing;
+import com.java.smart_garage.contracts.serviceContracts.EmailService;
 import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.exceptions.AuthenticationHelperException;
 import com.java.smart_garage.models.Credential;
@@ -30,15 +31,16 @@ public class AuthenticationMvcController {
     private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
     private final ModelConversionHelper modelConversionHelper;
-
+    private final EmailService emailService;
 
     @Autowired
     public AuthenticationMvcController(AuthenticationHelper authenticationHelper,
                                        UserService userService,
-                                       ModelConversionHelper modelConversionHelper) {
+                                       ModelConversionHelper modelConversionHelper, EmailService emailService) {
         this.authenticationHelper = authenticationHelper;
         this.userService = userService;
         this.modelConversionHelper = modelConversionHelper;
+        this.emailService = emailService;
     }
 
     @ModelAttribute
@@ -88,23 +90,16 @@ public class AuthenticationMvcController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(PersonalInfoDto dto,
-                                 BindingResult bindingResult,
-                                 HttpSession session) {
+    public String handleRegisterCustomer(PersonalInfoDto dto,
+                                         BindingResult bindingResult,
+                                         HttpSession session) {
 
         try {
-            User user = new User();
-            PersonalInfo p = modelConversionHelper.personalInfoFromDto(dto);
-            user.setPersonalInfo(p);
-            Credential credential = new Credential();
-            credential.setUsername(dto.getFirstName() + "." + dto.getLastName());  //todo s mail
-            String password = Md5Hashing.generateNewPassword();
-            credential.setPassword(Md5Hashing.md5(password));
-            user.setCredential(credential);
-            UserType usertype = new UserType();
-            usertype.setType("Customer");
-            user.setUserType(usertype);
+            User user = fillUser(dto, "Customer");
             userService.create(user, authenticationHelper.tryGetUser(session));
+            emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
+                                                user.getCredential().getUsername(),
+                                                user.getCredential().getPassword());
         } catch (AuthenticationHelperException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
             return "register";
@@ -112,5 +107,70 @@ public class AuthenticationMvcController {
         return "redirect:/login";
     }
 
+    /*
+    @GetMapping("/register_employee")
+    public String createEmployee(HttpSession session) {
+        session.setAttribute("registerDto", new PersonalInfoDto());
+        return "register_employee";
+    }
+    */
+
+    @PostMapping("/register_employee")
+    public String handleRegisterEmployee(BindingResult bindingResult,
+                                         HttpSession session) {
+
+        try {
+            PersonalInfoDto dto = new PersonalInfoDto();
+            dto.setFirstName("Employee" + Md5Hashing.generateNewPassword(4));
+            dto.setLastName("Employer" + Md5Hashing.generateNewPassword(2));
+            dto.setEmail("empemp" + Md5Hashing.generateNewPassword(3) + "@gmail.com");
+            dto.setPhoneNumber("08" + Md5Hashing.generateNewPhoneNumber());
+            User user = fillUser(dto, "Employee");
+            userService.create(user, authenticationHelper.tryGetUser(session));
+            emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
+                                                user.getCredential().getUsername(),
+                                                user.getCredential().getPassword());
+        } catch (AuthenticationHelperException e) {
+            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            return "register_employee";
+        }
+        return "redirect:/login";
+    }
+
+    @PostMapping("/reset_password")
+    public String resetPassword(PersonalInfoDto dto,
+                                BindingResult bindingResult,
+                                HttpSession session) {
+
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            userService.resetPassword(user.getPersonalInfo().getEmail());
+        } catch (AuthenticationHelperException e) {
+            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            return "register";
+        }
+        return "redirect:/login";
+    }
+
+    private String extractUsernameFromEmail(String email) {
+        int atIndex = email.indexOf("@");
+        String username = email.substring(0, atIndex) + Md5Hashing.generateNewPassword(3);
+        return username;
+    }
+
+    private User fillUser(PersonalInfoDto dto, String role) {
+        User user = new User();
+        PersonalInfo p = modelConversionHelper.personalInfoFromDto(dto);
+        user.setPersonalInfo(p);
+        Credential credential = new Credential();
+        credential.setUsername(extractUsernameFromEmail(user.getPersonalInfo().getEmail()));
+        String password = Md5Hashing.generateNewPassword(8);
+        credential.setPassword(Md5Hashing.md5(password));
+        user.setCredential(credential);
+        UserType usertype = new UserType();
+        usertype.setType(role);
+        user.setUserType(usertype);
+        return user;
+    }
 
 }

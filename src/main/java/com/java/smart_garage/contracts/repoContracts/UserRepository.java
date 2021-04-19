@@ -28,17 +28,17 @@ public interface UserRepository {
 
     void delete(int id);
 
-    List<CustomerViewDto> filterCustomers(Optional<String> firstName,
-                                          Optional<String> lastName,
-                                          Optional<String> email,
-                                          Optional<String> phoneNumber,
-                                          Optional<String> model,
-                                          Optional<Date> dateFrom,
-                                          Optional<Date> dateTo);
+    List<CarService> filterCustomers(Optional<String> firstName,
+                                     Optional<String> lastName,
+                                     Optional<String> email,
+                                     Optional<String> phoneNumber,
+                                     Optional<String> model,
+                                     Optional<Date> dateFrom,
+                                     Optional<Date> dateTo);
 
-    List<CustomerViewDto> sortCustomersByName(boolean ascending);
+    List<CustomerViewDto> sortCustomersByName(List<CustomerViewDto> customers, boolean ascending);
 
-    public List<CustomerViewDto> sortCustomersByVisits(boolean ascending);
+    public List<CustomerViewDto> sortCustomersByVisits(List<CustomerViewDto> customers, boolean ascending);
 
     User getByUserName(String userName);
 }

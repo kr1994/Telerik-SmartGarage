@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,8 +96,9 @@ public class UserController {
                                                  @RequestParam(required = false) Optional<Date> dateTo) {
         try {
             User credentialUser = authenticationHelper.tryGetUser(headers);
-            return service.filterCustomers(firstName, lastName, email, phoneNumber, model, dateFrom,
-                    dateTo, credentialUser);
+            List<CarService> queryResult = service.filterCustomers(firstName, lastName, email, phoneNumber,
+                    model, dateFrom, dateTo, credentialUser);
+            return mapCSToCustomerView(queryResult);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -108,7 +110,9 @@ public class UserController {
                                                      @RequestParam(required = true) boolean ascending) {
         try {
             User credentialUser = authenticationHelper.tryGetUser(headers);
-            return service.sortCustomersByName(ascending, credentialUser);
+            List<CustomerViewDto> allCustomers = filterCustomers(headers, Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            return service.sortCustomersByName(allCustomers, ascending, credentialUser);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -120,13 +124,70 @@ public class UserController {
                                                        @RequestParam(required = true) boolean ascending) {
         try {
             User credentialUser = authenticationHelper.tryGetUser(headers);
-            return service.sortCustomersByVisits(ascending, credentialUser);
+            List<CustomerViewDto> allCustomers = filterCustomers(headers, Optional.empty(), Optional.empty(), Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+            return service.sortCustomersByVisits(allCustomers, ascending, credentialUser);
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
+    private List<CustomerViewDto> mapCSToCustomerView(List<CarService> queryResult) {
 
+        List<CustomerViewDto> resultQuery = new ArrayList<CustomerViewDto>();
+        List<CustomerViewDto> result = new ArrayList<CustomerViewDto>();
+        List<Integer> indexesForDeletion = new ArrayList<Integer>();
+        List<Date> currentVisits = new ArrayList<Date>();
+
+        for (CarService cs : queryResult) {  // map CarService object to return view
+            CustomerViewDto cvd = new CustomerViewDto();
+            List<Date> visits = new ArrayList<Date>();
+            cvd.setFirstName(cs.getCar().getOwner().getPersonalInfo().getFirstName());
+            cvd.setLastName(cs.getCar().getOwner().getPersonalInfo().getLastName());
+            cvd.setEmail(cs.getCar().getOwner().getPersonalInfo().getEmail());
+            cvd.setPhoneNumber(cs.getCar().getOwner().getPersonalInfo().getPhoneNumber());
+            cvd.setUserType(cs.getCar().getOwner().getUserType());
+            cvd.setCarModel(cs.getCar().getModel().getModelName());
+            visits.add(cs.getInvoice().getDate());
+            cvd.setVisitsInRange(visits);
+            resultQuery.add(cvd);
+        }
+
+        int resultTempSize = resultQuery.size();
+        int duplicateCounter = 0;
+
+        if (resultTempSize > 1) {
+            for (int i = 0; i < resultTempSize - 1; i++) {            // extract duplicating dates to a single object
+                CustomerViewDto cvd = resultQuery.get(i);
+                CustomerViewDto cvdNext = resultQuery.get(i + 1);
+                if (duplicateCounter == 0) {
+                    currentVisits = cvd.getVisitsInRange();
+                }
+                if (cvd.getEmail().equals(cvdNext.getEmail())) {   // compare if the list contain duplicated emails -> in that case they are equal
+                    duplicateCounter++;
+                    indexesForDeletion.add(i + 1);
+                    Date moveDate = cvdNext.getVisitsInRange().get(0);
+                    currentVisits.add(moveDate);
+                } else {
+                    duplicateCounter = 0;
+                }
+                resultQuery.get(i).setVisitsInRange(currentVisits);  //move date to previous object
+            }
+        }
+
+        for (int k = 0, l = 0; k < resultQuery.size(); k++) {   //delete duplicated parts
+            if (k == indexesForDeletion.get(l)) {
+                l++;
+                if (l == indexesForDeletion.size()) {
+                    l = 0;
+                }
+            } else {
+                result.add(resultQuery.get(k));
+            }
+        }
+
+        return result;
+    }
 }
 

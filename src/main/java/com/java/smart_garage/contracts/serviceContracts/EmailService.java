@@ -1,7 +1,7 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 
-public interface MailService {
+public interface EmailService {
 
     public void sendMailForCredentials(String email, String username, String password);
 
