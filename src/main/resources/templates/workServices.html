@@ -138,44 +138,28 @@
            data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">Below you can see
             what services we provide.</p>
 
-        <!--        <a href="#" th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" th:href="@{/warehouses/create}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">Create a warehouse</a>-->
-        <!--        <a href="#" th:unless="${currentUser.getId() == 0 && !currentUser.getUserType().getRole().equals('Employee')}" th:href="@{/warehouses/delete}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-2">Remove a warehouse</a>-->
+
+        <a th:href="@{/workServices?currency=USD}"
+           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">USD</a>
+        <a th:href="@{/workServices?currency=BGN}"
+           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-2">BGN</a>
+        <a th:href="@{/workServices}"
+           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">EUR</a>
     </div>
 </div>
 <div class="u-clearfix u-section-2" id="sec-be6c">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <form th:fragment="currency-form" action="#" th:action="@{__${#httpServletRequest.requestURI}__}"
-              th:object="${currency}" method="POST"
-              class="u-clearfix u-form-custom-backend u-form-spacing-30 u-form-vertical u-inner-form"
-              style="padding: 10px" source="custom" name="form" redirect="true">
-            <div class="u-form-group u-form-select u-form-group-3">
-                <label for="select-4599"
-                       class="u-label u-text-body-alt-color u-label-3">Customer</label>
-                <div class="u-form-select-wrapper">
-                    <select id="select-4599" th:field="${currency}"
-                            class="u-input u-input-rectangle u-white" required="required">
-                        <option th:each="currency : ${currencies}" th:value="${currency}"
-                                th:text="${currency.name}">Currency
-                        </option>
-                    </select>
+        <div class="u-list u-repeater u-list-1">
+
+            <div th:each="service : ${workServices}"
+                 class="u-container-style u-image u-list-item u-repeater-item u-shading u-image-1"
+                 data-image-width="2000" data-image-height="300">
+                <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
+                    <h3 class="u-text u-text-1" th:text="'Service: ' + ${service.workServiceName}">Service name</h3>
+                    <p class="u-text u-text-2" th:text="'Price: ' + ${service.workServicePrice}">Price</p>
                 </div>
             </div>
-            <div class="u-align-left u-form-group u-form-submit u-form-group-4">
-                <input type="submit" value="Submit"
-                       class="u-btn u-btn-submit u-button-style u-palette-4-base u-btn-1"/>
-            </div>
-            <div class="u-list u-repeater u-list-1">
-                <div
-                        th:each="service : ${workServices}"
-                        class="u-container-style u-image u-list-item u-repeater-item u-shading u-image-1"
-                        data-image-width="2000" data-image-height="300">
-                    <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
-                        <h3 class="u-text u-text-1" th:text="'Service: ' + ${service.workServiceName}">Service name</h3>
-                        <p class="u-text u-text-2" th:text="'Price: ' + ${service.workServicePrice}">Price</p>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 <style class="u-overlap-style">.u-overlap:not(.u-sticky-scroll) .u-header {

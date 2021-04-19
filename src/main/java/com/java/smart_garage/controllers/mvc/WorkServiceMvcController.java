@@ -6,13 +6,16 @@ import com.java.smart_garage.contracts.serviceContracts.UserService;
 import com.java.smart_garage.contracts.serviceContracts.UserTypeService;
 import com.java.smart_garage.contracts.serviceContracts.WorkServiceService;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
+import com.java.smart_garage.models.Currency;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.UserType;
+import com.java.smart_garage.models.WorkService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -54,25 +57,14 @@ public class WorkServiceMvcController {
         } catch (UnauthorizedOperationException e) {
             model.addAttribute("currentUser", currentUser);
         }
-        model.addAttribute("currency",(currency));
-        model.addAttribute("workServices", workService.getAllWorkServices(currency));
-        model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
-        return "workServices";
-    }
-    @PostMapping
-    public String changeCurrency(@ModelAttribute("currentUser") User currentUser,@ModelAttribute @RequestParam  Optional<String> currency,
-                                  Model model, HttpSession session){
-
-
-        try {
-            currentUser = authenticationHelper.tryGetUser(session);
-            model.addAttribute("currentUser", currentUser);
-        } catch (UnauthorizedOperationException e) {
-            model.addAttribute("currentUser", currentUser);
+        List<WorkService> workServices = workService.getAllWorkServices(Optional.empty());
+        if (currency.isPresent()){
+            workServices = workService.getAllWorkServices(currency);
         }
         model.addAttribute("currency",(currency));
-        model.addAttribute("workServices", workService.getAllWorkServices(currency));
+        model.addAttribute("workServices", workServices);
         model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
-        return "workServices";
+            return "workServices";
     }
+
 }

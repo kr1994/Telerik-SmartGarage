@@ -36,7 +36,7 @@ public class WorkServiceController {
         this.authenticationHelper = authenticationHelper;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public List<WorkService> getAllWorkServices( @RequestParam Optional<String> currency){
         return service.getAllWorkServices(currency);
     }

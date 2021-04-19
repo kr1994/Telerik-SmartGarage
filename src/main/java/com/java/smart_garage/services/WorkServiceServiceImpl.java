@@ -35,7 +35,7 @@ public class WorkServiceServiceImpl implements WorkServiceService {
         }
 
         for (WorkService service : services) {
-            service.setWorkServicePrice(Math.round(service.getWorkServicePrice()*multiplierService.getCurrency(currency.toString().substring(9,12))));
+            service.setWorkServicePrice(Math.round(service.getWorkServicePrice()*multiplierService.getCurrency(currency.get())));
         }
         return services;
     }
@@ -47,7 +47,7 @@ public class WorkServiceServiceImpl implements WorkServiceService {
             return workService;
         }
 
-            workService.setWorkServicePrice(Math.round(workService.getWorkServicePrice()*multiplierService.getCurrency(currency.toString().substring(9,12))));
+            workService.setWorkServicePrice(Math.round(workService.getWorkServicePrice()*multiplierService.getCurrency(currency.get())));
 
         return workService;
     }
