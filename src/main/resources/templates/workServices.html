@@ -65,10 +65,21 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                    <li class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
-                            href="#" th:href="@{/workServices.html}"
+                            href="#" th:href="@{/workServices}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                        class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/cars}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned Cars</a>
                     </li>
                     <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
@@ -100,9 +111,17 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
-                                    class="u-button-style u-nav-link" href="#" th:href="@{/workServices}"
-                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
+                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
+                                                      th:href="@{/workServices}"
+                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
+                            </li>
+                            <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/cars}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
+                            </li>
+                            <li th:unless="${currentUser.getUserId() == 0}"  class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned Cars</a>
                             </li>
                             <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                                     class="u-button-style u-nav-link" href="#" th:href="@{/register}"
@@ -145,9 +164,14 @@
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-2">BGN</a>
         <a th:href="@{/workServices}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">EUR</a>
+        <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
+        <a th:href="@{/workServices}"
+           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">Create Work Service</a>
+        </li>
     </div>
 </div>
 <div class="u-clearfix u-section-2" id="sec-be6c">
+
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-list u-repeater u-list-1">
 
@@ -157,6 +181,10 @@
                 <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
                     <h3 class="u-text u-text-1" th:text="'Service: ' + ${service.workServiceName}">Service name</h3>
                     <p class="u-text u-text-2" th:text="'Price: ' + ${service.workServicePrice}">Price</p>
+                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
+                    <a th:href="@{/workservice/{id}(id=${service.getWorkServiceId()})}"
+                       class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">Update Service</a>
+                    </li>
                 </div>
             </div>
         </div>
