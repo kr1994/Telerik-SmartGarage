@@ -129,8 +129,54 @@ public class CarServiceMvcController {
             bindingResult.rejectValue("carService", "text", e.getMessage());
             return "carService-create";
         }
-        return "redirect:/carServices";
+        return "redirect:/carServices/" + currentUser.getUserId();
     }
+    @GetMapping("/{id}/delete")
+    public String showDeleteWarehousePage(@PathVariable int id,@ModelAttribute("currentUser") User currentUser, Model model, HttpSession session) {
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+            model.addAttribute("currentUser", currentUser);
+        } catch (UnauthorizedOperationException e) {
+            return "authentication-fail";
+        }
+        CarService carServiceToDelete = new CarService();
+
+        List<CarService> carServices = service.getAllCarServicesByCar(id);
+
+        model.addAttribute("carServices", carServices);
+        model.addAttribute("carServiceToDelete", carServiceToDelete);
+        return "carService-delete";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String removeShipment(@PathVariable int id,@ModelAttribute("currentUser") User currentUser,
+                                 @ModelAttribute CarService carServiceToDelete,Model model,
+                                 HttpSession session,
+                                 BindingResult bindingResult) {
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+            model.addAttribute("currentUser", currentUser);
+        } catch (UnauthorizedOperationException e) {
+            model.addAttribute("currentUser", currentUser);
+        }
+
+        if (!currentUser.isEmployee()) {
+            return "authentication-fail";
+        }
+        try {
+            service.delete(carServiceToDelete.getCarServicesId(), currentUser);
+        } catch (RuntimeException e) {
+            bindingResult.rejectValue("id", "email_error",
+                    "Please archive all parcel entities bound to this warehouse before deleting");
+            return "carService-delete";
+        }
+
+
+        return "redirect:/carServices/" + currentUser.getUserId();
+    }
+
     private List<CarServiceViewDto> getCarServiceViewDto(@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency, List<Automobile> cars) {
         List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
