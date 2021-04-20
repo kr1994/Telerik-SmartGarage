@@ -9,6 +9,7 @@ import com.java.smart_garage.contracts.serviceContracts.UserTypeService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.*;
+import com.java.smart_garage.models.dto.IdContainerDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,9 +72,6 @@ public class UserMvcController {
 
         User user = userService.getById(id);
         User userDto = user;
-        userDto.setUserId(user.getUserId());
-        userDto.getCredential().setCredentialId(user.getCredential().getCredentialId());
-        userDto.getPersonalInfo().setPersonalId(user.getPersonalInfo().getPersonalId());
         model.addAttribute("user", userDto);
         model.addAttribute("currentUser", currentUser);
         return "user-update";
@@ -82,6 +80,7 @@ public class UserMvcController {
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable int id,
                              @ModelAttribute("user") User userDto,
+                             @ModelAttribute("idContainer") IdContainerDto idContainer,
                              Model model,
                              BindingResult bindingResult,
                              HttpSession session) {
@@ -92,9 +91,9 @@ public class UserMvcController {
         try {
             User currentUser = authenticationHelper.tryGetUser(session);
             model.addAttribute("currentUser", currentUser);
-            User user = pucToUser(userDto.getPersonalInfo(), userDto.getCredential(), userDto.getUserType());
-            user.setUserId(id);
-            userService.update(user, currentUser);
+            User updatedUser = userService.getById(id);
+            userDtoToUser(updatedUser, userDto);
+            userService.update(updatedUser, currentUser);
         } catch (DuplicateEntityException e) {
             bindingResult.rejectValue("user", "text", e.getMessage());
             return "user-update";
@@ -103,20 +102,15 @@ public class UserMvcController {
         return "redirect:/users";
     }
 
-    private User pucToUser(PersonalInfo p, Credential credential, UserType userType) {
-        User user = new User();
-        int personalId = personalInfoService.getByEmail(p.getEmail()).getPersonalId();
-        user.setPersonalInfo(p);
-        user.getPersonalInfo().setPersonalId(personalId);
-        int credentialId = credentialService.getByUsername(credential.getUsername()).getCredentialId();
-        String password = credential.getPassword();
-        credential.setPassword(Md5Hashing.md5(password));
-        user.setCredential(credential);
-        user.getCredential().setCredentialId(credentialId);
-        user.setUserType(userType);
-        int typeId = userTypeService.getByName(userType.getType()).getTypeId();
-        user.getUserType().setTypeId(typeId);
-        return user;
+    private void userDtoToUser(User user, User userDto) {
+        user.getPersonalInfo().setFirstName(userDto.getPersonalInfo().getFirstName());
+        user.getPersonalInfo().setLastName(userDto.getPersonalInfo().getLastName());
+        user.getPersonalInfo().setEmail(userDto.getPersonalInfo().getEmail());
+        user.getPersonalInfo().setPhoneNumber(userDto.getPersonalInfo().getPhoneNumber());
+        String password = userDto.getCredential().getPassword();
+        userDto.getCredential().setPassword(Md5Hashing.md5(password));
+        user.getCredential().setPassword(userDto.getCredential().getPassword());
+        user.getUserType().setType(userDto.getUserType().getType());
     }
 
 
