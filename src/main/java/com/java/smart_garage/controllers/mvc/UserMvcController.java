@@ -63,22 +63,17 @@ public class UserMvcController {
         }
 
         User user = userService.getById(id);
-        PersonalInfo personalInfoDto = user.getPersonalInfo();
-        UserType chosenType = new UserType();
-        Credential credential = user.getCredential();
-
-        model.addAttribute("usertype", chosenType);
-        model.addAttribute("credential", credential);
-        model.addAttribute("personal_info", personalInfoDto);
+        User userDto = user;
+        List<String> listOfTypes = List.of("Employee","Customer");
+        model.addAttribute("user", userDto);
         model.addAttribute("currentUser", currentUser);
         return "user-update";
     }
 
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable int id,
-                             @ModelAttribute("personal_info") PersonalInfo personalInfo,
-                             @ModelAttribute("usertype") UserType userType,
-                             @ModelAttribute("credential") Credential credential,
+                             @ModelAttribute("user") User updatedUser,
+                             Model model,
                              BindingResult bindingResult,
                              HttpSession session) {
 
@@ -87,23 +82,24 @@ public class UserMvcController {
         }
         try {
             User currentUser = authenticationHelper.tryGetUser(session);
-            User user = pucToUser(personalInfo, userType, credential);
+            model.addAttribute("currentUser", currentUser);
+            User user = pucToUser(updatedUser.getPersonalInfo(), updatedUser.getCredential(), updatedUser.getUserType());
             userService.update(user, currentUser);
         } catch (DuplicateEntityException e) {
-            bindingResult.rejectValue("work service", "text", e.getMessage());
+            bindingResult.rejectValue("user", "text", e.getMessage());
             return "user-update";
         }
 
         return "redirect:/users";
     }
 
-    private User pucToUser(PersonalInfo p, UserType type, Credential credential) {
+    private User pucToUser(PersonalInfo p, Credential credential, UserType userType) {
         User user = new User();
         user.setPersonalInfo(p);
-        user.setUserType(type);
         String password = credential.getPassword();
         credential.setPassword(Md5Hashing.md5(password));
         user.setCredential(credential);
+        user.setUserType(userType);
         return user;
     }
 
