@@ -75,7 +75,7 @@ public class WorkServiceController {
     public WorkService update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody WorkServiceDto workServiceDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            WorkService workService = modelConversionHelper.workServiceFromDto(workServiceDto);  //Should be found by id
+            WorkService workService = modelConversionHelper.workServiceFromDto(workServiceDto,id);  //Should be found by id
             service.update(workService, user);
             return workService;
         } catch (EntityNotFoundException e) {

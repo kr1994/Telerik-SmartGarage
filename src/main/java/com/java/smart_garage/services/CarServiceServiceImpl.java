@@ -43,6 +43,8 @@ public class CarServiceServiceImpl implements CarServiceService {
 
     @Override
     public List<WorkServiceView> getAllCarServicesByView(Optional<Date> startingDate, Optional<Date> endingDate,int id,Optional<String> currency){
+
+
         List<WorkServiceView> workServiceView= new ArrayList<>();
         if(currency.isEmpty()){
             List<CarService> carServices = repository.filterByDateAndCarId(startingDate,endingDate,id);

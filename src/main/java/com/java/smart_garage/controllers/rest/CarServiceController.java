@@ -77,15 +77,7 @@ public class CarServiceController {
         }
     }
 
-    private List<CarServiceViewDto> getCarServiceViewDto(@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency, List<Automobile> cars) {
-        List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
-        for (Automobile car : cars) {
-            if(!service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency).isEmpty())
-            carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
-        }
-        return carServiceViewDto;
-    }
 
     @GetMapping("/car/{id}")
     public CarServiceViewDto getAllServicesForCar(@RequestParam Optional<Date> startingDate,
@@ -140,5 +132,15 @@ public class CarServiceController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    private List<CarServiceViewDto> getCarServiceViewDto(@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency, List<Automobile> cars) {
+        List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
+
+        for (Automobile car : cars) {
+            if(!service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency).isEmpty())
+                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
+        }
+        return carServiceViewDto;
     }
 }

@@ -160,7 +160,8 @@
                     <div class="u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
                         <div class="u-container-layout u-valign-middle u-container-layout-2">
                             <div class="u-form u-form-1">
-                                <form action="#" th:action="@{/workServices/create}" th:object="${workservice}" method="POST"
+                                <form  th:fragment="workService-form"
+                                       action="#" th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${workservice}" method="POST"
                                       class="u-clearfix u-form-custom-backend u-form-spacing-30 u-form-vertical u-inner-form"
                                       style="padding: 10px" source="custom" name="form" redirect="true">
                                     <p th:errors="*{workServiceName}">Username error</p>
@@ -190,13 +191,6 @@
     </div>
 </section>
 
-
-<footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-322e">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Sample text. Click to select the text box. Click again or
-            double click to start editing the text.</p>
-    </div>
-</footer>
 <section class="u-backlink u-clearfix u-grey-80">
     <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
         <span>Website Templates</span>

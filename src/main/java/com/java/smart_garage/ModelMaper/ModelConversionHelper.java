@@ -339,4 +339,11 @@ public class ModelConversionHelper {
         }
         return price;
     }
+
+    public WorkServiceDto workServiceToDto(WorkService workService){
+        WorkServiceDto workServiceDto = new WorkServiceDto();
+        workServiceDto.setWorkServiceName(workService.getWorkServiceName());
+        workServiceDto.setWorkServicePrice(workService.getWorkServicePrice());
+        return workServiceDto;
+    }
 }

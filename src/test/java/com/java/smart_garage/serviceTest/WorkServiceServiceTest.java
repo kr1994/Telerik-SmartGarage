@@ -42,7 +42,7 @@ public class WorkServiceServiceTest {
                 thenReturn(createMockWorkService());
 
         //Act
-        WorkService result = service.getById(1);
+        WorkService result = service.getById(Optional.empty(),1);
 
         // Assert
         Assertions.assertEquals(1, result.getWorkServiceId());

@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" style="font-size: 16px;" xmlns:th="http://www.thymeleaf.org">
+<html style="font-size: 16px;" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Services">
+    <meta name="keywords" content="Customer Cars">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>Services</title>
+    <title>Cars</title>
     <link rel="stylesheet" href="../static/styles.css" th:href="@{/styles.css}" media="screen">
-    <link rel="stylesheet" href="../static/workServices.css" th:href="@{/workServices.css}" media="screen">
+    <link rel="stylesheet" href="../static/carServices.css" th:href="@{/carServices.css}" media="screen">
+    <link rel="stylesheet" href="../static/filter-button.css" th:href="@{/filter-button.css}" media="screen">
     <script class="u-script" type="text/javascript" src="../static/js/jquery.js" th:src="@{/js/jquery.js}"
             defer=""></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script class="u-script" type="text/javascript" src="../static/js/scripts.js" th:src="@{/js/scripts.js}"
             defer=""></script>
     <meta name="generator" content="Nicepage 3.9.0, nicepage.com">
@@ -24,61 +26,15 @@
         "name": "SmartGarage",
         "url": "index.html",
         "logo": "images/default-logo.png"
-
-
-
     }</script>
-    <meta property="og:title" content="services">
+    <meta property="og:title" content="carServices">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#478ac9">
     <link rel="canonical" href="index.html">
     <meta property="og:url" content="index.html">
-
-    <style>
-        .dropbtn {
-            background-color: #3498DB;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .dropbtn:hover, .dropbtn:focus {
-            background-color: #2980B9;
-        }
-
-        .dropdown {
-            padding: 60px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            overflow: auto;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown a:hover {background-color: #ddd;}
-
-        .show {display: block;}
-    </style>
-
 </head>
-<body class="u-body u-overlap u-overlap-contrast">
- <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
+<body class="u-body u-overlap u-overlap-contrast u-overlap-transparent">
+<header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
             <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png"
@@ -161,13 +117,16 @@
                                                       th:href="@{/workServices}"
                                                       style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
                             </li>
-                            <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item"><a
+                            <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                                class="u-nav-item"><a
                                     class="u-button-style u-nav-link" href="#" th:href="@{/cars}"
                                     style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
                             </li>
-                            <li th:unless="${currentUser.getUserId() == 0}"  class="u-nav-item"><a
-                                    class="u-button-style u-nav-link" href="#" th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
-                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned Cars</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#"
+                                    th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned
+                                Cars</a>
                             </li>
                             <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                                     class="u-button-style u-nav-link" href="#" th:href="@{/register}"
@@ -193,93 +152,138 @@
         </nav>
     </div>
 </header>
-<div class="u-align-center u-clearfix u-image u-shading u-section-1" src="..static/images/adobestock_247009476.jpeg"
-     th:src="@{/images/adobestock_247009476.jpeg}" data-image-width="8200"
-     data-image-height="4100" id="sec-9970">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <h1 class="u-text u-title u-text-1" data-animation-name="slideIn" data-animation-duration="1000"
-            data-animation-delay="0" data-animation-direction="Down">Services</h1>
-        <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="slideIn"
-           data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">Below you can see
-            what services we provide.</p>
-
-        <div class="dropdown">
-            <button onclick="myFunction()" class="dropbtn">Choose currency</button>
-            <div id="myDropdown" class="dropdown-content">
-                <a th:href="@{/workServices?currency=USD}">USD</a>
-                <a th:href="@{/workServices?currency=BGN}">BGN</a>
-                <a th:href="@{/workServices}">EUR</a>
-                <a th:href="@{/workServices?currency=RON}">RON</a>
-                <a th:href="@{/workServices?currency=TRY}">TRY</a>
-                <a th:href="@{/workServices?currency=RUB}">RUB</a>
-            </div>
-        </div>
-
-        <script type="application/javascript">
-            /* When the user clicks on the button,
-            toggle between hiding and showing the dropdown content */
-            function myFunction() {
-                document.getElementById("myDropdown").classList.toggle("show");
-            }
-
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(event) {
-                if (!event.target.matches('.dropbtn')) {
-                    var dropdowns = document.getElementsByClassName("dropdown-content");
-                    var i;
-                    for (i = 0; i < dropdowns.length; i++) {
-                        var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                }
-            }
-        </script>
-        <!--
-        <a th:href="@{/workServices?currency=USD}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">USD</a>
-        <a th:href="@{/workServices?currency=BGN}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-2">BGN</a>
-        <a th:href="@{/workServices}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">EUR</a>
-
-        <select class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1" th:field="*{currencies}">
-            <option th:each="c : ${currencies}" th:value="${c.getName()}" th:text="${c.getName()}"
-                    th:href="@{/workServices?currency=${c.getName()}}"></option>
-        </select>
-        -->
-
-        <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
-        <a th:href="@{/workServices/create}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">Create Work Service</a>
-        </li>
-    </div>
-</div>
-<div class="u-clearfix u-section-2" id="sec-be6c">
-
+<section class="u-align-center u-clearfix u-palette-5-dark-3 u-section-1" id="carousel_180e">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <div class="u-list u-repeater u-list-1">
-
-            <div th:each="service : ${workServices}"
-                 class="u-container-style u-image u-list-item u-repeater-item u-shading u-image-1"
-                 data-image-width="2000" data-image-height="300">
-                <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
-                    <h3 class="u-text u-text-1" th:text="'Service: ' + ${service.workServiceName}">Service name</h3>
-                    <p class="u-text u-text-2" th:text="'Price: ' + ${service.workServicePrice}">Price</p>
-                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
-                    <a th:href="@{/workServices/{id}/update(id=${service.getWorkServiceId()})}"
-                       class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">Update Service</a>
-                    </li>
+        <h2 class="u-text u-text-1">Customers' Cars</h2>
+        <br>
+        <form action="#"
+              class="u-border-5 u-border-grey-30 u-input-round u-radius-10 u-search u-search-left u-white u-search-1">
+            <button disabled class="u-search-button" type="submit">
+            <span class="u-icon-circle u-search-icon u-text-palette-1-base u-search-icon-1">
+              <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 56.966 56.966"><use
+                      xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-d0b8"></use></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                   id="svg-d0b8" x="0px" y="0px" viewBox="0 0 56.966 56.966"
+                   style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" class="u-svg-content"><path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"></path></svg>
+            </span>
+            </button>
+            <input id="myInput" th:id="myInput" class="u-search-input" type="search" name="search" value=""
+                   placeholder="Search">
+        </form>
+        <br>
+        <div id="myDiv" class="u-accordion u-faq u-spacing-10 u-accordion-1">
+            <div class="u-accordion-item" th:each="user : ${users}">
+               <span class="u-accordion-link-text"
+                     th:text="'User: ' + ${user.credential.username}">Username</span>
+                <div class="u-accordion-item" th:each="view : ${carsView}"
+                     th:unless="${view.getTotalPrice()==0}"
+                     th:class="'filterDiv ' + ${view.getCarOwnerEmail()}">
+                    <a class="u-accordion-link u-active-palette-1-base u-button-style u-hover-palette-1-base u-palette-5-dark-2 u-text-active-white u-text-grey-10 u-text-hover-grey-10 u-accordion-link-1"
+                       id="link-accordion-ae6a" aria-controls="accordion-ae6a" aria-selected="false">
+                    <span class="u-accordion-link-text"
+                          th:text="'Car: ' + ${view.getCarRegPlate()}">Car ID</span><span
+                            class="u-accordion-link-icon u-icon u-icon-circle u-text-palette-1-base u-icon-1"><svg
+                            class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 16 16" style=""><use
+                            xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-bf29"></use></svg><svg
+                            class="u-svg-content" id="svg-bf29" style=""><path d="M8,10.7L1.6,5.3c-0.4-0.4-1-0.4-1.3,0c-0.4,0.4-0.4,0.9,0,1.3l7.2,6.1c0.1,0.1,0.4,0.2,0.6,0.2s0.4-0.1,0.6-0.2l7.1-6
+	c0.4-0.4,0.4-0.9,0-1.3c-0.4-0.4-1-0.4-1.3,0L8,10.7z"></path></svg></span>
+                    </a>
+                    <div class="u-accordion-pane u-container-style u-palette-1-base u-accordion-pane-1"
+                         id="accordion-ae6a" aria-labelledby="link-accordion-ae6a">
+                        <div class="u-container-layout u-container-layout-1">
+                            <div class="fr-view u-clearfix u-rich-text u-text">
+                                <p th:text="'User email: ' + ${view.getCarOwnerEmail()}">User email</p>
+                                <p th:text="'Model: ' + ${view.getCarModel()}">Model</p>
+                                <p th:text="'Manufacturer: ' + ${view.getCarManufacturer()}">Manufacturer</p>
+                                <div class="u-accordion-item" th:each="service : ${view.getWorkServices()}">
+                                    <p th:text="'Work Services name: ' + ${service.getServiceName()}">name</p>
+                                    <p th:text="'Work Services price: ' + ${service.getPrice()}">price</p>
+                                    <p th:text="'Work Services Date: ' + ${service.getDate()}">Date</p>
+                                </div>
+                                <p th:text="'Totall Price: ' + ${view.getTotalPrice()}">Registration plate</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<style class="u-overlap-style">.u-overlap:not(.u-sticky-scroll) .u-header {
-}</style>
+</section>
 
 
 <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-322e">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <p class="u-small-text u-text u-text-variant u-text-1">Sample text. Click to select the text box. Click again or
+            double click to start editing the text.</p>
+    </div>
 </footer>
+<section class="u-backlink u-clearfix u-grey-80">
+    <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
+        <span>Website Templates</span>
+    </a>
+    <p class="u-text">
+        <span>created with</span>
+    </p>
+    <a class="u-link" href="https://nicepage.com/" target="_blank">
+        <span>Website Builder Software</span>
+    </a>.
+</section>
 </body>
+<script>
+    selectFilter("all")
+
+    function selectFilter(c) {
+        var x, i;
+        x = document.getElementsByClassName("filterDiv");
+        if (c == "all") c = "";
+        for (i = 0; i < x.length; i++) {
+            w3RemoveClass(x[i], "show");
+            if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+        }
+    }
+
+    function w3AddClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == -1) {
+                element.className += " " + arr2[i];
+            }
+        }
+    }
+
+    function w3RemoveClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) > -1) {
+                arr1.splice(arr1.indexOf(arr2[i]), 1);
+            }
+        }
+        element.className = arr1.join(" ");
+    }
+
+    // Add active class to the current button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            current[2].className = current[2].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myDiv div").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 </html>

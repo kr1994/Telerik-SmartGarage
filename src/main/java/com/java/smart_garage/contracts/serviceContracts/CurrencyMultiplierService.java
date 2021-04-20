@@ -7,5 +7,6 @@ import java.util.List;
 public interface CurrencyMultiplierService {
 
     List<Currency> getAllCurrency();
+
     double getCurrency(String value);
 }
