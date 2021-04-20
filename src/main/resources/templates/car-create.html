@@ -35,7 +35,8 @@
 <header class="u-clearfix u-header u-sticky" id="sec-5f3c">
     <div class="u-clearfix u-sheet u-sheet-1">
         <a href="/" class="u-image u-logo u-image-1">
-            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png" th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
+            <img src="../static/images/PinClipart.com_engineering-clipart_5258420.png"
+                 th:src="@{/images/PinClipart.com_engineering-clipart_5258420}"
                  class="u-logo-image u-logo-image-1" alt="SmartGarage">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
@@ -64,10 +65,33 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
-                    <li  class="u-nav-item"><a
+                    <li class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/workServices}"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                        class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/carServices}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Car Services</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/carServices/{id}(id=${currentUser.getUserId()})}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">User Car
+                        Services</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                        class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/cars}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
+                    </li>
+                    <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned Cars</a>
                     </li>
                     <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
@@ -99,20 +123,48 @@
                             <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/index}"
                                                       style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                             </li>
-                            <li  class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/workServices}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
+                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
+                                                      th:href="@{/workServices}"
+                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Services</a>
                             </li>
-                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/register}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
+                            <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                                class="u-nav-item"><a class="u-button-style u-nav-link" href="#"
+                                                      th:href="@{/carServices}"
+                                                      style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">All Cars Services</a>
                             </li>
-                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/login}"
-                                                                                              style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#"
+                                    th:href="@{/carServices/{id}(id=${currentUser.getUserId()})}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">User
+                                Cars Services</a>
                             </li>
-                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
-                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
+
+                            <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                                class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/cars}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Cars</a>
                             </li>
-                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
-                                                                                                  style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#"
+                                    th:href="@{/cars/{id}(id=${currentUser.getUserId()})}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Owned
+                                Cars</a>
+                            </li>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/register}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Register</a>
+                            </li>
+                            <li th:if="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/login}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
+                            </li>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
+                            </li>
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
+                                    class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
+                                    style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -156,7 +208,8 @@
                                         <div class="u-form-select-wrapper">
                                             <select id="select-4598" th:field="*{modelId}"
                                                     class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="model : ${models}" th:value="${model.modelId}"
+                                                <option th:each="model : ${models}"
+                                                        th:value="${model.modelId}"
                                                         th:text="${model.modelName + '-' + model.manufacturer.manufacturerName} "
                                                 >"${model.modelName}">Model
                                                 </option>

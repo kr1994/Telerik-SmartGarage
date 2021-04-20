@@ -21,27 +21,27 @@ public class CarServiceDto {
     public CarServiceDto() {
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
-    }
-
-    public void setService(int serviceId) {
-        this.serviceId = serviceId;
-    }
-
-    public void setInvoice(InvoiceDto invoice) {
-        this.invoice = invoice;
-    }
-
     public int getCarId() {
         return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
     }
 
     public int getServiceId() {
         return serviceId;
     }
 
+    public void setServiceId(int serviceId) {
+        this.serviceId = serviceId;
+    }
+
     public InvoiceDto getInvoice() {
         return invoice;
+    }
+
+    public void setInvoice(InvoiceDto invoice) {
+        this.invoice = invoice;
     }
 }

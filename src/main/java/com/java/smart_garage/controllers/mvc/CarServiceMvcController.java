@@ -3,22 +3,20 @@ package com.java.smart_garage.controllers.mvc;
 
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
-import com.java.smart_garage.contracts.serviceContracts.AutomobileService;
-import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
-import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
-import com.java.smart_garage.contracts.serviceContracts.UserService;
+import com.java.smart_garage.contracts.serviceContracts.*;
+import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.*;
+import com.java.smart_garage.models.dto.CarServiceDto;
 import com.java.smart_garage.models.viewDto.CarServiceViewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +31,23 @@ public class CarServiceMvcController {
     private final CarServiceService service;
     private final AutomobileService automobileService;
     private final UserService userService;
+    private final WorkServiceService workServiceService;
+    private final AutomobileService carService;
 
     @Autowired
     public CarServiceMvcController(AuthenticationHelper authenticationHelper,
                                    CurrencyMultiplierService currencyMultiplierService,
                                    ModelConversionHelper modelConversionHelper,
-                                   CarServiceService service, AutomobileService automobileService, UserService userService) {
+                                   CarServiceService service, AutomobileService automobileService, UserService userService, WorkServiceService workServiceService, AutomobileService carService1, AutomobileService carService) {
         this.authenticationHelper = authenticationHelper;
         this.currencyMultiplierService = currencyMultiplierService;
         this.modelConversionHelper = modelConversionHelper;
         this.service = service;
         this.automobileService = automobileService;
         this.userService = userService;
+        this.workServiceService = workServiceService;
+        this.carService = carService;
+
     }
 
     @ModelAttribute
@@ -70,6 +73,63 @@ public class CarServiceMvcController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
         return "carServices";
+    }
+    @GetMapping("/{id}")
+    public String showAllCars(@PathVariable int id,@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
+                              Model model, HttpSession session) {
+        User currentUser ;
+
+            currentUser = authenticationHelper.tryGetUser(session);
+            model.addAttribute("currentUser", currentUser);
+
+        List<Automobile> cars = automobileService.getAllCarsByOwner(id);
+        List<CarServiceViewDto> carsView = getCarServiceViewDto(startingDate,  endingDate, currency,  cars);
+        model.addAttribute("carsView",carsView);
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
+        return "carServices";
+    }
+    @GetMapping("/{id}/create")
+    public String showCarsCreate(Model model, HttpSession session, @PathVariable int id) {
+        User currentUser;
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+        } catch (UnauthorizedOperationException e) {
+            return "authentication-fail";
+        }
+
+        if (!currentUser.isEmployee()) {
+            return "authentication-fail";
+        }
+
+        model.addAttribute("carService", new CarServiceDto());
+        model.addAttribute("cars",carService.getById(id));
+        model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
+        model.addAttribute("currentUser", currentUser);
+        return "carService-create";
+    }
+
+    @PostMapping("/{id}/create")
+    public String createCar(@PathVariable int id,@ModelAttribute("currentUser") User currentUser, Model model, HttpSession session, BindingResult bindingResult, @Valid @ModelAttribute CarServiceDto carServiceDto) {
+        if (bindingResult.hasErrors()) {
+            return "workService-create";
+        }
+        currentUser = authenticationHelper.tryGetUser(session);
+        CarService carServiceWork = modelConversionHelper.carServiceFromDto(carServiceDto);
+        Invoice invoice = modelConversionHelper.invoiceFromDto(carServiceDto.getInvoice());
+
+        try {
+            model.addAttribute("carService", carServiceDto);
+            model.addAttribute("cars",carService.getById(id));
+            model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
+            model.addAttribute("currentUser", currentUser);
+            service.create(carServiceWork,invoice, currentUser);
+        } catch (DuplicateEntityException e) {
+            bindingResult.rejectValue("carService", "text", e.getMessage());
+            return "carService-create";
+        }
+        return "redirect:/carServices";
     }
     private List<CarServiceViewDto> getCarServiceViewDto(@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency, List<Automobile> cars) {
         List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
