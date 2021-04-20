@@ -108,12 +108,15 @@ public class AuthenticationMvcController {
 
         User user = fillUser(dto, "Customer");
         User admin = fillUser(dto, "Employee");
+        personalInfoService.create(user.getPersonalInfo(), admin);
+        credentialService.create(user.getCredential(), admin);
+        user.getUserType().setTypeId(1);
         userService.create(user, admin);
         emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
                                             user.getCredential().getUsername(),
                                             user.getCredential().getPassword());
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @PostMapping("/reset_password")
@@ -140,14 +143,12 @@ public class AuthenticationMvcController {
     private User fillUser(PersonalInfoDto dto, String role) {
         User user = new User();
         PersonalInfo p = modelConversionHelper.personalInfoFromDto(dto);
-
         user.setPersonalInfo(p);
         Credential credential = new Credential();
         credential.setUsername(extractUsernameFromEmail(user.getPersonalInfo().getEmail()));
         String password = Md5Hashing.generateNewPassword(8);
         credential.setPassword(Md5Hashing.md5(password));
         user.setCredential(credential);
-
         UserType usertype = new UserType();
         usertype.setType(role);
         user.setUserType(usertype);
