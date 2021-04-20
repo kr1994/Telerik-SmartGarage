@@ -95,11 +95,11 @@
                                     class="u-button-style u-nav-link" href="#" th:href="@{/login}"
                                     style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Login</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                                     class="u-button-style u-nav-link" href="#" th:href="@{/profile}"
                                     style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Profile</a>
                             </li>
-                            <li th:unless="${currentUser.getId() == 0}" class="u-nav-item"><a
+                            <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item"><a
                                     class="u-button-style u-nav-link" href="#" th:href="@{/logout}"
                                     style="padding: 10px 0; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Logout</a>
                             </li>

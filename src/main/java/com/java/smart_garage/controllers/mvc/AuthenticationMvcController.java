@@ -90,7 +90,7 @@ public class AuthenticationMvcController {
     }
 
     @PostMapping("/register")
-    public String handleRegisterCustomer(PersonalInfoDto dto,
+    public String handleRegisterCustomer(@Valid @ModelAttribute("registerDto") PersonalInfoDto dto,
                                          BindingResult bindingResult,
                                          HttpSession session) {
 
