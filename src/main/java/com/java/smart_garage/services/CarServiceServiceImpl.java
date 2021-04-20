@@ -4,6 +4,7 @@ import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.contracts.repoContracts.CarServiceRepository;
 import com.java.smart_garage.contracts.serviceContracts.CarServiceService;
 import com.java.smart_garage.contracts.serviceContracts.CurrencyMultiplierService;
+import com.java.smart_garage.exceptions.DateInPastException;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -125,6 +127,9 @@ public class CarServiceServiceImpl implements CarServiceService {
         if (duplicateExists) {
             throw new DuplicateEntityException("Car Service", "id", carService.getCarServicesId());
         }
+        if(invoice.getDate().before(Date.valueOf(LocalDate.now()))){
+            throw new DateInPastException(invoice.getDate());
+        }
 
         repository.create(carService,invoice);
     }
@@ -133,6 +138,10 @@ public class CarServiceServiceImpl implements CarServiceService {
     public void delete(int id, User user) {
         if (!(user.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee  can delete a car.");
+        }
+        CarService carService = getById(id);
+        if(carService.getInvoice().getDate().before(Date.valueOf(LocalDate.now()))){
+            throw new DateInPastException(carService.getInvoice().getDate());
         }
         repository.delete(id);
     }

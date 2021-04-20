@@ -4,6 +4,7 @@ package com.java.smart_garage.controllers.mvc;
 import com.java.smart_garage.ModelMaper.ModelConversionHelper;
 import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.*;
+import com.java.smart_garage.exceptions.DateInPastException;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.*;
@@ -124,7 +125,12 @@ public class CarServiceMvcController {
             model.addAttribute("cars",carService.getById(id));
             model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
             model.addAttribute("currentUser", currentUser);
-            service.create(carServiceWork,invoice, currentUser);
+
+           try{ service.create(carServiceWork,invoice, currentUser);}
+           catch (DateInPastException e) {
+               bindingResult.rejectValue("carService.invoice", "text", e.getMessage());
+               return "carService-create";
+           }
         } catch (DuplicateEntityException e) {
             bindingResult.rejectValue("carService", "text", e.getMessage());
             return "carService-create";

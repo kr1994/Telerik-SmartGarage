@@ -221,13 +221,16 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <p th:errors="*{invoice}">Date error</p>
                                     <div class="u-form-group u-form-select u-form-group-3">
-                                        <label for="select-3599"
+                                        <label for="localDate"
                                                class="u-label u-text-body-alt-color u-label-3">Date</label>
                                         <div class="u-form-select-wrapper">
                                             <input type="date" th:value="${carService.invoice}"
-                                                   id="select-3599" th:field="*{invoice.date}"
-                                            >Engine
+                                                   min="04-20-2021"
+                                                   id="localDate" th:field="*{invoice.date}"
+                                                   class="u-input u-input-rectangle u-white"
+                                            > Service Date
                                             </input>
 
                                         </div>
@@ -245,6 +248,14 @@
         </div>
     </div>
 </section>
+<script>
+
+    var today = new Date();
+
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+    document.getElementById("localDate").innerHTML = date;
+</script>
 
 <section class="u-backlink u-clearfix u-grey-80">
     <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
