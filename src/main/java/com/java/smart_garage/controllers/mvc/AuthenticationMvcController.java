@@ -107,36 +107,6 @@ public class AuthenticationMvcController {
         return "redirect:/login";
     }
 
-    /*
-    @GetMapping("/register_employee")
-    public String createEmployee(HttpSession session) {
-        session.setAttribute("registerDto", new PersonalInfoDto());
-        return "register_employee";
-    }
-    */
-
-    @PostMapping("/register_employee")
-    public String handleRegisterEmployee(BindingResult bindingResult,
-                                         HttpSession session) {
-
-        try {
-            PersonalInfoDto dto = new PersonalInfoDto();
-            dto.setFirstName("Employee" + Md5Hashing.generateNewPassword(4));
-            dto.setLastName("Employer" + Md5Hashing.generateNewPassword(2));
-            dto.setEmail("empemp" + Md5Hashing.generateNewPassword(3) + "@gmail.com");
-            dto.setPhoneNumber("08" + Md5Hashing.generateNewPhoneNumber());
-            User user = fillUser(dto, "Employee");
-            userService.create(user, authenticationHelper.tryGetUser(session));
-            emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
-                                                user.getCredential().getUsername(),
-                                                user.getCredential().getPassword());
-        } catch (AuthenticationHelperException e) {
-            bindingResult.rejectValue("username", "auth_error", e.getMessage());
-            return "register_employee";
-        }
-        return "redirect:/login";
-    }
-
     @PostMapping("/reset_password")
     public String resetPassword(PersonalInfoDto dto,
                                 BindingResult bindingResult,
