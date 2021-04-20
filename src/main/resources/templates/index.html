@@ -66,6 +66,12 @@
                             href="/"
                             style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Home</a>
                     </li>
+                    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}"
+                        class="u-nav-item"><a
+                            class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
+                            href="#" th:href="@{/users}"
+                            style="padding: 10px 0px; text-shadow: 2px 2px 8px rgba(128,128,128,1);">Users</a>
+                    </li>
                     <li class="u-nav-item"><a
                             class="u-border-2 u-border-active-black u-border-hover-black u-border-no-left u-border-no-right u-border-no-top u-button-style u-nav-link u-text-active-white u-text-grey-90 u-text-hover-grey-40"
                             href="#" th:href="@{/workServices}"
