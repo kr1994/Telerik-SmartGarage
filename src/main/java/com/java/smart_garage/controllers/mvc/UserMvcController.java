@@ -9,7 +9,6 @@ import com.java.smart_garage.contracts.serviceContracts.UserTypeService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.*;
-import com.java.smart_garage.models.dto.IdContainerDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -80,7 +79,6 @@ public class UserMvcController {
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable int id,
                              @ModelAttribute("user") User userDto,
-                             @ModelAttribute("idContainer") IdContainerDto idContainer,
                              Model model,
                              BindingResult bindingResult,
                              HttpSession session) {
@@ -112,7 +110,4 @@ public class UserMvcController {
         user.getCredential().setPassword(userDto.getCredential().getPassword());
         user.getUserType().setType(userDto.getUserType().getType());
     }
-
-
-
 }
