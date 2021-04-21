@@ -160,58 +160,6 @@
         <p class="u-large-text u-text u-text-variant u-text-2" data-animation-name="slideIn"
            data-animation-duration="1000" data-animation-delay="0" data-animation-direction="Down">Below you can see
             all registered users and employees.</p>
-
-        <!--
-        <div class="dropdown">
-            <button onclick="myFunction()" class="dropbtn">Choose currency</button>
-            <div id="myDropdown" class="dropdown-content">
-                <a th:href="@{/workServices?currency=USD}">USD</a>
-                <a th:href="@{/workServices?currency=BGN}">BGN</a>
-                <a th:href="@{/workServices}">EUR</a>
-                <a th:href="@{/workServices?currency=RON}">RON</a>
-                <a th:href="@{/workServices?currency=TRY}">TRY</a>
-                <a th:href="@{/workServices?currency=RUB}">RUB</a>
-            </div>
-        </div>
-        <script type="application/javascript">
-            /* When the user clicks on the button,
-            toggle between hiding and showing the dropdown content */
-            function myFunction() {
-                document.getElementById("myDropdown").classList.toggle("show");
-            }
-
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(event) {
-                if (!event.target.matches('.dropbtn')) {
-                    var dropdowns = document.getElementsByClassName("dropdown-content");
-                    var i;
-                    for (i = 0; i < dropdowns.length; i++) {
-                        var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
-                }
-            }
-        </script>
-        -->
-        <!--
-        <a th:href="@{/workServices?currency=USD}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">USD</a>
-        <a th:href="@{/workServices?currency=BGN}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-2">BGN</a>
-        <a th:href="@{/workServices}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">EUR</a>
-
-        <select class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1" th:field="*{currencies}">
-            <option th:each="c : ${currencies}" th:value="${c.getName()}" th:text="${c.getName()}"
-                    th:href="@{/workServices?currency=${c.getName()}}"></option>
-        </select>
-        -->
-
-        <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
-        <a th:href="@{/users/create}"
-           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">Create User</a>
-        </li>
     </div>
 </div>
 <div class="u-clearfix u-section-2" id="sec-be6c">
@@ -231,7 +179,7 @@
                     <p class="u-text u-text-2" th:text="'Phonenumber: ' + ${user.getPersonalInfo().getPhoneNumber()}">Phone Number</p>
                     <p class="u-text u-text-2" th:text="'User Type: ' + ${user.getUserType().getType()}">User Type</p>
                     <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
-                    <a th:href="@{/users/{id}(id=${user.getUserId()})}"
+                    <a th:href="@{/users/{id}/update (id=${user.getUserId()})}"
                        class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">Update User</a>
                     </li>
                 </div>

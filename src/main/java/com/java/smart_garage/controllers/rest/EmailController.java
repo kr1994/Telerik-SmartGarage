@@ -18,7 +18,7 @@ public class EmailController {
 
     @PostMapping
     public String sendEmail() {
-        //mailService.sendMailForCredentials();
+        //emailService.sendMailForCredentials();
         return "Email sent successfully";
     }
 
