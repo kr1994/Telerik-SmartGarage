@@ -1,10 +1,5 @@
 package com.java.smart_garage.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.java.smart_garage.models.UserType;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 

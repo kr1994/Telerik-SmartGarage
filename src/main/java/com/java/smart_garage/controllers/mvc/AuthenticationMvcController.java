@@ -105,16 +105,16 @@ public class AuthenticationMvcController {
         if(bindingResult.hasErrors()) {
             return "redirect:/";
         }
-
-        User user = fillUser(dto, "Customer");
-        User admin = fillUser(dto, "Employee");
-        personalInfoService.create(user.getPersonalInfo(), admin);
-        credentialService.create(user.getCredential(), admin);
-        user.getUserType().setTypeId(1);
-        userService.create(user, admin);
+        String password = Md5Hashing.generateNewPassword(8);
+        User user = fillUser(dto, "Customer", password);
+        //User admin = fillUser(dto, password, "Employee");
+        personalInfoService.create(user.getPersonalInfo(), user);
+        credentialService.create(user.getCredential(), user);
+        user.getUserType().setTypeId(2);
+        userService.create(user, user);
         emailService.sendMailForCredentials(user.getPersonalInfo().getEmail(),
                                             user.getCredential().getUsername(),
-                                            user.getCredential().getPassword());
+                                            password);
 
         return "redirect:/login";
     }
@@ -136,17 +136,16 @@ public class AuthenticationMvcController {
 
     private String extractUsernameFromEmail(String email) {
         int atIndex = email.indexOf("@");
-        String username = email.substring(0, atIndex) + Md5Hashing.generateNewPassword(3);
+        String username = email;
         return username;
     }
 
-    private User fillUser(PersonalInfoDto dto, String role) {
+    private User fillUser(PersonalInfoDto dto, String role, String password) {
         User user = new User();
         PersonalInfo p = modelConversionHelper.personalInfoFromDto(dto);
         user.setPersonalInfo(p);
         Credential credential = new Credential();
         credential.setUsername(extractUsernameFromEmail(user.getPersonalInfo().getEmail()));
-        String password = Md5Hashing.generateNewPassword(8);
         credential.setPassword(Md5Hashing.md5(password));
         user.setCredential(credential);
         UserType usertype = new UserType();

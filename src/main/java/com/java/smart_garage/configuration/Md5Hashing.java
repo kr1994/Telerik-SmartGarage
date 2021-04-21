@@ -33,11 +33,14 @@ public class Md5Hashing {
     }
 
     public static String generateNewPassword(int length) {
-        byte[] array = new byte[length];
-        new Random().nextBytes(array);
-        String generatedString = new String(array, Charset.forName("UTF-8"));
+        char[] letters = {'a', 'b', 'b', 'c', '4', '1', '8', '2', 'e', '0'};
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <letters.length ; i++) {
+            char current = letters[new Random().nextInt(9)];
+            sb.append(current);
+        }
 
-        return generatedString;
+        return sb.toString();
     }
 
     public static String generateNewPhoneNumber() {

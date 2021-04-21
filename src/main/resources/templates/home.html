@@ -131,6 +131,10 @@
         </h1>
         <p class="u-align-left u-text u-text-white u-text-2" data-animation-name="zoomIn" data-animation-duration="1000"
            data-animation-delay="0" data-animation-direction="">We repairing your Car Dreams!</p>
+        <li th:unless="${currentUser.getUserId() == 0}" class="u-nav-item">
+            <a th:href="@{/reset_password}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4
+            u-text-body-alt-color u-btn-3">Forgotten Password</a>
+        </li>
     </div>
 </section>
 <section class="u-clearfix u-section-2" id="sec-444f">
