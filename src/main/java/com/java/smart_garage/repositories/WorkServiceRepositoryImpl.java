@@ -2,6 +2,7 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.WorkServiceRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.WorkService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +11,9 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class WorkServiceRepositoryImpl implements WorkServiceRepository {
@@ -36,7 +39,7 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
 
     @Override
     public WorkService getByName(String name) {
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Query<WorkService> query = session.createQuery("from WorkService where workServiceName like concat('%', :name, '%')",
                     WorkService.class);
             query.setParameter("name", name);
@@ -84,12 +87,48 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
     }
 
     @Override
-    public void delete(int id){
-        try(Session session = sessionFactory.openSession()){
+    public void delete(int id) {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(WorkService.class,id));
+            session.delete(session.get(WorkService.class, id));
             session.getTransaction().commit();
         }
     }
 
+    @Override
+    public List<WorkService> filterWorkServicesByNameAndPrice(Optional<String> name,
+                                                              Optional<Double> price) {
+
+        try (Session session = sessionFactory.openSession()) {
+
+            int countParameters = 0;
+            String queryStr = "from WorkService ws ";
+
+            if (name.isPresent()) {
+                queryStr += "where workServiceName = :name ";
+                countParameters++;
+            }
+
+            if (price.isPresent()) {
+                if (countParameters > 0) {
+                    queryStr += "and workServicePrice = :price "; // = or < ????
+                } else {
+                    queryStr += "where workServicePrice = :price ";  // = or < ????
+                }
+                countParameters++;
+            }
+
+            Query<WorkService> query = session.createQuery(queryStr, WorkService.class);
+
+            if (name.isPresent()) {
+                query.setParameter("name", name.get());
+            }
+
+            if (price.isPresent()) {
+                query.setParameter("price", price.get());
+            }
+
+            return query.getResultList();
+        }
+    }
 }
