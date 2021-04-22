@@ -22,8 +22,8 @@
     <script type="application/ld+json">{
         "@context": "http://schema.org",
         "@type": "Organization",
-        "name": "DeliverIt",
-        "url": "index.html",
+        "name": "SmartGarage",
+        "url": "profile.html",
         "logo": "images/default-logo.png"
     }</script>
     <meta property="og:title" content="profile">
@@ -175,7 +175,7 @@
         </nav>
     </div>
 </header>
-<section th:src="@{/images/parcel-delivery-rights-1507942560.jpg}" class="u-align-left u-clearfix u-image u-section-1"
+<section th:src="@{/images/Writing_a_letter.jpg}" class="u-align-left u-clearfix u-image u-section-1"
          id="carousel_20b1" data-image-width="2057"
          data-image-height="1457">
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
@@ -210,7 +210,7 @@
 	c0,1.101,0.494,2.128,1.34,2.821c0.81,3.173,2.477,5.575,3.093,6.389v2.894c0,0.816-0.445,1.566-1.162,1.958l-7.907,4.313
 	c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path></svg></span>
                     <h3 class="u-custom-font u-font-montserrat u-text u-text-1">Username:</h3>
-                    <p th:text="${currentUser.userName}" class="u-text u-text-2">username</p>
+                    <p th:text="${currentUser.credential.username}" class="u-text u-text-2">Username</p>
                 </div>
             </div>
             <div class="u-align-center-sm u-align-center-xs u-container-style u-list-item u-repeater-item u-shape-rectangle">
@@ -220,12 +220,12 @@
                                                                    viewBox="0 0 512 512" style=""><use
                         xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-6ac3"></use></svg><svg
                         class="u-svg-content" viewBox="0 0 512 512" x="0px" y="0px" id="svg-6ac3"
-                        style="enable-background:new 0 0 512 512;"><g><g><path
-                        d="M467,61H45C20.218,61,0,81.196,0,106v300c0,24.72,20.128,45,45,45h422c24.72,0,45-20.128,45-45V106    C512,81.28,491.872,61,467,61z M460.786,91L256.954,294.833L51.359,91H460.786z M30,399.788V112.069l144.479,143.24L30,399.788z     M51.213,421l144.57-144.57l50.657,50.222c5.864,5.814,15.327,5.795,21.167-0.046L317,277.213L460.787,421H51.213z M482,399.787    L338.213,256L482,112.212V399.787z"></path>
-</g>
-</g></svg></span>
+                        style="enable-background:new 0 0 512 512;"><g><g><path d="M467,61H45C20.218,61,0,81.196,0,106v300c0,24.72,20.128,45,45,45h422c24.72,0,45-20.128,45-45V106
+                        C512,81.28,491.872,61,467,61z M460.786,91L256.954,294.833L51.359,91H460.786z M30,399.788V112.069l144.479,143.24L30,399.788z
+                        M51.213,421l144.57-144.57l50.657,50.222c5.864,5.814,15.327,5.795,21.167-0.046L317,277.213L460.787,421H51.213z M482,399.787
+                        L338.213,256L482,112.212V399.787z"></path></g></g></svg></span>
                     <h3 class="u-custom-font u-font-montserrat u-text u-text-3">Email:</h3>
-                    <p th:text="${currentUser.email}" class="u-text u-text-4">email</p>
+                    <p th:text="${currentUser.personalInfo.email}" class="u-text u-text-4">Email</p>
                 </div>
             </div>
             <div class="u-align-center-sm u-align-center-xs u-container-style u-list-item u-repeater-item u-shape-rectangle">
@@ -243,7 +243,7 @@
                         d="m432 277.332031h-117.332031c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h117.332031c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0"></path><path
                         d="m432 362.667969h-117.332031c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h117.332031c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0"></path></svg></span>
                     <h3 class="u-custom-font u-font-montserrat u-text u-text-5">First name:</h3>
-                    <p th:text="${currentUser.firstName}" class="u-text u-text-6">first name</p>
+                    <p th:text="${currentUser.personalInfo.firstName}" class="u-text u-text-6">First name</p>
                 </div>
             </div>
             <div class="u-align-center-sm u-align-center-xs u-container-style u-list-item u-repeater-item u-shape-rectangle">
@@ -261,10 +261,10 @@
                         d="m432 277.332031h-117.332031c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h117.332031c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0"></path><path
                         d="m432 362.667969h-117.332031c-8.832031 0-16-7.167969-16-16s7.167969-16 16-16h117.332031c8.832031 0 16 7.167969 16 16s-7.167969 16-16 16zm0 0"></path></svg></span>
                     <h3 class="u-custom-font u-font-montserrat u-text u-text-7">Last name:</h3>
-                    <p th:text="${currentUser.lastName}" class="u-text u-text-8">last name</p>
+                    <p th:text="${currentUser.personalInfo.lastName}" class="u-text u-text-8">Last name</p>
                 </div>
             </div>
-            <div th:unless="${currentUser.userType.role.equals('Employee')}"
+            <div th:unless="${currentUser.userType.getType().equals('Employee')}"
                  class="u-align-center-sm u-align-center-xs u-container-style u-list-item u-repeater-item u-shape-rectangle">
                 <div class="u-container-layout u-similar-container u-container-layout-5"><span
                         class="u-icon u-icon-circle u-icon-5"><svg class="u-svg-link"
@@ -275,156 +275,17 @@
                         d="m256 0c-108.81 0-197.333 88.523-197.333 197.333 0 61.198 31.665 132.275 94.116 211.257 45.697 57.794 90.736 97.735 92.631 99.407 6.048 5.336 15.123 5.337 21.172 0 1.895-1.672 46.934-41.613 92.631-99.407 62.451-78.982 94.116-150.059 94.116-211.257 0-108.81-88.523-197.333-197.333-197.333zm0 474.171c-38.025-36.238-165.333-165.875-165.333-276.838 0-91.165 74.168-165.333 165.333-165.333s165.333 74.168 165.333 165.333c0 110.963-127.31 240.602-165.333 276.838z"></path><path
                         d="m378.413 187.852-112-96c-5.992-5.136-14.833-5.136-20.825 0l-112 96c-6.709 5.75-7.486 15.852-1.735 22.561s15.852 7.486 22.561 1.735l13.586-11.646v79.498c0 8.836 7.164 16 16 16h144c8.836 0 16-7.164 16-16v-79.498l13.587 11.646c6.739 5.777 16.836 4.944 22.561-1.735 5.751-6.709 4.974-16.81-1.735-22.561zm-66.413 76.148h-112v-90.927l56-48 56 48z"></path>
 </g></svg></span>
-                    <h3 class="u-custom-font u-font-montserrat u-text u-text-9">Address:</h3>
-                    <p th:text="${currentCustomer.address.name}" class="u-text u-text-10">Address</p>
+                    <h3 class="u-custom-font u-font-montserrat u-text u-text-9">Phone Number:</h3>
+                    <p th:text="${currentUser.personalInfo.phoneNumber}" class="u-text u-text-10">Phone Number</p>
                 </div>
             </div>
         </div>
-        <a href="#" th:href="@{/profile/password/change}"
+        <a href="#" th:href="@{/profile/reset-password}"
            class="u-btn u-btn-round u-button-style u-hover-palette-4-base u-palette-4-light-1 u-radius-50 u-btn-1">Change
             password</a>
     </div>
 </section>
-<section th:unless="${currentUser.userType.role.equals('Employee')}"
-         class="u-align-center u-clearfix u-image u-shading u-section-3" id="sec-4e38" data-image-width="1600"
-         data-image-height="1200">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <h3 class="u-text u-text-1">Parcels information</h3>
-        <div class="u-expanded-width u-tab-links-align-left u-tabs u-tabs-1">
-            <ul class="u-border-2 u-border-palette-1-base u-spacing-10 u-tab-list u-unstyled" role="tablist">
-                <li class="u-tab-item" role="presentation">
-                    <a class="active u-active-palette-1-base u-button-style u-grey-10 u-tab-link u-text-active-white u-text-black u-tab-link-1"
-                       id="link-tab-0da5" href="#tab-0da5" role="tab" aria-controls="tab-0da5" aria-selected="true">Parcels</a>
-                </li>
-                <li class="u-tab-item u-tab-item-2" role="presentation">
-                    <a class="u-active-palette-1-base u-button-style u-grey-10 u-tab-link u-text-active-white u-text-black u-tab-link-2"
-                       id="tab-93fc" href="#link-tab-93fc" role="tab" aria-controls="link-tab-93fc"
-                       aria-selected="false">Incoming parcels</a>
-                </li>
-            </ul>
-            <div class="u-tab-content">
-                <div class="u-container-style u-shape-rectangle u-tab-active u-tab-pane" id="tab-0da5" role="tabpanel"
-                     aria-labelledby="link-tab-0da5">
-                    <div class="u-container-layout u-container-layout-1">
-                        <div class="u-expanded-width u-table u-table-responsive u-table-1">
-                            <table class="u-table-entity">
-                                <colgroup>
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="17%">
-                                </colgroup>
-                                <tbody class="u-table-alt-grey-5 u-table-body">
-                                <tr style="height: 70px;">
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-1">
-                                        Parcel ID
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-2">
-                                        Warehouse destination
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-3">
-                                        Weight
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-4">
-                                        Category
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-5">
-                                        Shipment ID
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-6">
-                                        Status
-                                    </td>
-                                </tr>
-                                <tr th:each="parcel : ${parcels}" style="height: 53px;">
-                                    <td th:text="${parcel.id}" class="u-border-2 u-border-grey-75 u-table-cell">Parcel
-                                        ID
-                                    </td>
-                                    <td th:text="${parcel.warehouse.address.name}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Destination
-                                    </td>
-                                    <td th:text="${parcel.weight}" class="u-border-2 u-border-grey-75 u-table-cell">
-                                        Weight
-                                    </td>
-                                    <td th:text="${parcel.category.name}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Category
-                                    </td>
-                                    <td th:text="${parcel.shipment.shipmentId}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Shipment ID
-                                    </td>
-                                    <td th:text="${parcel.shipment.status.status}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Status
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="u-align-left u-container-style u-shape-rectangle u-tab-pane" id="link-tab-93fc"
-                     role="tabpanel" aria-labelledby="tab-93fc">
-                    <div class="u-container-layout u-container-layout-2">
-                        <div class="u-table u-table-responsive u-table-2">
-                            <table class="u-table-entity">
-                                <colgroup>
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="16.6%">
-                                    <col width="17%">
-                                </colgroup>
-                                <tbody class="u-table-alt-grey-5 u-table-body">
-                                <tr style="height: 73px;">
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-13">
-                                        Parcel ID
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-14">
-                                        Warehouse destination
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-15">
-                                        Weight
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-16">
-                                        Category
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-17">
-                                        Shipment ID
-                                    </td>
-                                    <td class="u-border-2 u-border-grey-75 u-palette-1-base u-table-cell u-table-cell-18">
-                                        Status
-                                    </td>
-                                </tr>
-                                <tr th:each="incomingParcel : ${incomingParcels}" style="height: 51px;">
-                                    <td th:text="${incomingParcel.id}" class="u-border-2 u-border-grey-75 u-table-cell">
-                                        Parcel ID
-                                    </td>
-                                    <td th:text="${incomingParcel.warehouse.address.name}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Destination
-                                    </td>
-                                    <td th:text="${incomingParcel.weight}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Weight
-                                    </td>
-                                    <td th:text="${incomingParcel.category.name}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Category
-                                    </td>
-                                    <td th:text="${incomingParcel.shipment.shipmentId}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Shipment ID
-                                    </td>
-                                    <td th:text="${incomingParcel.shipment.status.status}"
-                                        class="u-border-2 u-border-grey-75 u-table-cell">Status
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 
 <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-322e">

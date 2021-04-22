@@ -107,7 +107,6 @@ public class AuthenticationMvcController {
         }
         String password = Md5Hashing.generateNewPassword(8);
         User user = fillUser(dto, "Customer", password);
-        //User admin = fillUser(dto, password, "Employee");
         personalInfoService.create(user.getPersonalInfo(), user);
         credentialService.create(user.getCredential(), user);
         user.getUserType().setTypeId(2);
@@ -116,21 +115,6 @@ public class AuthenticationMvcController {
                                             user.getCredential().getUsername(),
                                             password);
 
-        return "redirect:/login";
-    }
-
-    @PostMapping("/reset_password")
-    public String resetPassword(PersonalInfoDto dto,
-                                BindingResult bindingResult,
-                                HttpSession session) {
-
-        try {
-            User user = authenticationHelper.tryGetUser(session);
-            userService.resetPassword(user.getPersonalInfo().getEmail());
-        } catch (AuthenticationHelperException e) {
-            bindingResult.rejectValue("username", "auth_error", e.getMessage());
-            return "register";
-        }
         return "redirect:/login";
     }
 
