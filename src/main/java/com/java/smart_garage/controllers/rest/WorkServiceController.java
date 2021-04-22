@@ -5,6 +5,7 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.WorkServiceService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
+import com.java.smart_garage.models.CarService;
 import com.java.smart_garage.models.Credential;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.WorkService;
@@ -89,6 +90,19 @@ public class WorkServiceController {
             User user = authenticationHelper.tryGetUser(headers);
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/filter/customers")
+    public List<WorkService> filterWorkServicesByNameAndPrice(@RequestHeader HttpHeaders headers,
+                                                              Optional<String> name,
+                                                              Optional<Double> price) {
+        try {
+            User credentialUser = authenticationHelper.tryGetUser(headers);
+            return service.filterWorkServicesByNameAndPrice(name, price, credentialUser);
+        }
+        catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

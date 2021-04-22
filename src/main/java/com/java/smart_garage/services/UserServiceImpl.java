@@ -56,10 +56,6 @@ public class UserServiceImpl implements UserService {
     public void create(User user, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(credentialUser.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee or the user can create new user.");
-        }
-
         try {
             repository.getById(user.getUserId());
         } catch (EntityNotFoundException e) {

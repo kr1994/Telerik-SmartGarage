@@ -20,4 +20,8 @@ public interface WorkServiceService {
     void update(WorkService service, User credentialUser);
 
     void delete(int id, User credentialUser);
+
+    List<WorkService> filterWorkServicesByNameAndPrice(Optional<String> name,
+                                                       Optional<Double> price,
+                                                       User credentialUser);
 }

@@ -77,8 +77,8 @@ public class AuthenticationHelper {
     public Credential verifyAuthentication(String username, String password){
         try{
             Credential credential = credentialService.getByUsername(username);
-
-            if(!credential.getPassword().equals(password)){
+            String hashedPassword = Md5Hashing.md5(password);
+            if(!credential.getPassword().equals(hashedPassword)){
                 throw new AuthenticationHelperException("Wrong user/password.");
             }
 

@@ -54,9 +54,6 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     public void create(PersonalInfo personalInfo, User credentialUser) {
         boolean duplicateExists = true;
 
-        if (!(credentialUser.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee can create the personal information!");
-        }
         try {
             repository.getByEmail(personalInfo.getEmail());
         } catch (EntityNotFoundException e) {

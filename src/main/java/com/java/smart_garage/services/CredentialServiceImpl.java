@@ -40,9 +40,7 @@ public class CredentialServiceImpl implements CredentialService {
     @Override
     public void create(Credential credential, User employeeUser) {
         boolean duplicateExists = true;
-        if (!(employeeUser.isEmployee())) {
-            throw new UnauthorizedOperationException("Only employee or the user can create new credential");
-        }
+
         try {
             repository.getByUsername(credential.getUsername());
         } catch (EntityNotFoundException e) {

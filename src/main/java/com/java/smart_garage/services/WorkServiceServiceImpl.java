@@ -99,6 +99,16 @@ public class WorkServiceServiceImpl implements WorkServiceService {
         }
         repository.delete(id);
     }
+
+    @Override
+    public List<WorkService> filterWorkServicesByNameAndPrice(Optional<String> name,
+                                                              Optional<Double> price,
+                                                              User credentialUser) {
+        if (!(credentialUser.isEmployee())) {
+            throw new UnauthorizedOperationException("Only employee can filter work services.");
+        }
+        return repository.filterWorkServicesByNameAndPrice(name, price);
+    }
 }
 
 
