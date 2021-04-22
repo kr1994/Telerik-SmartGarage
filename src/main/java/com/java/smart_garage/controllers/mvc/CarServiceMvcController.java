@@ -59,9 +59,10 @@ public class CarServiceMvcController {
         currentUser.setUserType(userType);
         model.addAttribute("currentUser", currentUser);
     }
+
     @GetMapping
-    public String showAllServices(@ModelAttribute("currentUser") User currentUser,@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
-                                  Model model, HttpSession session){
+    public String showAllServices(@ModelAttribute("currentUser") User currentUser, @RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
+                                  Model model, HttpSession session) {
         try {
             currentUser = authenticationHelper.tryGetUser(session);
             model.addAttribute("currentUser", currentUser);
@@ -69,27 +70,29 @@ public class CarServiceMvcController {
             model.addAttribute("currentUser", currentUser);
         }
         List<Automobile> cars = automobileService.getAllCars();
-        List<CarServiceViewDto> carsView = getCarServiceViewDto(startingDate,  endingDate, currency,  cars);
-        model.addAttribute("carsView",carsView);
+        List<CarServiceViewDto> carsView = getCarServiceViewDto(startingDate, endingDate, currency, cars);
+        model.addAttribute("carsView", carsView);
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
         return "carServices";
     }
-    @GetMapping("/{id}")
-    public String showAllCars(@PathVariable int id,@RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
-                              Model model, HttpSession session) {
-        User currentUser ;
 
-            currentUser = authenticationHelper.tryGetUser(session);
-            model.addAttribute("currentUser", currentUser);
+    @GetMapping("/{id}")
+    public String showAllCars(@PathVariable int id, @RequestParam Optional<Date> startingDate, @RequestParam Optional<Date> endingDate, @RequestParam Optional<String> currency,
+                              Model model, HttpSession session) {
+        User currentUser;
+
+        currentUser = authenticationHelper.tryGetUser(session);
+        model.addAttribute("currentUser", currentUser);
 
         List<Automobile> cars = automobileService.getAllCarsByOwner(id);
-        List<CarServiceViewDto> carsView = getCarServiceViewDto(startingDate,  endingDate, currency,  cars);
-        model.addAttribute("carsView",carsView);
+        List<CarServiceViewDto> carsView = getCarServiceViewDto(startingDate, endingDate, currency, cars);
+        model.addAttribute("carsView", carsView);
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
         return "carServices";
     }
+
     @GetMapping("/{id}/create")
     public String showCarsCreate(Model model, HttpSession session, @PathVariable int id) {
         User currentUser;
@@ -105,14 +108,14 @@ public class CarServiceMvcController {
         }
 
         model.addAttribute("carService", new CarServiceDto());
-        model.addAttribute("cars",carService.getById(id));
+        model.addAttribute("cars", carService.getById(id));
         model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
         model.addAttribute("currentUser", currentUser);
         return "carService-create";
     }
 
     @PostMapping("/{id}/create")
-    public String createCar(@PathVariable int id,@ModelAttribute("currentUser") User currentUser, Model model, HttpSession session, BindingResult bindingResult, @Valid @ModelAttribute CarServiceDto carServiceDto) {
+    public String createCar(@PathVariable int id, @ModelAttribute("currentUser") User currentUser, Model model, HttpSession session, BindingResult bindingResult, @Valid @ModelAttribute CarServiceDto carServiceDto) {
         if (bindingResult.hasErrors()) {
             return "workService-create";
         }
@@ -121,24 +124,26 @@ public class CarServiceMvcController {
         Invoice invoice = modelConversionHelper.invoiceFromDto(carServiceDto.getInvoice());
 
         try {
-            model.addAttribute("carService", carServiceDto);
-            model.addAttribute("cars",carService.getById(id));
-            model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
-            model.addAttribute("currentUser", currentUser);
 
-           try{ service.create(carServiceWork,invoice, currentUser);}
-           catch (DateInPastException e) {
-               bindingResult.rejectValue("carService.invoice", "text", e.getMessage());
-               return "carService-create";
-           }
+            try {
+                model.addAttribute("carService", carServiceDto);
+                model.addAttribute("cars", carService.getById(id));
+                model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
+                model.addAttribute("currentUser", currentUser);
+                service.create(carServiceWork, invoice, currentUser);
+            } catch (DateInPastException e) {
+                bindingResult.rejectValue("carService.invoice", "text", e.getMessage());
+                return "carService-create";
+            }
         } catch (DuplicateEntityException e) {
             bindingResult.rejectValue("carService", "text", e.getMessage());
             return "carService-create";
         }
         return "redirect:/carServices/" + currentUser.getUserId();
     }
+
     @GetMapping("/{id}/delete")
-    public String showDeleteWarehousePage(@PathVariable int id,@ModelAttribute("currentUser") User currentUser, Model model, HttpSession session) {
+    public String showDeleteWarehousePage(@PathVariable int id, @ModelAttribute("currentUser") User currentUser, Model model, HttpSession session) {
 
         try {
             currentUser = authenticationHelper.tryGetUser(session);
@@ -156,8 +161,8 @@ public class CarServiceMvcController {
     }
 
     @PostMapping("/{id}/delete")
-    public String removeShipment(@PathVariable int id,@ModelAttribute("currentUser") User currentUser,
-                                 @ModelAttribute CarService carServiceToDelete,Model model,
+    public String removeShipment(@PathVariable int id, @ModelAttribute("currentUser") User currentUser,
+                                 @ModelAttribute CarService carServiceToDelete, Model model,
                                  HttpSession session,
                                  BindingResult bindingResult) {
 
@@ -187,8 +192,8 @@ public class CarServiceMvcController {
         List<CarServiceViewDto> carServiceViewDto = new ArrayList<>();
 
         for (Automobile car : cars) {
-            if(!service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency).isEmpty())
-                carServiceViewDto.add(modelConversionHelper.objectToView(car,service.getAllCarServicesByView(startingDate,endingDate,car.getId(),currency)));
+            if (!service.getAllCarServicesByView(startingDate, endingDate, car.getId(), currency).isEmpty())
+                carServiceViewDto.add(modelConversionHelper.objectToView(car, service.getAllCarServicesByView(startingDate, endingDate, car.getId(), currency)));
         }
         return carServiceViewDto;
     }

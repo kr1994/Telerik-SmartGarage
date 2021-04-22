@@ -193,9 +193,10 @@
                                        style="padding: 10px" source="custom" name="form" redirect="true">
 
                                     <div class="u-form-email u-form-group u-form-group-1">
+                                        <p th:errors="*{model}">Model error</p>
                                         <label for="email-319a"
                                                class="u-label u-text-body-alt-color u-label-1">Model name</label>
-                                        <p th:errors="*{model}">Model error</p>
+
                                         <input th:field="*{model}" type="text" placeholder="Enter modelCar name here..." id="email-319a"
                                                name="workservice" class="u-input u-input-rectangle u-white" required="">
                                     </div>

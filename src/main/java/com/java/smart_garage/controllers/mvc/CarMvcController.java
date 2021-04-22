@@ -90,7 +90,7 @@ public class CarMvcController {
     @GetMapping("/create")
     public String showCarsCreate(Model model, HttpSession session) {
         User currentUser;
-
+        AutomobileDto automobileDto = new AutomobileDto();
         try {
             currentUser = authenticationHelper.tryGetUser(session);
         } catch (UnauthorizedOperationException e) {
@@ -100,7 +100,7 @@ public class CarMvcController {
         if (!currentUser.isEmployee()) {
             return "authentication-fail";
         }
-        carPartsList(currentUser, model);
+        carPartsList(currentUser, model,automobileDto);
         return "car-create";
     }
 
@@ -113,7 +113,7 @@ public class CarMvcController {
         Automobile automobile = modelConversionHelper.carFromDto(automobileDto);
 
         try {
-            carPartsList(currentUser, model);
+            carPartsList(currentUser, model,automobileDto);
             automobileService.create(automobile, currentUser);
         } catch (DuplicateEntityException e) {
             bindingResult.rejectValue("car", "text", e.getMessage());
@@ -138,6 +138,7 @@ public class CarMvcController {
         }
         model.addAttribute("modelCar",new ModelCarDto());
         model.addAttribute("manufacturers", manufactureService.getAllManufacturers());
+        model.addAttribute("currentUser", currentUser);
 
 
         return "model-create";
@@ -152,6 +153,9 @@ public class CarMvcController {
         ModelCar newModelCar = modelConversionHelper.modelFromDto(modelCarDto);
 
         try {
+            model.addAttribute("modelCar",modelCarDto);
+            model.addAttribute("manufacturers", manufactureService.getAllManufacturers());
+            model.addAttribute("currentUser", currentUser);
             modelService.create(newModelCar, currentUser);
 
         } catch (DuplicateEntityException e) {
@@ -165,8 +169,8 @@ public class CarMvcController {
         return "cars";
     }
 
-    private void carPartsList(@ModelAttribute("currentUser") User currentUser, Model model) {
-        model.addAttribute("car", new AutomobileDto());
+    private void carPartsList(@ModelAttribute("currentUser") User currentUser, Model model,@Valid @ModelAttribute AutomobileDto automobileDto) {
+        model.addAttribute("car", automobileDto);
         model.addAttribute("manufacturer", manufactureService.getAllManufacturers());
         model.addAttribute("models", modelService.getAllModels());
         model.addAttribute("colours", colourService.getAllColours());

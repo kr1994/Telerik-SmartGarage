@@ -202,7 +202,7 @@
                                                     class="u-input u-input-rectangle u-white" required="required">
                                                 <option
                                                         th:value="${cars.getId()}"
-                                                        th:text="${cars.modelCar.modelName + '-' + cars.modelCar.manufacturer.manufacturerName+ '-' + cars.registrationPlate} "
+                                                        th:text="${cars.model.model + '-' + cars.model.manufacturer.manufacturerName+ '-' + cars.registrationPlate} "
                                                 >Car
                                                 </option>
                                             </select>
@@ -210,13 +210,13 @@
                                     </div>
                                     <div class="u-form-group u-form-select u-form-group-3">
                                         <label for="select-3598"
-                                               class="u-label u-text-body-alt-color u-label-3">Colours</label>
+                                               class="u-label u-text-body-alt-color u-label-3">Service/Price</label>
                                         <div class="u-form-select-wrapper">
                                             <select id="select-3598" th:field="*{serviceId}"
                                                     class="u-input u-input-rectangle u-white" required="required">
                                                 <option th:each="work : ${workService}"
                                                         th:value="${work.workServiceId}"
-                                                        th:text="${work.workServiceName}">Service
+                                                        th:text="${work.workServiceName} + '-' + ${work.workServicePrice}">Service
                                                 </option>
                                             </select>
                                         </div>

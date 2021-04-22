@@ -180,6 +180,11 @@
     <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <h2 class="u-text u-text-1">Customers' Cars</h2>
         <br>
+        <a th:href="@{/carServices?currency=USD}"
+           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">USD</a>
+        <a th:href="@{/carServices?currency=BGN}"
+           class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">BGN</a>
+        <a th:href="@{/carServices}" class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-1">EUR</a>
         <form action="#"
               class="u-border-5 u-border-grey-30 u-input-round u-radius-10 u-search u-search-left u-white u-search-1">
             <button disabled class="u-search-button" type="submit">
