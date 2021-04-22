@@ -130,12 +130,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void resetPassword(String email) {
+    public void resetPassword(String email, String newPassword) {
         User user = Optional.ofNullable(repository.getByEmail(email)).orElseThrow(
                 () -> new EntityNotFoundException("User", "email"));
 
         Credential credential = credentialRepository.getById(user.getCredential().getCredentialId());
-        String newPassword = Md5Hashing.generateNewPassword(8);
         credential.setPassword(Md5Hashing.md5(newPassword));
         credentialRepository.update(credential);
         emailService.sendMailForNewPassword(email, newPassword);

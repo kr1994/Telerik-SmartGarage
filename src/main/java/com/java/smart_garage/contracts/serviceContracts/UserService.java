@@ -39,5 +39,5 @@ public interface UserService {
 
     int getUserCount();
 
-    void resetPassword(String email);
+    void resetPassword(String email, String newPassword);
 }
