@@ -1,18 +1,18 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
-import com.java.smart_garage.models.Model;
+import com.java.smart_garage.models.ModelCar;
 import com.java.smart_garage.models.User;
 
 import java.util.List;
 
 public interface ModelService {
-    List<Model> getAllModels();
+    List<ModelCar> getAllModels();
 
-    Model getModelById(int id);
+    ModelCar getModelById(int id);
 
-    Model getModelByName(String name);
+    ModelCar getModelByName(String name);
 
-    void create(Model model, User credentialUser);
+    void create(ModelCar modelCar, User credentialUser);
 
     void delete(int id, User credentialUser);
 }

@@ -5,7 +5,7 @@ import com.java.smart_garage.contracts.serviceContracts.ModelService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Model;
+import com.java.smart_garage.models.ModelCar;
 import com.java.smart_garage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,22 +23,22 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<Model> getAllModels(){
+    public List<ModelCar> getAllModels(){
         return repository.getAllModels();
     }
 
     @Override
-    public Model getModelById(int id){
+    public ModelCar getModelById(int id){
         return repository.getById(id);
     }
 
     @Override
-    public Model getModelByName(String name){
+    public ModelCar getModelByName(String name){
         return repository.getByName(name);
     }
 
     @Override
-    public void create(Model model, User credentialUser) {
+    public void create(ModelCar modelCar, User credentialUser) {
 
         boolean duplicateExists = true;
 
@@ -46,16 +46,16 @@ public class ModelServiceImpl implements ModelService {
             throw new UnauthorizedOperationException("Only employee can create models.");
         }
         try {
-            repository.getByName(model.getModelName());
+            repository.getByName(modelCar.getModel());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
 
         if (duplicateExists) {
-            throw new DuplicateEntityException("Model", "name", model.getModelName());
+            throw new DuplicateEntityException("Model", "name", modelCar.getModel());
         }
 
-        repository.create(model);
+        repository.create(modelCar);
     }
 
     @Override

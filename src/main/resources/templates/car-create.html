@@ -208,10 +208,10 @@
                                         <div class="u-form-select-wrapper">
                                             <select id="select-4598" th:field="*{modelId}"
                                                     class="u-input u-input-rectangle u-white" required="required">
-                                                <option th:each="model : ${models}"
-                                                        th:value="${model.modelId}"
-                                                        th:text="${model.modelName + '-' + model.manufacturer.manufacturerName} "
-                                                >"${model.modelName}">Model
+                                                <option th:each="modelCar : ${models}"
+                                                        th:value="${modelCar.modelId}"
+                                                        th:text="${modelCar.model + '-' + modelCar.manufacturer.manufacturerName} "
+                                                >"${modelCar.modelName}">Model
                                                 </option>
                                             </select>
                                         </div>

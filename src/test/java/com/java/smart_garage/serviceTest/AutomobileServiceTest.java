@@ -1,7 +1,6 @@
 package com.java.smart_garage.serviceTest;
 
 import com.java.smart_garage.contracts.repoContracts.AutomobileRepository;
-import com.java.smart_garage.contracts.repoContracts.CityRepository;
 import com.java.smart_garage.contracts.serviceContracts.PlateValidationService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
@@ -9,7 +8,6 @@ import com.java.smart_garage.exceptions.IncorrectPlateRegistrationException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Automobile;
 import com.java.smart_garage.services.AutomobileServiceImpl;
-import com.java.smart_garage.services.PlateValidationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +64,7 @@ public class AutomobileServiceTest {
         Assertions.assertEquals(1, result.getId());
         Assertions.assertEquals("CA2313HM", result.getRegistrationPlate());
         Assertions.assertEquals("Id12345678901234567", result.getIdentifications());
-        Assertions.assertEquals("Z1", result.getModel().getModelName());
+        Assertions.assertEquals("Z1", result.getModel().getModel());
         Assertions.assertEquals("BMW", result.getModel().getManufacturer().getManufacturerName());
         Assertions.assertEquals("Red", result.getColour().getColour());
         Assertions.assertEquals(2020, result.getYear());

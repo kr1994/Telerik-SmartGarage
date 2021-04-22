@@ -4,7 +4,7 @@ import com.java.smart_garage.contracts.repoContracts.ModelRepository;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
-import com.java.smart_garage.models.Model;
+import com.java.smart_garage.models.ModelCar;
 import com.java.smart_garage.services.ModelServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import java.util.List;
 import static com.java.smart_garage.Helpers.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ModelServiceTest {
+public class ModelCarServiceTest {
 
     @Mock
     ModelRepository mockModelRepository;
@@ -29,7 +29,7 @@ public class ModelServiceTest {
 
     @Test
     public void getAllModel_Should_Return_AllModels() {
-        List<Model> result = service.getAllModels();
+        List<ModelCar> result = service.getAllModels();
         result.add(createMockModel());
 
         // Assert
@@ -43,11 +43,11 @@ public class ModelServiceTest {
                 thenReturn(createMockModel());
 
         //Act
-        Model result = service.getModelById(1);
+        ModelCar result = service.getModelById(1);
 
         // Assert
         Assertions.assertEquals(1, result.getModelId());
-        Assertions.assertEquals("Z1", result.getModelName());
+        Assertions.assertEquals("Z1", result.getModel());
 
     }
 
@@ -58,11 +58,11 @@ public class ModelServiceTest {
                 thenReturn(createMockModel());
 
         //Act
-        Model result = service.getModelByName("Z1");
+        ModelCar result = service.getModelByName("Z1");
 
         // Assert
         Assertions.assertEquals(1, result.getModelId());
-        Assertions.assertEquals("Z1", result.getModelName());
+        Assertions.assertEquals("Z1", result.getModel());
 
     }
 
@@ -93,7 +93,7 @@ public class ModelServiceTest {
         var mockModel = createMockModel();
         var mockUser = createMockUser();
 
-        Mockito.when(mockModelRepository.getByName(mockModel.getModelName()))
+        Mockito.when(mockModelRepository.getByName(mockModel.getModel()))
                 .thenThrow(new EntityNotFoundException("Model", "id", mockModel.getModelId()));
 
         // Act, Assert

@@ -6,9 +6,11 @@ import com.java.smart_garage.contracts.serviceContracts.*;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.UnauthorizedOperationException;
 import com.java.smart_garage.models.Automobile;
+import com.java.smart_garage.models.ModelCar;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.UserType;
 import com.java.smart_garage.models.dto.AutomobileDto;
+import com.java.smart_garage.models.dto.ModelCarDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -119,6 +121,48 @@ public class CarMvcController {
         }
 
         return "redirect:/cars";
+    }
+
+    @GetMapping("/create-modelCar")
+    public String showModelCreate(Model model, HttpSession session) {
+        User currentUser;
+
+        try {
+            currentUser = authenticationHelper.tryGetUser(session);
+        } catch (UnauthorizedOperationException e) {
+            return "authentication-fail";
+        }
+
+        if (!currentUser.isEmployee()) {
+            return "authentication-fail";
+        }
+        model.addAttribute("modelCar",new ModelCarDto());
+        model.addAttribute("manufacturers", manufactureService.getAllManufacturers());
+
+
+        return "model-create";
+    }
+
+    @PostMapping("/create-modelCar")
+    public String createCar(@ModelAttribute("currentUser") User currentUser, @Valid @ModelAttribute ModelCarDto modelCarDto, Model model, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "model-create";
+        }
+        currentUser = authenticationHelper.tryGetUser(session);
+        ModelCar newModelCar = modelConversionHelper.modelFromDto(modelCarDto);
+
+        try {
+            modelService.create(newModelCar, currentUser);
+
+        } catch (DuplicateEntityException e) {
+            bindingResult.rejectValue("model", "model_error", e.getMessage());
+            return "model-create";
+        }
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("cars", automobileService.getAllCars());
+        model.addAttribute("currentUser", currentUser);
+
+        return "cars";
     }
 
     private void carPartsList(@ModelAttribute("currentUser") User currentUser, Model model) {

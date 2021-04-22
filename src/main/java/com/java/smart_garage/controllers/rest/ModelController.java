@@ -5,10 +5,9 @@ import com.java.smart_garage.configuration.AuthenticationHelper;
 import com.java.smart_garage.contracts.serviceContracts.ModelService;
 import com.java.smart_garage.exceptions.DuplicateEntityException;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.Credential;
+import com.java.smart_garage.models.ModelCar;
 import com.java.smart_garage.models.User;
-import com.java.smart_garage.models.dto.ModelDto;
+import com.java.smart_garage.models.dto.ModelCarDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,12 +35,12 @@ public class ModelController {
     }
 
     @GetMapping
-    public List<Model> getAllModels(){
+    public List<ModelCar> getAllModels(){
         return  service.getAllModels();
     }
 
     @GetMapping("/{id}")
-    public Model getModelById(@PathVariable int id) {
+    public ModelCar getModelById(@PathVariable int id) {
         try {
             return service.getModelById(id);
         }
@@ -50,12 +49,12 @@ public class ModelController {
         }
     }
     @PostMapping
-    public Model create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ModelDto modelDto) {
+    public ModelCar create(@RequestHeader HttpHeaders headers, @Valid @RequestBody ModelCarDto modelCarDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Model model = modelConversionHelper.modelFromDto(modelDto);
-            service.create(model, user);
-            return model;
+            ModelCar modelCar = modelConversionHelper.modelFromDto(modelCarDto);
+            service.create(modelCar, user);
+            return modelCar;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

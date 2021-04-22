@@ -1,17 +1,17 @@
 package com.java.smart_garage.contracts.repoContracts;
 
-import com.java.smart_garage.models.Model;
+import com.java.smart_garage.models.ModelCar;
 
 import java.util.List;
 
 public interface ModelRepository {
-    List<Model> getAllModels();
+    List<ModelCar> getAllModels();
 
-    Model getById(int id);
+    ModelCar getById(int id);
 
-    Model getByName(String name);
+    ModelCar getByName(String name);
 
-    Model create(Model model);
+    ModelCar create(ModelCar modelCar);
 
     void delete(int id);
 }

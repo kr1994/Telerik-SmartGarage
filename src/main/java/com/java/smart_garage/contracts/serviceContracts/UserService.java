@@ -1,8 +1,6 @@
 package com.java.smart_garage.contracts.serviceContracts;
 
 import com.java.smart_garage.models.CarService;
-import com.java.smart_garage.models.Model;
-import com.java.smart_garage.models.PersonalInfo;
 import com.java.smart_garage.models.User;
 import com.java.smart_garage.models.viewDto.CustomerViewDto;
 

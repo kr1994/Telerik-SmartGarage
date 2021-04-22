@@ -3,7 +3,7 @@ package com.java.smart_garage.repositories;
 
 import com.java.smart_garage.contracts.repoContracts.ModelRepository;
 import com.java.smart_garage.exceptions.EntityNotFoundException;
-import com.java.smart_garage.models.Model;
+import com.java.smart_garage.models.ModelCar;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -23,34 +23,34 @@ public class ModelRepositoryImpl implements ModelRepository {
 
 
     @Override
-    public List<Model> getAllModels() {
+    public List<ModelCar> getAllModels() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Model> query = session.createQuery("from Model order by modelId",
-                    Model.class);
+            Query<ModelCar> query = session.createQuery("from ModelCar order by manufacturer.manufacturerName ",
+                    ModelCar.class);
             return query.list();
         }
     }
 
 
     @Override
-    public Model getById(int id) {
+    public ModelCar getById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Model model = session.get(Model.class, id);
-            if (model == null) {
+            ModelCar modelCar = session.get(ModelCar.class, id);
+            if (modelCar == null) {
                 throw new EntityNotFoundException("Model", "id", id);
             }
 
-            return model;
+            return modelCar;
         }
     }
 
     @Override
-    public Model getByName(String name) {
+    public ModelCar getByName(String name) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Model> query = session.createQuery("from Model where modelName like concat('%', :name, '%')",
-                    Model.class);
+            Query<ModelCar> query = session.createQuery("from ModelCar where model like concat('%', :name, '%')",
+                    ModelCar.class);
             query.setParameter("name", name);
-            List<Model> result = query.list();
+            List<ModelCar> result = query.list();
             if (result.size() == 0) {
                 throw new EntityNotFoundException("Model", "name", name);
             }
@@ -61,12 +61,12 @@ public class ModelRepositoryImpl implements ModelRepository {
 
 
     @Override
-    public Model create(Model model) {
+    public ModelCar create(ModelCar modelCar) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(model);
+            session.save(modelCar);
         }
 
-        return model;
+        return modelCar;
     }
 
 
@@ -74,7 +74,7 @@ public class ModelRepositoryImpl implements ModelRepository {
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.get(Model.class, id));
+            session.delete(session.get(ModelCar.class, id));
             session.getTransaction().commit();
         }
     }

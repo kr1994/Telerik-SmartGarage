@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "models")
-public class Model {
+public class ModelCar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,18 +13,18 @@ public class Model {
     private int modelId;
 
     @Column(name = "name")
-    private String modelName;
+    private String model;
 
     @ManyToOne
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 
-    public Model() {
+    public ModelCar() {
     }
 
-    public Model(int modelId, String modelName, Manufacturer manufacturer) {
+    public ModelCar(int modelId, String model, Manufacturer manufacturer) {
         this.modelId = modelId;
-        this.modelName = modelName;
+        this.model = model;
         this.manufacturer = manufacturer;
     }
 
@@ -32,8 +32,8 @@ public class Model {
         this.modelId = modelId;
     }
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setModel(String modelName) {
+        this.model = modelName;
     }
 
     public void setManufacturer(Manufacturer manufacturer) {
@@ -44,8 +44,8 @@ public class Model {
         return modelId;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getModel() {
+        return model;
     }
 
     public Manufacturer getManufacturer() {

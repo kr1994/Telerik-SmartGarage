@@ -148,7 +148,7 @@ public class UserController {
             cvd.setEmail(cs.getCar().getOwner().getPersonalInfo().getEmail());
             cvd.setPhoneNumber(cs.getCar().getOwner().getPersonalInfo().getPhoneNumber());
             cvd.setUserType(cs.getCar().getOwner().getUserType());
-            cvd.setCarModel(cs.getCar().getModel().getModelName());
+            cvd.setCarModel(cs.getCar().getModel().getModel());
             visits.add(cs.getInvoice().getDate());
             cvd.setVisitsInRange(visits);
             resultQuery.add(cvd);

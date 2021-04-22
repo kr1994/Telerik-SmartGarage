@@ -202,7 +202,7 @@
                                                     class="u-input u-input-rectangle u-white" required="required">
                                                 <option
                                                         th:value="${cars.getId()}"
-                                                        th:text="${cars.model.modelName + '-' + cars.model.manufacturer.manufacturerName+ '-' + cars.registrationPlate} "
+                                                        th:text="${cars.modelCar.modelName + '-' + cars.modelCar.manufacturer.manufacturerName+ '-' + cars.registrationPlate} "
                                                 >Car
                                                 </option>
                                             </select>

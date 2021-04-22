@@ -5,19 +5,11 @@ import com.java.smart_garage.contracts.repoContracts.*;
 import com.java.smart_garage.models.*;
 import com.java.smart_garage.models.dto.*;
 import com.java.smart_garage.models.viewDto.CarServiceViewDto;
-import com.java.smart_garage.models.viewDto.CustomerViewDto;
 import com.java.smart_garage.models.viewDto.WorkServiceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ModelConversionHelper {
@@ -153,16 +145,16 @@ public class ModelConversionHelper {
         return carService;
     }
 
-    public Model modelFromDto(ModelDto modelDto) {
-        Model model = new Model();
-        dtoToModelObject(modelDto, model);
-        return model;
+    public ModelCar modelFromDto(ModelCarDto modelCarDto) {
+        ModelCar modelCar = new ModelCar();
+        dtoToModelObject(modelCarDto, modelCar);
+        return modelCar;
     }
 
-    public Model modelFromDto(ModelDto modelDto, int id) {
-        Model model = modelRepository.getById(id);
-        dtoToModelObject(modelDto, model);
-        return model;
+    public ModelCar modelFromDto(ModelCarDto modelCarDto, int id) {
+        ModelCar modelCar = modelRepository.getById(id);
+        dtoToModelObject(modelCarDto, modelCar);
+        return modelCar;
     }
 
     public Automobile carFromDto(AutomobileDto automobileDto) {
@@ -179,7 +171,7 @@ public class ModelConversionHelper {
 
     public CarServiceViewDto objectToView(Automobile automobile, List<WorkServiceView> workServiceViews){
         CarServiceViewDto carServiceViewDto = new CarServiceViewDto();
-        carServiceViewDto.setCarModel(automobile.getModel().getModelName());
+        carServiceViewDto.setCarModel(automobile.getModel().getModel());
         carServiceViewDto.setCarManufacturer(automobile.getModel().getManufacturer().getManufacturerName());
         carServiceViewDto.setCarRegPlate(automobile.getRegistrationPlate());
         carServiceViewDto.setCarIdNumber(automobile.getIdentifications());
@@ -282,12 +274,12 @@ public class ModelConversionHelper {
     }
 
     private void dtoToCarObject(AutomobileDto automobileDto, Automobile automobile) {
-        Model model = modelRepository.getById(automobileDto.getModelId());
+        ModelCar modelCar = modelRepository.getById(automobileDto.getModelId());
         Colour colour = coloursRepository.getById(automobileDto.getColourId());
         Engine engine = engineRepository.getById(automobileDto.getEngineId());
         User user = userRepository.getById(automobileDto.getOwnerId());
 
-        automobile.setModel(model);
+        automobile.setModel(modelCar);
         automobile.setRegistrationPlate(automobileDto.getPlate());
         automobile.setIdentifications(automobileDto.getIdentification());
         automobile.setYear(automobileDto.getYear());
@@ -296,10 +288,10 @@ public class ModelConversionHelper {
         automobile.setOwner(user);
     }
 
-    private void dtoToModelObject(ModelDto modelDto, Model model) {
-        Manufacturer manufacturer = manufacturerRepository.getById(modelDto.getManufacturer());
-        model.setModelName(modelDto.getModelName());
-        model.setManufacturer(manufacturer);
+    private void dtoToModelObject(ModelCarDto modelCarDto, ModelCar modelCar) {
+        Manufacturer manufacturer = manufacturerRepository.getById(modelCarDto.getManufacturer());
+        modelCar.setModel(modelCarDto.getModel());
+        modelCar.setManufacturer(manufacturer);
     }
 
     private void dtoToCarServiceObject(CarServiceDto carServiceDto, CarService carService) {

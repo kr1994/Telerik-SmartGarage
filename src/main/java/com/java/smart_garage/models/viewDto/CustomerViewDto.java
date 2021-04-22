@@ -1,6 +1,5 @@
 package com.java.smart_garage.models.viewDto;
 
-import com.java.smart_garage.models.Model;
 import com.java.smart_garage.models.UserType;
 
 import java.sql.Date;

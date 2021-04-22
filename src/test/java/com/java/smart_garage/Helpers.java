@@ -74,12 +74,12 @@ public class Helpers {
         return mockManufacturer;
     }
 
-    public static Model createMockModel(){
-        Model mockModel = new Model();
-        mockModel.setModelId(1);
-        mockModel.setModelName("Z1");
-        mockModel.setManufacturer(createMockManufacturer());
-        return mockModel;
+    public static ModelCar createMockModel(){
+        ModelCar mockModelCar = new ModelCar();
+        mockModelCar.setModelId(1);
+        mockModelCar.setModel("Z1");
+        mockModelCar.setManufacturer(createMockManufacturer());
+        return mockModelCar;
     }
 
     public static PersonalInfo createMockPersonalInfo(){
