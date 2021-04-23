@@ -276,11 +276,12 @@
         </select>
         -->
 
-        <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
+
+    </div>
+    <li th:unless="${currentUser.getUserId() == 0 || !currentUser.getUserType().getType().equals('Employee')}" class="u-nav-item">
         <a th:href="@{/workServices/create}"
            class="u-btn u-btn-round u-button-style u-gradient u-none u-radius-4 u-text-body-alt-color u-btn-3">Create Work Service</a>
-        </li>
-    </div>
+    </li>
 </div>
 <div class="u-clearfix u-section-2" id="sec-be6c">
 
