@@ -72,6 +72,7 @@ public class CarServiceMvcController {
         List<Automobile> cars = automobileService.getAllCars();
         List<CarServiceViewDto> carsView = getCarServiceViewDto(startingDate, endingDate, currency, cars);
         model.addAttribute("carsView", carsView);
+        model.addAttribute("workService", workServiceService.getAllWorkServices(Optional.empty()));
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("currencies", currencyMultiplierService.getAllCurrency());
         return "carServices";

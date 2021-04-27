@@ -27,6 +27,7 @@ import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.BASE_
 @Service
 public class CarServiceServiceImpl implements CarServiceService {
 
+    public static final String BASE_CURRENCY_NAME = "EUR";
     private final CarServiceRepository repository;
     private final CurrencyMultiplierService multiplierService;
     private final ModelConversionHelper conversionHelper;
@@ -48,7 +49,7 @@ public class CarServiceServiceImpl implements CarServiceService {
 
 
         List<WorkServiceView> workServiceView= new ArrayList<>();
-        if(currency.isEmpty()){
+        if(currency.isEmpty() || currency.get().equals(BASE_CURRENCY_NAME)){
             List<CarService> carServices = repository.filterByDateAndCarId(startingDate,endingDate,id);
             try {
                 workServiceView = listWorkServices(carServices, BASE_CURRENCY);
