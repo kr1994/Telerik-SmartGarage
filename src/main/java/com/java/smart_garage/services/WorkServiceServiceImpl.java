@@ -79,7 +79,7 @@ public class WorkServiceServiceImpl implements WorkServiceService {
 
     @Override
     public void update(WorkService workService, User credentialUser) {
-
+        boolean duplicateExists = true;
         if (!(credentialUser.isEmployee())) {
             throw new UnauthorizedOperationException("Only employee or the user can modify the work service!");
         }
@@ -87,6 +87,14 @@ public class WorkServiceServiceImpl implements WorkServiceService {
             repository.getById(workService.getWorkServiceId());
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Work Service", "id", workService.getWorkServiceId());
+        }
+        try {
+            repository.getByName(workService.getWorkServiceName());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+        if (duplicateExists) {
+            throw new DuplicateEntityException("Work Service", "name", workService.getWorkServiceName());
         }
 
         repository.update(workService);

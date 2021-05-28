@@ -4,7 +4,7 @@ import com.java.smart_garage.models.Colour;
 
 import java.util.List;
 
-public interface ColoursRepository {
+public interface ColoursRepository  {
     List<Colour> getAllColours();
 
     Colour getById(int id);
@@ -13,5 +13,5 @@ public interface ColoursRepository {
 
     Colour create(Colour colour);
 
-    void delete(int id);
+     void delete(int id);
 }

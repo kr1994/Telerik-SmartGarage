@@ -27,6 +27,7 @@ public class ModelConversionHelper {
     private final CredentialRepository credentialRepository;
     private final PersonalInfoRepository personalInfoRepository;
     private final InvoiceRepository invoiceRepository;
+    private final WorkServiceStatusRepository workServiceStatus;
 
     @Autowired
     public ModelConversionHelper(ManufacturerRepository manufacturerRepository,
@@ -41,7 +42,7 @@ public class ModelConversionHelper {
                                  UserTypeRepository userTypeRepository,
                                  CredentialRepository credentialRepository,
                                  PersonalInfoRepository personalInfoRepository,
-                                 InvoiceRepository invoiceRepository) {
+                                 InvoiceRepository invoiceRepository, WorkServiceStatusRepository workServiceStatus) {
         this.manufacturerRepository = manufacturerRepository;
         this.automobileRepository = automobileRepository;
         this.carServiceRepository = carServiceRepository;
@@ -55,6 +56,7 @@ public class ModelConversionHelper {
         this.credentialRepository = credentialRepository;
         this.personalInfoRepository = personalInfoRepository;
         this.invoiceRepository = invoiceRepository;
+        this.workServiceStatus = workServiceStatus;
     }
 
 
@@ -106,11 +108,19 @@ public class ModelConversionHelper {
         return colour;
     }
 
+    public WorkServiceStatus workServiceStatusFromDto(ServiceStatusDto serviceStatusDto) {
+        WorkServiceStatus serviceStatus = new WorkServiceStatus();
+        serviceStatus.setStatus(serviceStatusDto.getName());
+        return serviceStatus;
+    }
+
+
 
     public WorkService workServiceFromDto(WorkServiceDto workServiceDto) {
         WorkService service = new WorkService();
         service.setWorkServiceName(workServiceDto.getWorkServiceName());
         service.setWorkServicePrice(workServiceDto.getWorkServicePrice());
+        service.setStatus(workServiceStatus.getById(workServiceDto.getWorkServiceStatusId()));
         return service;
     }
 
@@ -118,6 +128,7 @@ public class ModelConversionHelper {
         WorkService service = workServiceRepository.getById(id);
         service.setWorkServiceName(workServiceDto.getWorkServiceName());
         service.setWorkServicePrice(workServiceDto.getWorkServicePrice());
+        service.setStatus(workServiceStatus.getById(workServiceDto.getWorkServiceStatusId()));
         return service;
     }
 

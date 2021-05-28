@@ -1,7 +1,12 @@
 package com.java.smart_garage.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
+
+import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.ACTIVE;
+import static com.java.smart_garage.models.ModelsConstants.ModelsConstants.EMPLOYEE;
 
 @Entity
 @Table(name = "services")
@@ -18,13 +23,19 @@ public class WorkService {
     @Column(name = "service_price")
     private double workServicePrice;
 
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private WorkServiceStatus status;
+
     public WorkService() {
     }
 
-    public WorkService(int workServiceId, String workServiceName, double workServicePrice) {
+    public WorkService(int workServiceId, String workServiceName, double workServicePrice, WorkServiceStatus status) {
         this.workServiceId = workServiceId;
         this.workServiceName = workServiceName;
         this.workServicePrice = workServicePrice;
+        this.status = status;
     }
 
     public void setWorkServiceId(int workServiceId) {
@@ -39,6 +50,11 @@ public class WorkService {
         this.workServicePrice = workServicePrice;
     }
 
+
+    public void setStatus(WorkServiceStatus status) {
+        this.status = status;
+    }
+
     public int getWorkServiceId() {
         return workServiceId;
     }
@@ -51,5 +67,12 @@ public class WorkService {
         return workServicePrice;
     }
 
+    public WorkServiceStatus getStatus() {
+        return status;
+    }
 
+    @JsonIgnore
+    public boolean isActive() {
+        return getStatus().getStatus().equals(ACTIVE);
+    }
 }

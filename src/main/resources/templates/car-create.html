@@ -232,6 +232,7 @@
                                                id="name-320a"
                                                th:field="*{identification}" class="u-input u-input-rectangle u-white"
                                                required="">
+                                        <label th:errors="*{identification}">Identification error</label>
                                     </div>
                                     <p th:errors="*{identification}">Identification error</p>
                                     <div class="u-form-group u-form-name u-form-partition-factor-2 u-form-group-2">

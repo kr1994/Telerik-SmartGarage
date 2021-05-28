@@ -15,6 +15,10 @@ public class WorkServiceDto {
     @Positive(message = "Work Service price must be positive.")
     private double workServicePrice;
 
+    @NotNull
+    @Positive(message = "Work Service status must be positive.")
+    private int workServiceStatusId;
+
     public WorkServiceDto() {
     }
 
@@ -26,11 +30,19 @@ public class WorkServiceDto {
         this.workServicePrice = workServicePrice;
     }
 
+    public void setWorkServiceStatusId(int workServiceStatusId) {
+        this.workServiceStatusId = workServiceStatusId;
+    }
+
     public String getWorkServiceName() {
         return workServiceName;
     }
 
     public double getWorkServicePrice() {
         return workServicePrice;
+    }
+
+    public int getWorkServiceStatusId() {
+        return workServiceStatusId;
     }
 }

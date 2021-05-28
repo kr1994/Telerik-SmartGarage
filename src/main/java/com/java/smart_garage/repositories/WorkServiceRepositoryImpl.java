@@ -120,13 +120,9 @@ public class WorkServiceRepositoryImpl implements WorkServiceRepository {
 
             Query<WorkService> query = session.createQuery(queryStr, WorkService.class);
 
-            if (name.isPresent()) {
-                query.setParameter("name", name.get());
-            }
+            name.ifPresent(s -> query.setParameter("name", s));
 
-            if (price.isPresent()) {
-                query.setParameter("price", price.get());
-            }
+            price.ifPresent(aDouble -> query.setParameter("price", aDouble));
 
             return query.getResultList();
         }

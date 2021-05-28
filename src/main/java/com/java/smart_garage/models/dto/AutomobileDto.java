@@ -1,9 +1,11 @@
 package com.java.smart_garage.models.dto;
 
 import com.java.smart_garage.models.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public class AutomobileDto {
 
@@ -15,6 +17,7 @@ public class AutomobileDto {
     private String plate;
 
     @NotNull
+    @Size(min = 17,max = 17)
     private String identification;
 
     @NotNull
